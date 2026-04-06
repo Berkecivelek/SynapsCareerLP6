@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mülakat Koçu — Synaps AI | Her Mülakata Hazır Gel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400;1,9..144,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F7F5FF; --bg-off:#EFECFE; --bg-w:#FFFFFF; --bg-dark:#13082B; --bg-dark2:#0C0518;
+  --p700:#6D28D9; --p600:#7C3AED; --p500:#8B5CF6; --p400:#A78BFA; --p300:#C4B5FD;
+  --p200:#DDD6FE; --p100:#EDE9FE; --p50:#F5F3FF;
+  --ink:#0F0A1E; --ink2:#2E1E5A; --ink3:#6B5F8A; --ink4:#A89EC0; --ink5:#C8C0DC;
+  --green:#059669; --amber:#D97706; --coral:#E11D48; --sky:#0284C7;
+  --bdr:rgba(109,40,217,.12); --bdr2:rgba(109,40,217,.07);
+  --s2:0 4px 24px rgba(109,40,217,.10); --s3:0 16px 64px rgba(109,40,217,.14);
+  --s4:0 32px 100px rgba(15,10,30,.18); --s5:0 48px 140px rgba(15,10,30,.25);
+  --ease:cubic-bezier(.25,0,0,1); --spring:cubic-bezier(.34,1.56,.64,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Bricolage Grotesque',sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden;line-height:1.55}
+a{text-decoration:none} button{font-family:inherit;cursor:pointer;border:none}
+
+.t-d{font-family:'Bricolage Grotesque';font-weight:800;font-size:clamp(3rem,6.5vw,7rem);line-height:1.0;letter-spacing:-.04em}
+.t-h2{font-family:'Bricolage Grotesque';font-weight:800;font-size:clamp(2.2rem,4vw,4.6rem);line-height:1.06;letter-spacing:-.03em}
+.italic{font-family:'Fraunces',serif;font-style:italic;font-weight:300;color:var(--p600)}
+.eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--p600);margin-bottom:16px}
+.eyebrow::before{content:'';display:block;width:20px;height:2px;background:var(--p500);border-radius:2px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 32px}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:9px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;border:none;cursor:pointer;transition:all .28s var(--ease);white-space:nowrap}
+.btn-dark{background:var(--ink);color:#fff;padding:15px 30px;border-radius:100px;font-size:.95rem}
+.btn-dark:hover{background:var(--p700);transform:translateY(-2px);box-shadow:0 10px 32px rgba(109,40,217,.4)}
+.btn-purple{background:var(--p600);color:#fff;padding:15px 30px;border-radius:100px;font-size:.95rem;box-shadow:0 4px 20px rgba(109,40,217,.3)}
+.btn-purple:hover{background:var(--p700);transform:translateY(-2px);box-shadow:0 12px 36px rgba(109,40,217,.45)}
+.btn-outline{background:transparent;color:var(--ink);padding:14px 28px;border-radius:100px;font-size:.95rem;border:2px solid rgba(15,10,30,.14)}
+.btn-outline:hover{border-color:var(--p400);color:var(--p700);background:var(--p50)}
+.btn-ghost{background:rgba(255,255,255,.1);color:#fff;padding:12px 22px;border-radius:100px;font-size:.88rem;border:1px solid rgba(255,255,255,.2)}
+.btn-ghost:hover{background:rgba(255,255,255,.2)}
+.btn-lg{padding:18px 40px;font-size:1.05rem}
+.btn-sm{padding:10px 20px;font-size:.85rem}
+.arr{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2.5;transition:transform .2s}
+.btn:hover .arr{transform:translateX(4px)}
+
+/* NAV */
+#nav{position:fixed;top:0;left:0;right:0;z-index:900;height:68px;display:flex;align-items:center;padding:0 36px;transition:all .35s var(--ease)}
+#nav.stuck{background:rgba(247,245,255,.94);backdrop-filter:blur(24px);border-bottom:1px solid var(--bdr2);box-shadow:0 1px 4px rgba(109,40,217,.06)}
+.nav-in{max-width:1180px;margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between}
+.n-logo{display:flex;align-items:center;gap:10px}
+.n-mark{width:34px;height:34px;border-radius:9px;background:var(--ink);display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-style:italic;font-size:1.05rem;color:#fff;transition:background .25s}
+.n-logo:hover .n-mark{background:var(--p700)}
+.n-name{font-weight:800;font-size:1.1rem;color:var(--ink);letter-spacing:-.03em}
+.n-name span{color:var(--p600)}
+.n-back{display:flex;align-items:center;gap:7px;font-size:.84rem;font-weight:700;color:var(--ink3);padding:8px 14px;border-radius:10px;transition:all .2s}
+.n-back:hover{color:var(--ink);background:var(--p50)}
+.n-back svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.5;transition:transform .2s}
+.n-back:hover svg{transform:translateX(-3px)}
+.n-actions{display:flex;align-items:center;gap:10px}
+.n-sign{font-size:.88rem;font-weight:700;color:var(--ink3);padding:8px 14px;border-radius:10px;cursor:pointer;transition:color .2s}
+.n-sign:hover{color:var(--ink)}
+
+/* SCROLL REVEAL */
+[data-sr]{opacity:0;transition:opacity .85s var(--ease),transform .85s var(--ease)}
+[data-sr="up"]{transform:translateY(50px)}
+[data-sr="left"]{transform:translateX(-50px)}
+[data-sr="right"]{transform:translateX(50px)}
+[data-sr="scale"]{transform:scale(.92)}
+[data-sr="fade"]{}
+[data-sr].vis{opacity:1;transform:none}
+[data-d="1"]{transition-delay:.1s}[data-d="2"]{transition-delay:.2s}
+[data-d="3"]{transition-delay:.3s}[data-d="4"]{transition-delay:.4s}[data-d="5"]{transition-delay:.5s}
+
+/* HERO */
+#hero{padding:140px 0 100px;position:relative;overflow:hidden}
+.h-mesh{position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 60% 55% at 88% 40%,rgba(225,29,72,.06) 0%,transparent 60%),
+    radial-gradient(ellipse 70% 60% at 8% 50%,rgba(139,92,246,.09) 0%,transparent 65%)}
+.h-grid{position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(rgba(109,40,217,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(109,40,217,.04) 1px,transparent 1px);
+  background-size:72px 72px;
+  mask-image:radial-gradient(ellipse 90% 80% at 50% 35%,black 0%,transparent 100%)}
+
+.hero-body{position:relative;z-index:2;display:grid;grid-template-columns:1fr 1.15fr;gap:60px;align-items:center;padding:0 32px;max-width:1180px;margin:0 auto;width:100%}
+
+/* trial pill — kırmızı ton */
+.trial-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(225,29,72,.07);border:1px solid rgba(225,29,72,.2);color:var(--coral);border-radius:100px;padding:7px 16px 7px 10px;font-size:.78rem;font-weight:800;letter-spacing:.02em;margin-bottom:28px}
+.trial-dot{width:22px;height:22px;border-radius:50%;background:rgba(225,29,72,.12);border:1px solid rgba(225,29,72,.25);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.trial-dot-inner{width:8px;height:8px;border-radius:50%;background:var(--coral);animation:rec 1.2s infinite}
+@keyframes rec{0%,100%{opacity:1}50%{opacity:.25}}
+
+.hero-title{margin-bottom:24px}
+.hero-sub{font-size:1.05rem;color:var(--ink3);line-height:1.75;margin-bottom:36px;max-width:510px}
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:36px}
+.hero-pills{display:flex;gap:10px;flex-wrap:wrap}
+.hpill{background:var(--bg-w);border:1px solid var(--bdr);border-radius:100px;padding:8px 16px;display:flex;align-items:center;gap:7px;font-size:.8rem;font-weight:700;color:var(--ink2);transition:all .25s}
+.hpill:hover{border-color:var(--p300);background:var(--p50);transform:translateY(-1px)}
+.hpill-num{font-family:'Fraunces',serif;font-size:1rem;font-weight:700;color:var(--p600)}
+
+/* ── Interview Window Mockup ── */
+.int-window{background:var(--bg-w);border:1px solid var(--bdr);border-radius:24px;overflow:hidden;box-shadow:var(--s4);transition:all .5s var(--ease)}
+.int-window:hover{transform:translateY(-8px);box-shadow:var(--s5)}
+
+.iw-bar{background:var(--p50);border-bottom:1px solid var(--bdr2);padding:11px 18px;display:flex;align-items:center;gap:12px}
+.iw-dots{display:flex;gap:5px}
+.iwd{width:10px;height:10px;border-radius:50%}
+.iwd.r{background:#FF5F57}.iwd.y{background:#FEBC2E}.iwd.g{background:#28C840}
+.iw-live{display:flex;align-items:center;gap:6px;font-size:.72rem;font-weight:800;color:var(--coral)}
+.iw-live-dot{width:7px;height:7px;border-radius:50%;background:var(--coral);animation:rec 1.2s infinite}
+.iw-role{font-size:.7rem;font-weight:700;color:var(--ink3);margin-left:4px}
+.iw-timer{margin-left:auto;font-size:.8rem;font-weight:800;color:var(--ink3);font-variant-numeric:tabular-nums;display:flex;align-items:center;gap:5px}
+
+.iw-body{padding:18px;display:flex;flex-direction:column;gap:11px}
+
+/* chat messages */
+.cm{} 
+.cm-who{font-size:.58rem;font-weight:800;color:var(--ink4);margin-bottom:4px;padding-left:3px}
+.cm-who.r{text-align:right;padding-right:3px;padding-left:0}
+.bubble{padding:10px 14px;border-radius:14px;font-size:.79rem;line-height:1.55}
+.bubble.ai{background:var(--p50);border:1px solid var(--p200);color:var(--ink2);border-top-left-radius:4px}
+.bubble.user{background:var(--p600);color:#fff;border-top-right-radius:4px;margin-left:28px}
+
+.score-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}
+.sc-chip{display:flex;align-items:center;gap:4px;font-size:.65rem;font-weight:800;padding:3px 9px;border-radius:100px}
+.sc-chip.g{background:rgba(5,150,105,.09);color:var(--green);border:1px solid rgba(5,150,105,.18)}
+.sc-chip.w{background:rgba(217,119,6,.09);color:var(--amber);border:1px solid rgba(217,119,6,.18)}
+.sc-chip.p{background:var(--p100);color:var(--p700);border:1px solid var(--p200)}
+
+/* typing indicator */
+.typing{display:flex;gap:4px;align-items:center;padding:10px 14px;background:var(--p50);border:1px solid var(--p200);border-radius:14px;border-top-left-radius:4px;width:fit-content}
+.typing span{width:5px;height:5px;border-radius:50%;background:var(--p400);animation:tb 1.2s ease-in-out infinite}
+.typing span:nth-child(2){animation-delay:.2s}
+.typing span:nth-child(3){animation-delay:.4s}
+@keyframes tb{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+
+/* progress float */
+.prog-float{position:absolute;top:-16px;right:-22px;background:var(--bg-w);border:1px solid var(--bdr);border-radius:14px;padding:12px 16px;box-shadow:var(--s3)}
+.pfl{font-size:.6rem;font-weight:800;color:var(--ink4);margin-bottom:7px}
+.pf-steps{display:flex;gap:5px}
+.pfs{width:26px;height:8px;border-radius:100px}
+.pfs.done{background:var(--green)}
+.pfs.active{background:var(--p500);animation:spa 1.5s infinite}
+.pfs.todo{background:var(--p100)}
+@keyframes spa{0%,100%{opacity:1}50%{opacity:.45}}
+.pf-count{font-size:.63rem;font-weight:700;color:var(--ink3);margin-top:6px}
+
+/* score float */
+.score-float{position:absolute;bottom:16px;left:-24px;background:var(--bg-w);border:1px solid var(--bdr);border-radius:14px;padding:12px 16px;box-shadow:var(--s3);min-width:160px}
+.sfl{font-size:.6rem;font-weight:800;color:var(--ink4);margin-bottom:8px}
+.sfbig{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.sfnum{font-family:'Fraunces',serif;font-weight:700;font-size:2rem;color:var(--p600);line-height:1}
+.sfout{font-size:.72rem;color:var(--ink3);font-weight:600}
+.sf-bar{display:flex;align-items:center;gap:6px;margin-bottom:4px}
+.sf-bar-l{font-size:.6rem;color:var(--ink3);font-weight:600;min-width:56px}
+.sf-bar-t{flex:1;height:4px;background:var(--p100);border-radius:100px;overflow:hidden}
+.sf-bar-f{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--p600),var(--p400))}
+.sf-bar-v{font-size:.6rem;font-weight:800;color:var(--p600);min-width:22px;text-align:right}
+
+/* TICKER */
+.ticker{background:var(--p700);overflow:hidden;padding:12px 0;position:relative;z-index:3}
+.ticker-track{display:flex;gap:60px;animation:tick 28s linear infinite;width:max-content}
+.ticker-track:hover{animation-play-state:paused}
+.tick-item{display:flex;align-items:center;gap:9px;font-size:.84rem;font-weight:600;color:rgba(255,255,255,.6);flex-shrink:0}
+.tick-item strong{color:#fff}
+.tick-sep{color:rgba(255,255,255,.25)}
+@keyframes tick{to{transform:translateX(-50%)}}
+
+@media(max-width:1000px){
+  .hero-body{grid-template-columns:1fr;gap:44px}
+  .prog-float{right:-10px;top:-10px}
+  .score-float{left:-8px;bottom:8px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-in">
+    <a href="../index.html" class="n-logo">
+      <div class="n-mark">S</div>
+      <span class="n-name">Synaps<span>AI</span></span>
+    </a>
+    <a href="../index.html" class="n-back">
+      <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Anasayfa
+    </a>
+    <div class="n-actions">
+      <span class="n-sign" onclick="openModal('login')">Giriş Yap</span>
+      <a href="#" class="btn btn-dark btn-sm" onclick="openModal('register')">
+        Ücretsiz Dene <svg class="arr" viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="h-mesh"></div>
+  <div class="h-grid"></div>
+
+  <div class="hero-body">
+    <!-- COPY -->
+    <div>
+      <div data-sr="up">
+        <div class="trial-pill">
+          <div class="trial-dot"><div class="trial-dot-inner"></div></div>
+          1 ücretsiz deneme · Sonrası paket gerektirir
+        </div>
+      </div>
+
+      <div class="hero-title" data-sr="up" data-d="1">
+        <h1 class="t-d">
+          <span style="display:block">Her mülakata</span>
+          <span style="display:block" class="italic">hazır gel,</span>
+          <span style="display:block">işe gir</span>
+        </h1>
+      </div>
+
+      <p class="hero-sub" data-sr="up" data-d="2">
+        Yapay zeka mülakat koçunla gerçekçi simülasyonlar yap, anlık geri bildirim al.
+        Sesli pratik, STAR analizi, 10.000+ soruluk banka.
+        Bir kez deneyince bırakamazsın — çünkü sonuç konuşur.
+      </p>
+
+      <div class="hero-ctas" data-sr="up" data-d="3">
+        <a href="#" class="btn btn-dark btn-lg" onclick="openModal('register')">
+          Ücretsiz Simülasyon Başlat <svg class="arr" viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+        </a>
+        <a href="#pricing" class="btn btn-outline btn-lg">Paketleri Gör</a>
+      </div>
+
+      <div class="hero-pills" data-sr="fade" data-d="4">
+        <div class="hpill"><span class="hpill-num">%78</span> mülakat başarısı</div>
+        <div class="hpill"><span class="hpill-num">10K+</span> soru bankası</div>
+        <div class="hpill"><span class="hpill-num">50+</span> sektör</div>
+        <div class="hpill"><span class="hpill-num">4.9★</span> kullanıcı puanı</div>
+      </div>
+    </div>
+
+    <!-- INTERVIEW WINDOW MOCKUP -->
+    <div style="position:relative" data-sr="right" data-d="2">
+      <div class="int-window">
+        <div class="iw-bar">
+          <div class="iw-dots"><div class="iwd r"></div><div class="iwd y"></div><div class="iwd g"></div></div>
+          <div class="iw-live"><div class="iw-live-dot"></div>Canlı Simülasyon</div>
+          <div class="iw-role">· Trendyol Senior Frontend</div>
+          <div class="iw-timer">⏱ 04:22</div>
+        </div>
+
+        <div class="iw-body">
+          <div class="cm">
+            <div class="cm-who">AI Mülakat Uzmanı · Soru 3/5</div>
+            <div class="bubble ai">"Çok zorlandığınız bir teknik sorunu nasıl çözdüğünüzü ve ekibinizle iletişim sürecini anlatır mısınız?"</div>
+          </div>
+
+          <div class="cm">
+            <div class="cm-who r">Zeynep K.</div>
+            <div class="bubble user">Monolitik yapıyı microservices'e geçirirken ciddi performans sorunuyla karşılaştık. ROI analizi hazırlayıp ekibi ikna ettim, 4 ayda başarıyla teslim ettik.</div>
+          </div>
+
+          <div class="cm">
+            <div class="cm-who">AI Geri Bildirimi</div>
+            <div class="bubble ai">
+              Yapı güçlü, somut sonuç mevcut. Zorlukları biraz daha derinleştirirseniz 9+ a çıkar.
+              <div class="score-row">
+                <span class="sc-chip g">✓ Yapı: Mükemmel</span>
+                <span class="sc-chip g">✓ Somut Sonuç</span>
+                <span class="sc-chip w">⚠ Detay Ekle</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="cm">
+            <div class="cm-who">AI Mülakat Uzmanı</div>
+            <div class="typing"><span></span><span></span><span></span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Progress float -->
+      <div class="prog-float">
+        <div class="pfl">SORULAR</div>
+        <div class="pf-steps">
+          <div class="pfs done"></div>
+          <div class="pfs done"></div>
+          <div class="pfs active"></div>
+          <div class="pfs todo"></div>
+          <div class="pfs todo"></div>
+        </div>
+        <div class="pf-count">3 / 5 tamamlandı</div>
+      </div>
+
+      <!-- Score float -->
+      <div class="score-float">
+        <div class="sfl">ANLÍK SKOR</div>
+        <div class="sfbig">
+          <div class="sfnum">8.5</div>
+          <div class="sfout">/ 10</div>
+        </div>
+        <div class="sf-bar"><span class="sf-bar-l">Yapı</span><div class="sf-bar-t"><div class="sf-bar-f" style="width:92%"></div></div><span class="sf-bar-v">92</span></div>
+        <div class="sf-bar"><span class="sf-bar-l">Somutluk</span><div class="sf-bar-t"><div class="sf-bar-f" style="width:78%"></div></div><span class="sf-bar-v">78</span></div>
+        <div class="sf-bar"><span class="sf-bar-l">Güven</span><div class="sf-bar-t"><div class="sf-bar-f" style="width:85%"></div></div><span class="sf-bar-v">85</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track">
+    <div class="tick-item"><strong>1 Ücretsiz</strong><span class="tick-sep">·</span>Simülasyon hakkı</div>
+    <div class="tick-item"><strong>STAR Analizi</strong><span class="tick-sep">·</span>Her yanıt için</div>
+    <div class="tick-item"><strong>10.000+</strong> Soru bankası</div>
+    <div class="tick-item"><strong>Sesli Pratik</strong><span class="tick-sep">·</span>Growth+ ile</div>
+    <div class="tick-item"><strong>%78</strong> mülakat başarısı</div>
+    <div class="tick-item"><strong>Maaş Müzakeresi</strong><span class="tick-sep">·</span>Unlimited'da</div>
+    <div class="tick-item"><strong>50+</strong> Sektör kategorisi</div>
+    <div class="tick-item"><strong>1 Ücretsiz</strong><span class="tick-sep">·</span>Simülasyon hakkı</div>
+    <div class="tick-item"><strong>STAR Analizi</strong><span class="tick-sep">·</span>Her yanıt için</div>
+    <div class="tick-item"><strong>10.000+</strong> Soru bankası</div>
+    <div class="tick-item"><strong>Sesli Pratik</strong><span class="tick-sep">·</span>Growth+ ile</div>
+    <div class="tick-item"><strong>%78</strong> mülakat başarısı</div>
+    <div class="tick-item"><strong>Maaş Müzakeresi</strong><span class="tick-sep">·</span>Unlimited'da</div>
+    <div class="tick-item"><strong>50+</strong> Sektör kategorisi</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     FEATURES
+══════════════════════════════════ -->
+<section id="features" style="padding:140px 0;background:var(--bg)">
+<style>
+.fg-head{text-align:center;margin-bottom:72px}
+/* bento grid */
+.fg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.fg{background:var(--bg-w);border:1px solid var(--bdr2);border-radius:24px;overflow:hidden;transition:all .35s var(--ease)}
+.fg:hover{border-color:var(--p300);box-shadow:var(--s3);transform:translateY(-5px)}
+.fg.s2{grid-column:span 2}
+.fg-bd{padding:26px}
+.fg-ico{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+.fg-ico svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8}
+.fg-title{font-weight:800;font-size:1.05rem;color:var(--ink);letter-spacing:-.02em;margin-bottom:8px}
+.fg-desc{font-size:.86rem;color:var(--ink3);line-height:1.65}
+
+/* STAR visual */
+.star-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:18px}
+.star-card{border-radius:12px;padding:14px 12px;transition:all .3s var(--ease);cursor:pointer}
+.star-card:hover{transform:translateY(-3px)}
+.star-card.S{background:rgba(109,40,217,.08);border:1px solid var(--p200)}
+.star-card.T{background:rgba(2,132,199,.07);border:1px solid rgba(2,132,199,.18)}
+.star-card.A{background:rgba(5,150,105,.07);border:1px solid rgba(5,150,105,.18)}
+.star-card.R{background:rgba(217,119,6,.07);border:1px solid rgba(217,119,6,.18)}
+.star-card.active{transform:scale(1.03);}
+.star-card.S.active{background:rgba(109,40,217,.14);border-color:var(--p400)}
+.star-letter{font-family:'Fraunces',serif;font-weight:700;font-size:2rem;line-height:1;margin-bottom:6px}
+.star-card.S .star-letter{color:var(--p600)}
+.star-card.T .star-letter{color:var(--sky)}
+.star-card.A .star-letter{color:var(--green)}
+.star-card.R .star-letter{color:var(--amber)}
+.star-name{font-weight:800;font-size:.74rem;color:var(--ink);margin-bottom:4px}
+.star-desc{font-size:.66rem;color:var(--ink3);line-height:1.4}
+
+/* live score big */
+.score-big-vis{display:flex;align-items:center;gap:18px;margin-top:18px}
+.score-ring{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--p600),var(--p400));display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 8px 24px rgba(109,40,217,.3)}
+.sr-num{font-family:'Fraunces',serif;font-weight:700;font-size:1.6rem;color:#fff;line-height:1}
+.sr-den{font-size:.58rem;color:rgba(255,255,255,.7);font-weight:700}
+.score-bars{flex:1;display:flex;flex-direction:column;gap:7px}
+.sbar{display:flex;align-items:center;gap:8px}
+.sbar-l{font-size:.7rem;font-weight:600;color:var(--ink2);min-width:72px}
+.sbar-t{flex:1;height:6px;background:var(--p100);border-radius:100px;overflow:hidden}
+.sbar-f{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--p600),var(--p400))}
+.sbar-v{font-size:.7rem;font-weight:800;color:var(--p700);min-width:24px;text-align:right}
+
+/* category tabs */
+.cat-tabs{display:flex;gap:7px;flex-wrap:wrap;margin-top:16px}
+.cat-tab{font-size:.74rem;font-weight:700;padding:6px 13px;border-radius:100px;border:1px solid var(--bdr);cursor:pointer;transition:all .2s;color:var(--ink3)}
+.cat-tab:hover,.cat-tab.on{background:var(--p600);color:#fff;border-color:var(--p600)}
+
+/* voice feature */
+.voice-demo{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.voice-card{border-radius:11px;padding:12px;display:flex;flex-direction:column;gap:5px}
+.vc-ico{font-size:1.3rem;margin-bottom:3px}
+.vc-title{font-size:.72rem;font-weight:800;color:var(--ink)}
+.vc-desc{font-size:.65rem;color:var(--ink3);line-height:1.4}
+
+/* salary scenario */
+.salary-scenario{margin-top:14px;background:rgba(5,150,105,.06);border:1px solid rgba(5,150,105,.15);border-radius:11px;padding:13px}
+.ss-label{font-size:.64rem;font-weight:800;color:var(--green);margin-bottom:6px}
+.ss-text{font-size:.78rem;color:var(--ink2);line-height:1.55}
+.ss-highlight{color:var(--green);font-weight:700}
+.ss-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(5,150,105,.1);border:1px solid rgba(5,150,105,.2);color:var(--green);font-size:.68rem;font-weight:800;padding:4px 10px;border-radius:100px;margin-top:9px}
+
+@media(max-width:900px){.fg-grid{grid-template-columns:1fr}.fg.s2{grid-column:span 1}.star-grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+<div class="wrap">
+  <div class="fg-head" data-sr="up">
+    <span class="eyebrow" style="justify-content:center;display:flex">Özellikler</span>
+    <h2 class="t-h2">Gerçek mülakatı kazanmak için <span class="italic">gerçek pratik</span></h2>
+  </div>
+  <div class="fg-grid">
+
+    <!-- STAR Analizi — span 2 -->
+    <div class="fg s2" data-sr="left">
+      <div class="fg-bd">
+        <div class="fg-ico" style="background:var(--p100)"><svg viewBox="0 0 24 24" stroke="var(--p600)"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        <div class="fg-title">STAR Yöntemi Analizi</div>
+        <div class="fg-desc">Her yanıtın Situation · Task · Action · Result boyutlarını AI gerçek zamanlı analiz eder. Eksik boyutu işaret eder, nasıl güçlendireceğini önerir.</div>
+        <div class="star-grid">
+          <div class="star-card S active">
+            <div class="star-letter">S</div>
+            <div class="star-name">Situation</div>
+            <div class="star-desc">Durumu ve bağlamı net anlat</div>
+          </div>
+          <div class="star-card T">
+            <div class="star-letter">T</div>
+            <div class="star-name">Task</div>
+            <div class="star-desc">Görevin ve sorumluluğun neydi</div>
+          </div>
+          <div class="star-card A">
+            <div class="star-letter">A</div>
+            <div class="star-name">Action</div>
+            <div class="star-desc">Ne yaptın, nasıl hareket ettin</div>
+          </div>
+          <div class="star-card R">
+            <div class="star-letter">R</div>
+            <div class="star-name">Result</div>
+            <div class="star-desc">Somut sonuç ve öğrenim</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Anlık Puan -->
+    <div class="fg" data-sr="right">
+      <div class="fg-bd">
+        <div class="fg-ico" style="background:var(--p100)"><svg viewBox="0 0 24 24" stroke="var(--p600)"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <div class="fg-title">Anlık Puan &amp; Geri Bildirim</div>
+        <div class="fg-desc">Her yanıt gerçek zamanlı puanlanır. Detaylı rapor mülakatın sonunda oluşturulur.</div>
+        <div class="score-big-vis">
+          <div class="score-ring"><div class="sr-num">8.5</div><div class="sr-den">/ 10</div></div>
+          <div class="score-bars">
+            <div class="sbar"><span class="sbar-l">Yapı</span><div class="sbar-t"><div class="sbar-f" style="width:92%"></div></div><span class="sbar-v">92</span></div>
+            <div class="sbar"><span class="sbar-l">Somutluk</span><div class="sbar-t"><div class="sbar-f" style="width:78%"></div></div><span class="sbar-v">78</span></div>
+            <div class="sbar"><span class="sbar-l">Güven</span><div class="sbar-t"><div class="sbar-f" style="width:85%"></div></div><span class="sbar-v">85</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Soru Bankası -->
+    <div class="fg" data-sr="left" data-d="1">
+      <div class="fg-bd">
+        <div class="fg-ico" style="background:rgba(2,132,199,.1)"><svg viewBox="0 0 24 24" stroke="var(--sky)"><path d="M4 6h16M4 10h16M4 14h8"/></svg></div>
+        <div class="fg-title">10.000+ Sektöre Özel Soru</div>
+        <div class="fg-desc">Teknoloji, Finans, FMCG, Danışmanlık... her sektör için gerçek mülakat soruları. Seviyeye göre filtreleme.</div>
+        <div class="cat-tabs">
+          <div class="cat-tab on">Teknoloji</div>
+          <div class="cat-tab">Finans</div>
+          <div class="cat-tab">FMCG</div>
+          <div class="cat-tab">Danışmanlık</div>
+          <div class="cat-tab">Girişim</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sesli & Görüntülü Pratik -->
+    <div class="fg" data-sr="right" data-d="1">
+      <div class="fg-bd">
+        <div class="fg-ico" style="background:rgba(225,29,72,.08)"><svg viewBox="0 0 24 24" stroke="var(--coral)"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></div>
+        <div class="fg-title">Sesli &amp; Görüntülü Pratik</div>
+        <div class="fg-desc">Gerçek mülakat atmosferi. Ses tonu, konuşma hızı, göz teması analizi. <span style="color:var(--p700);font-weight:700">Growth+ özelliği.</span></div>
+        <div class="voice-demo">
+          <div class="voice-card" style="background:rgba(225,29,72,.06);border:1px solid rgba(225,29,72,.12)">
+            <div class="vc-ico">🎙️</div>
+            <div class="vc-title">Ses Analizi</div>
+            <div class="vc-desc">Hız · Ton · Güven seviyesi</div>
+          </div>
+          <div class="voice-card" style="background:rgba(139,92,246,.06);border:1px solid var(--bdr)">
+            <div class="vc-ico">📹</div>
+            <div class="vc-title">Video Analizi</div>
+            <div class="vc-desc">Göz teması · Duruş · Mimik</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Maaş Müzakeresi — span2 alt row -->
+    <div class="fg s2" data-sr="up" data-d="2">
+      <div class="fg-bd">
+        <div class="fg-ico" style="background:rgba(5,150,105,.1)"><svg viewBox="0 0 24 24" stroke="var(--green)"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+        <div class="fg-title">Maaş Müzakeresi Koçluğu</div>
+        <div class="fg-desc">Teklifi nasıl artıracağını öğren. Gerçek senaryolar, ikna teknikleri, sektör benchmark'ları ile en iyi teklifi al. <span style="color:var(--amber);font-weight:700">Sadece Unlimited'da.</span></div>
+        <div class="salary-scenario">
+          <div class="ss-label">📊 Örnek Senaryo</div>
+          <div class="ss-text">
+            İlk teklif <strong>₺80.000</strong>. Sektör ortalaması <strong>₺95.000</strong>. AI ile müzakere stratejisi oluştur.
+            Doğru zamanlamada doğru argümanı kullan. Sonuç: <span class="ss-highlight">₺102.400</span> — teklif %28 arttı.
+          </div>
+          <div class="ss-badge">✓ Gerçek kullanıcı örneği · Kemal D. — Backend Developer</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Raporlama -->
+    <div class="fg" data-sr="scale" data-d="3">
+      <div class="fg-bd">
+        <div class="fg-ico" style="background:rgba(217,119,6,.08)"><svg viewBox="0 0 24 24" stroke="var(--amber)"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
+        <div class="fg-title">Detaylı Simülasyon Raporu</div>
+        <div class="fg-desc">Mülakat sonunda her sorunun STAR analizi, güçlü-zayıf noktalar, bir sonraki simülasyon için gelişim önerileri.</div>
+        <div style="margin-top:14px;display:flex;flex-direction:column;gap:6px">
+          <div style="background:var(--p50);border:1px solid var(--p200);border-radius:8px;padding:9px 12px;font-size:.74rem;color:var(--ink2)">📄 5 soruluk tam rapor</div>
+          <div style="background:rgba(5,150,105,.06);border:1px solid rgba(5,150,105,.15);border-radius:8px;padding:9px 12px;font-size:.74rem;color:var(--ink2)">✓ STAR boyut analizi</div>
+          <div style="background:rgba(217,119,6,.06);border:1px solid rgba(217,119,6,.15);border-radius:8px;padding:9px 12px;font-size:.74rem;color:var(--ink2)">⚡ Gelişim önerileri</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</section>
+
+<!-- ══════════════════════════════════
+     HOW IT WORKS
+══════════════════════════════════ -->
+<section id="hiw" style="padding:140px 0;background:var(--bg-dark)">
+<style>
+.hiw-h2{text-align:center;margin-bottom:80px}
+.hiw-h2 .t-h2{color:#fff}.hiw-h2 .italic{color:var(--p300)}
+.hiw-h2 p{color:rgba(255,255,255,.5);margin-top:14px;max-width:430px;margin-left:auto;margin-right:auto;font-size:.96rem}
+/* 3-col grid with connecting line */
+.hiw-cols{display:grid;grid-template-columns:repeat(3,1fr);position:relative;gap:0}
+.hiw-cols::before{content:'';position:absolute;top:36px;left:calc(100%/6);right:calc(100%/6);height:1px;background:linear-gradient(90deg,transparent,var(--p500),var(--p300),transparent)}
+.hcol{padding:28px 24px 36px;text-align:center;border-radius:18px;cursor:default;transition:all .35s var(--ease)}
+.hcol:hover{background:rgba(255,255,255,.03)}
+.hcol:hover .horb{background:var(--p600);border-color:var(--p400);transform:scale(1.1)}
+.horb{width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,.05);border:2px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;transition:all .35s var(--spring);position:relative}
+.horb svg{width:26px;height:26px;stroke:var(--p400);fill:none;stroke-width:1.6;transition:stroke .3s}
+.hcol:hover .horb svg{stroke:#fff}
+.hn{position:absolute;top:-5px;right:-5px;width:20px;height:20px;background:var(--p600);border-radius:50%;font-size:.6rem;font-weight:900;color:#fff;display:flex;align-items:center;justify-content:center;border:2px solid var(--bg-dark)}
+.hcol-lbl{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--p400);margin-bottom:10px}
+.hcol h3{font-weight:800;font-size:1.1rem;color:#fff;letter-spacing:-.025em;margin-bottom:10px}
+.hcol p{font-size:.86rem;color:rgba(255,255,255,.5);line-height:1.7}
+.hcol-tags{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:12px}
+.htag{font-size:.68rem;font-weight:700;padding:4px 10px;border-radius:100px}
+.htag.g{background:rgba(5,150,105,.1);border:1px solid rgba(5,150,105,.2);color:#34D399}
+.htag.r{background:rgba(225,29,72,.1);border:1px solid rgba(225,29,72,.2);color:#FDA4AF}
+.htag.p{background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.2);color:var(--p300)}
+@media(max-width:900px){.hiw-cols{grid-template-columns:1fr}.hiw-cols::before{display:none}}
+</style>
+<div class="wrap">
+  <div class="hiw-h2" data-sr="up">
+    <span class="eyebrow" style="color:var(--p300);justify-content:center;display:flex">Nasıl Çalışır</span>
+    <h2 class="t-h2">3 adımda <span class="italic">mülakata hazır</span></h2>
+    <p>1 ücretsiz denemeyle başla. Farkı kendiliğinden göreceksin.</p>
+  </div>
+  <div class="hiw-cols">
+    <div class="hcol" data-sr="up" data-d="1">
+      <div class="horb">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 1 0-16 0"/></svg>
+        <div class="hn">1</div>
+      </div>
+      <div class="hcol-lbl">Hazırlık</div>
+      <h3>Pozisyon ve sektörünü seç</h3>
+      <p>Hedef iş ilanını veya sektörünü belirt. AI'ın o pozisyona özel soru listesi otomatik oluşturulur.</p>
+      <div class="hcol-tags"><span class="htag g">✓ 1 deneme ücretsiz</span></div>
+    </div>
+    <div class="hcol" data-sr="up" data-d="2">
+      <div class="horb">
+        <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <div class="hn">2</div>
+      </div>
+      <div class="hcol-lbl">Simülasyon</div>
+      <h3>Gerçekçi mülakat yap</h3>
+      <p>Sesli ya da yazılı simülasyon. Her soruya yanıt ver, AI gerçek zamanlı STAR analizi yapar ve puanlar.</p>
+      <div class="hcol-tags"><span class="htag r">⚡ Sonrası Growth+</span></div>
+    </div>
+    <div class="hcol" data-sr="up" data-d="3">
+      <div class="horb">
+        <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        <div class="hn">3</div>
+      </div>
+      <div class="hcol-lbl">Gelişim</div>
+      <h3>Rapor al, sürekli geliş</h3>
+      <p>Detaylı STAR raporu, puan dağılımı, iyileştirme önerileri. Her simülasyondan sonra daha hazırsın.</p>
+      <div class="hcol-tags"><span class="htag p">✦ Detaylı rapor</span></div>
+    </div>
+  </div>
+</div>
+</section>
+<div id="rest"></div>
+
+<!-- ══ PRICING ══ -->
+<section id="pricing" style="padding:140px 0;background:var(--bg);position:relative;overflow:hidden">
+<style>
+.prgl{position:absolute;border-radius:50%;filter:blur(100px);pointer-events:none}
+.pr-h{text-align:center;margin-bottom:22px}
+.pr-h .t-h2{margin-bottom:14px}
+.pr-h p{color:var(--ink3);max-width:500px;margin:0 auto;font-size:1rem}
+.pr-tog{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:56px}
+.pt-l{font-size:.88rem;font-weight:700;color:var(--ink4);transition:color .25s}.pt-l.on{color:var(--ink)}
+.pt-sw{position:relative;width:48px;height:26px;background:var(--p200);border-radius:100px;cursor:pointer;transition:background .3s}
+.pt-sw.on{background:var(--p600)}
+.pt-kn{position:absolute;width:20px;height:20px;background:#fff;border-radius:50%;top:3px;left:3px;transition:left .3s var(--spring);box-shadow:0 1px 6px rgba(0,0,0,.15)}
+.pt-sw.on .pt-kn{left:25px}
+.sv-pill{background:rgba(5,150,105,.1);border:1px solid rgba(5,150,105,.2);color:var(--green);font-size:.72rem;font-weight:800;padding:4px 11px;border-radius:100px}
+.pr-tbl{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1020px;margin:0 auto}
+.pc{background:var(--bg-w);border:1px solid var(--bdr);border-radius:26px;overflow:hidden;transition:all .35s var(--ease);position:relative}
+.pc:hover{transform:translateY(-6px);box-shadow:var(--s3)}
+.pc.pop{border-color:var(--p500);box-shadow:0 0 0 3px var(--p200),var(--s3)}
+.pc.pop:hover{box-shadow:0 0 0 3px var(--p300),var(--s4)}
+.pc-top{padding:28px 28px 20px;border-bottom:1px solid var(--bdr2)}
+.pop-b{position:absolute;top:-1px;left:50%;transform:translateX(-50%);background:linear-gradient(90deg,var(--p700),var(--p500));color:#fff;font-size:.64rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:5px 14px;border-radius:0 0 12px 12px}
+.pc-name{font-weight:800;font-size:1rem;color:var(--ink);letter-spacing:-.02em;margin-bottom:4px;margin-top:14px}
+.pc:not(.pop) .pc-name{margin-top:0}
+.pc-tag{font-size:.76rem;color:var(--ink3);margin-bottom:16px}
+.pc-price{display:flex;align-items:flex-end;gap:4px;margin-bottom:5px}
+.pc-num{font-family:'Fraunces',serif;font-weight:700;font-size:2.8rem;line-height:1;color:var(--ink)}
+.pc.pop .pc-num{color:var(--p700)}
+.pc-cur{font-size:1.1rem;font-weight:700;color:var(--ink3);margin-bottom:4px}
+.pc.pop .pc-cur{color:var(--p600)}
+.pc-per{font-size:.8rem;color:var(--ink4);margin-bottom:4px}
+.pc-note{font-size:.7rem;color:var(--green);font-weight:600;height:16px}
+.pc-ca{padding:16px 26px;border-bottom:1px solid var(--bdr2)}
+.pc-btn{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;padding:12px;border-radius:100px;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:.88rem;cursor:pointer;border:none;transition:all .28s var(--ease)}
+.pc-btn.dark{background:var(--ink);color:#fff}.pc-btn.dark:hover{background:var(--p700);box-shadow:0 8px 24px rgba(109,40,217,.4)}
+.pc-btn.purple{background:var(--p600);color:#fff;box-shadow:0 4px 18px rgba(109,40,217,.3)}.pc-btn.purple:hover{background:var(--p700);box-shadow:0 10px 32px rgba(109,40,217,.45);transform:translateY(-2px)}
+.pc-btn.outline{background:transparent;color:var(--ink2);border:2px solid rgba(109,40,217,.18)}.pc-btn.outline:hover{border-color:var(--p400);color:var(--p700);background:var(--p50)}
+.pc-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.5;transition:transform .2s}.pc-btn:hover svg{transform:translateX(3px)}
+.pc-feats{padding:18px 26px 24px}
+.pcsl{font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:var(--ink4);margin-bottom:9px;margin-top:14px}.pcsl:first-child{margin-top:0}
+.pf{display:flex;align-items:flex-start;gap:8px;padding:5px 0;border-bottom:1px solid var(--bdr2);font-size:.82rem;color:var(--ink2)}.pf:last-child{border:none}
+.pf-ok{font-size:.72rem;font-weight:800;color:var(--p600);flex-shrink:0;margin-top:1px}
+.pf-no{font-size:.72rem;color:var(--ink5);flex-shrink:0}.pf-m{color:var(--ink4)}
+.pfb{margin-left:auto;font-size:.56rem;font-weight:800;padding:2px 6px;border-radius:100px;background:var(--p100);color:var(--p700);white-space:nowrap;flex-shrink:0}
+.pfb.g{background:rgba(5,150,105,.1);color:var(--green)}
+@media(max-width:900px){.pr-tbl{grid-template-columns:1fr;max-width:420px}}
+</style>
+<div class="prgl" style="width:450px;height:450px;background:rgba(139,92,246,.07);top:-80px;right:-80px"></div>
+<div class="prgl" style="width:300px;height:300px;background:rgba(109,40,217,.05);bottom:0;left:80px"></div>
+<div class="wrap">
+  <div class="pr-h" data-sr="up">
+    <span class="eyebrow" style="justify-content:center;display:flex">Fiyatlandırma</span>
+    <h2 class="t-h2">1 kez dene, <span class="italic">sonuç görünce</span> devam et</h2>
+    <p>Ücretsiz 1 simülasyon sonrası Growth paketi ile tüm özellikler sınırsız açılır.</p>
+  </div>
+  <div class="pr-tog" data-sr="fade">
+    <span class="pt-l on" id="ptl-m">Aylık</span>
+    <div class="pt-sw" id="ptSw" onclick="togglePricing()"><div class="pt-kn"></div></div>
+    <span class="pt-l" id="ptl-y">Yıllık</span>
+    <span class="sv-pill">%40 tasarruf</span>
+  </div>
+  <div class="pr-tbl" data-sr="up">
+    <!-- Starter -->
+    <div class="pc">
+      <div class="pc-top"><div class="pc-name">Starter</div><div class="pc-tag">Denemek isteyenler için</div><div class="pc-price"><span class="pc-cur">₺</span><span class="pc-num" id="p-s">0</span></div><div class="pc-note" id="n-s"></div></div>
+      <div class="pc-ca"><button class="pc-btn dark" onclick="openModal('register')">Ücretsiz Başla <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></button></div>
+      <div class="pc-feats">
+        <div class="pcsl">CV Builder</div>
+        <div class="pf"><span class="pf-ok">✓</span>Sınırsız CV oluşturma</div>
+        <div class="pf"><span class="pf-ok">✓</span>5 temel ATS şablonu</div>
+        <div class="pf"><span class="pf-ok">✓</span>PDF &amp; DOCX indirme</div>
+        <div class="pcsl">Mülakat Koçu</div>
+        <div class="pf"><span class="pf-ok">✓</span>1 tam simülasyon <span class="pfb">Deneme</span></div>
+        <div class="pf"><span class="pf-no">—</span><span class="pf-m">Sınırsız simülasyon</span></div>
+        <div class="pf"><span class="pf-no">—</span><span class="pf-m">Sesli &amp; görüntülü pratik</span></div>
+        <div class="pf"><span class="pf-no">—</span><span class="pf-m">Maaş müzakeresi</span></div>
+        <div class="pcsl">Kariyer Asistanı</div>
+        <div class="pf"><span class="pf-ok">✓</span>1 kariyer danışmanlığı <span class="pfb">Deneme</span></div>
+      </div>
+    </div>
+    <!-- Growth -->
+    <div class="pc pop">
+      <div class="pop-b">EN ÇOK TERCİH EDİLEN</div>
+      <div class="pc-top"><div class="pc-name">Growth</div><div class="pc-tag">Aktif iş arayanlar için</div><div class="pc-price"><span class="pc-cur">₺</span><span class="pc-num" id="p-g">299</span><span class="pc-per">/ay</span></div><div class="pc-note" id="n-g"></div></div>
+      <div class="pc-ca"><button class="pc-btn purple" onclick="openModal('register')">Hemen Başla <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></button></div>
+      <div class="pc-feats">
+        <div class="pcsl">CV Builder — Tam</div>
+        <div class="pf"><span class="pf-ok">✓</span>AI içerik önerileri + 50+ şablon</div>
+        <div class="pf"><span class="pf-ok">✓</span>LinkedIn içe aktar</div>
+        <div class="pcsl">Mülakat Koçu — Sınırsız</div>
+        <div class="pf"><span class="pf-ok">✓</span>Sınırsız simülasyon <span class="pfb g">Sınırsız</span></div>
+        <div class="pf"><span class="pf-ok">✓</span>Sesli &amp; görüntülü pratik</div>
+        <div class="pf"><span class="pf-ok">✓</span>STAR analizi + detaylı rapor</div>
+        <div class="pf"><span class="pf-ok">✓</span>10.000+ sektöre özel soru</div>
+        <div class="pf"><span class="pf-no">—</span><span class="pf-m">Maaş müzakeresi koçluğu</span></div>
+        <div class="pcsl">Kariyer Asistanı</div>
+        <div class="pf"><span class="pf-ok">✓</span>Sınırsız AI danışmanlık <span class="pfb g">Sınırsız</span></div>
+        <div class="pf"><span class="pf-ok">✓</span>Kanban iş takip panosu</div>
+      </div>
+    </div>
+    <!-- Unlimited -->
+    <div class="pc">
+      <div class="pc-top"><div class="pc-name">Unlimited</div><div class="pc-tag">Her şey, sınır yok</div><div class="pc-price"><span class="pc-cur">₺</span><span class="pc-num" id="p-u">499</span><span class="pc-per">/ay</span></div><div class="pc-note" id="n-u"></div></div>
+      <div class="pc-ca"><button class="pc-btn outline" onclick="openModal('register')">Unlimited'a Geç <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></button></div>
+      <div class="pc-feats">
+        <div class="pcsl">CV Builder + Kariyer Asistanı</div>
+        <div class="pf"><span class="pf-ok">✓</span>Growth'taki her şey</div>
+        <div class="pf"><span class="pf-ok">✓</span>Maaş analizi &amp; benchmark</div>
+        <div class="pcsl">Mülakat Koçu — Unlimited</div>
+        <div class="pf"><span class="pf-ok">✓</span>Growth'taki her şey</div>
+        <div class="pf"><span class="pf-ok">✓</span>Maaş müzakeresi koçluğu <span class="pfb">Sadece Unlimited</span></div>
+        <div class="pf"><span class="pf-ok">✓</span>Kişisel mock interview raporu</div>
+        <div class="pf"><span class="pf-ok">✓</span>Kariyer koçu 1-1 (2/ay)</div>
+        <div class="pf"><span class="pf-ok">✓</span>Öncelikli destek</div>
+      </div>
+    </div>
+  </div>
+  <p style="text-align:center;margin-top:22px;font-size:.82rem;color:var(--ink3)" data-sr="fade" data-d="2">
+    Kredi kartı gerekmez · İstediğin zaman iptal et · 7 gün para iade garantisi
+  </p>
+</div>
+</section>
+
+<!-- ══ TESTIMONIALS ══ -->
+<section id="proof" style="padding:120px 0;background:var(--bg-w);overflow:hidden">
+<style>
+.proof-h{text-align:center;margin-bottom:56px}
+.proof-rows{display:flex;flex-direction:column;gap:18px}
+.proof-row{position:relative;overflow:hidden}
+.proof-row::before,.proof-row::after{content:'';position:absolute;top:0;bottom:0;width:120px;z-index:10;pointer-events:none}
+.proof-row::before{left:0;background:linear-gradient(to right,var(--bg-w),transparent)}
+.proof-row::after{right:0;background:linear-gradient(to left,var(--bg-w),transparent)}
+.proof-track{display:flex;gap:16px;width:max-content;animation:pmove 42s linear infinite;padding:4px 0 18px}
+.proof-track.rev{animation-name:pmoveR}
+.proof-track:hover{animation-play-state:paused}
+@keyframes pmove{to{transform:translateX(-50%)}}
+@keyframes pmoveR{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+.pcard{min-width:270px;flex-shrink:0;background:var(--bg);border:1px solid var(--bdr2);border-radius:18px;padding:20px;transition:all .3s var(--ease);cursor:pointer}
+.pcard:hover{border-color:var(--p300);box-shadow:var(--s2);transform:translateY(-3px);background:var(--bg-w)}
+.pcard-stars{color:#FBBF24;font-size:.75rem;letter-spacing:2px;margin-bottom:9px}
+.pcard-text{font-size:.84rem;color:var(--ink2);line-height:1.65;margin-bottom:13px}
+.pcard-auth{display:flex;align-items:center;gap:9px}
+.pcard-av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:900;color:#fff;flex-shrink:0}
+.pcard-name{font-weight:800;font-size:.8rem;color:var(--ink)}.pcard-role{font-size:.68rem;color:var(--ink3)}
+</style>
+<div class="wrap">
+  <div class="proof-h" data-sr="up">
+    <span class="eyebrow" style="justify-content:center;display:flex">Başarı Hikayeleri</span>
+    <h2 class="t-h2" style="text-align:center">Mülakat Koçu ile <span class="italic">işe girenler</span></h2>
+  </div>
+</div>
+<div class="proof-rows">
+  <!-- Row 1 → -->
+  <div class="proof-row">
+    <div class="proof-track">
+      <div class="pcard"><div class="pcard-stars">★★★★★</div><p class="pcard-text">"2 hafta mülakat pratiği yaptım. Gerçek mülakata inanılmaz hazır girdim. Peak Games'ten teklif aldım!"</p><div class="pcard-auth"><div class="pcard-av" style="background:linear-gradient(135deg,#059669,#34D399)">ZK</div><div><div class="pcard-name">Zeynep Koç</div><div class="pcard-role">Product Manager · İstanbul</div></div></div></div>
+      <div class="pcard"><div class="pcard-stars">★★★★★</div><p class="pcard-text">"STAR analizi yanıtlarımı tamamen değiştirdi. İlk soruda mülakatçı 'harika' dedi — bunu duyduğumda anladım."</p><div class="pcard-auth"><div class="pcard-av" style="background:linear-gradient(135deg,#0D9488,#34D399)">HY</div><div><div class="pcard-name">Hasan Yıldız</div><div class="pcard-role">Product Designer · Ankara</div></div></div></div>
+      <div class="pcard"><div class="pcard-stars">★★★★★</div><p class="pcard-text">"Maaş müzakeresi modülü teklifi %28 artırdı. Bu yatırım 3 günde kendini geri ödedi."</p><div class="pcard-auth"><div class="pcard-av" style="background:linear-gradient(135deg,#059669,#6EE7B7)">KD</div><div><div class="pcard-name">Kemal Demir</div><div class="pcard-role">Backend Developer · İzmir</div></div></div></div>
+      <div class="pcard"><div class="pcard-stars">★★★★★</div><p class="pcard-text">"Sesli pratik özelliği konuşma hızımı düzeltti. Mülakatçı rahatımı fark edip not aldı."</p><div class="pcard-auth"><div class="pcard-av" style="background:linear-gradient(135deg,#7C3AED,#A78BFA)">AY</div><div><div class="pcard-name">Ahmet Yılmaz</div><div class="pcard-role">Software Engineer · İstanbul</div></div></div></div>
+      <div class="pcard"><div class="pcard-stars">★★★★★</div><p class="pcard-text">"10.000+ soruluk banka inanılmaz. Finans sektörü için ayrı setler var, hazırlık çok daha kolay."</p><div class="pcard-auth"><div class="pcard-av" style="background:linear-gradient(135deg,#D97706,#FCD34D)">MC</div><div><div class="pcard-name">Mert Can</div><div class="pcard-role">Data Scientist · Ankara</div></div></div></div>
+      <!-- dup -->
+      <div class="pcard"><div class="pcard-stars">★★★★★</div><p class="pcard-text">"Peak Games'ten teklif aldım!"</p><div class="pcard-auth"><div class="pcard-av" style="background:linear-gradient(135deg,#059669,#34D399)">ZK</div><div><div class="pcard-name">Zeynep Koç</div><div class="pcard-role">Product Manager</div></div></div></div>
+      <div class="pcard"><div class="pcard-stars">★★★★★</div><p class="pcard-text">"İlk soruda mülakatçı 'harika' dedi."</p><div class="pcard-auth"><div class="pcard-av" style="background:linear-gradient(135deg,#0D9488,#34D399)">HY</div><div><div class="pcard-name">Hasan Yıldız</div><div class="pcard-role">Product Designer</div></div></div></div>
+      <div class="pcard"><div class="pcard-stars">★★★★★</div><p class="pcard-text">"Teklifi %28 artırdım."</p><div class="pcard-auth"><div class="pcard-av" style="background:linear-gradient(135deg,#059669,#6EE7B7)">KD</div><div><div class="pcard-name">Kemal Demir</div><div class="pcard-role">Backend Developer</div></div></div></div>
+      <div class="pcard"><div class="pcard-stars">★★★★★</div><p class="pcard-text">"Konuşma hızımı düzelttim."</p><div class="pcard-auth"><div class="pcard-av" style="background:linear-gradient(135deg,#7C3AED,#A78BFA)">AY</div><div><div class="pcard-name">Ahmet Yılmaz</div><div class="pcard-role">Software Engineer</div></div></div></div>
+      <div class="pcard"><div class="pcard-stars">★★★★★</div><p class="pcard-text">"Finans sektörü için ayrı setler harika."</p><div class="pcard-auth"><div class="pcard-av" style="background:linear-gradient(135deg,#D97706,#FCD34D)">MC</div><div><div class="pcard-name">Mert Can</div><div class="pcard-role">Data Scientist</div></div></div></div>
+    </div>
+  </div>
+  <!-- Row 2 ← -->
+  <div class="proof-row">
+    <div class="proof-track rev">
+      <div class="pcard"><div class="pcard-stars">★★★★★</div><p class="pcard-text">"1 ücretsiz simülasyon beni sattı. Growth'a geçtim, iki hafta sonra Google'dan davet aldım."</p><div class="pcard-auth"><div class="pcard-av" style="background:linear-gradient(135deg,#E11D48,#FB7185)">SA</div><div><div class="pcard-name">Selin Arslan</div><div class="pcard-role">UX Lead · İstanbul</div></div></div></div>
+      <div class="pcard"><div class="pcard-stars">★★★★★</div><p class="pcard-text">"STAR metoduyla yanıtlarımı yapılandırdım. Daha önce 8 mülakata girdim giremedim, bu sefer ilk mülakatımda geçtim."</p><div class="pcard-auth"><div class="pcard-av" style="background:linear-gradient(135deg,#6D28D9,#C4B5FD)">BÖ</div><div><div class="pcard-name">Burak Öztürk</div><div class="pcard-role">Fintech Analyst · İstanbul</div></div></div></div>
+      <div class="pcard"><div class="pcard-stars">★★★★★</div><p class="pcard-text">"Her sektör için özel soru seti gerçekten değerli. FMCG mülakatına hazırlandım, case'leri ezberledim."</p><div class="pcard-auth"><div class="pcard-av" style="background:linear-gradient(135deg,#0284C7,#38BDF8)">EŞ</div><div><div class="pcard-name">Elif Şahin</div><div class="pcard-role">Brand Manager · Ankara</div></div></div></div>
+      <div class="pcard"><div class="pcard-stars">★★★★★</div><p class="pcard-text">"Anlık geri bildirim sistemi oyunun kurallarını değiştiriyor. Her cevabımın nerede zayıf olduğunu görüyorum."</p><div class="pcard-auth"><div class="pcard-av" style="background:linear-gradient(135deg,#059669,#34D399)">NÖ</div><div><div class="pcard-name">Nil Öztürk</div><div class="pcard-role">Product Manager · İzmir</div></div></div></div>
+      <!-- dup -->
+      <div class="pcard"><div class="pcard-stars">★★★★★</div><p class="pcard-text">"Google'dan davet aldım."</p><div class="pcard-auth"><div class="pcard-av" style="background:linear-gradient(135deg,#E11D48,#FB7185)">SA</div><div><div class="pcard-name">Selin Arslan</div><div class="pcard-role">UX Lead</div></div></div></div>
+      <div class="pcard"><div class="pcard-stars">★★★★★</div><p class="pcard-text">"İlk mülakatımda geçtim."</p><div class="pcard-auth"><div class="pcard-av" style="background:linear-gradient(135deg,#6D28D9,#C4B5FD)">BÖ</div><div><div class="pcard-name">Burak Öztürk</div><div class="pcard-role">Fintech Analyst</div></div></div></div>
+      <div class="pcard"><div class="pcard-stars">★★★★★</div><p class="pcard-text">"FMCG case'lerini ezberledim."</p><div class="pcard-auth"><div class="pcard-av" style="background:linear-gradient(135deg,#0284C7,#38BDF8)">EŞ</div><div><div class="pcard-name">Elif Şahin</div><div class="pcard-role">Brand Manager</div></div></div></div>
+      <div class="pcard"><div class="pcard-stars">★★★★★</div><p class="pcard-text">"Her cevabımın zayıf noktasını görüyorum."</p><div class="pcard-auth"><div class="pcard-av" style="background:linear-gradient(135deg,#059669,#34D399)">NÖ</div><div><div class="pcard-name">Nil Öztürk</div><div class="pcard-role">Product Manager</div></div></div></div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══ CTA ══ -->
+<section id="cta" style="padding:160px 0;background:var(--bg-dark);text-align:center;position:relative;overflow:hidden">
+  <div style="position:absolute;border-radius:50%;filter:blur(120px);pointer-events:none;width:700px;height:400px;background:rgba(109,40,217,.25);top:-180px;left:50%;transform:translateX(-50%)"></div>
+  <div style="position:absolute;border-radius:50%;filter:blur(120px);pointer-events:none;width:320px;height:320px;background:rgba(225,29,72,.07);bottom:0;right:5%"></div>
+  <div style="position:relative;z-index:1;max-width:680px;margin:0 auto;padding:0 32px">
+    <div data-sr="up">
+      <span class="eyebrow" style="color:var(--p300);justify-content:center;display:flex;margin-bottom:20px">Hazır Mısın?</span>
+      <h2 class="t-h2" style="color:#fff">Bir simülasyonla <span class="italic">farkı gör</span></h2>
+    </div>
+    <p style="font-size:1rem;color:rgba(255,255,255,.5);max-width:460px;margin:18px auto 42px;line-height:1.7" data-sr="up" data-d="1">
+      İlk simülasyon ücretsiz. Sonucu görünce zaten devam etmek isteyeceksin.
+    </p>
+    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap" data-sr="up" data-d="2">
+      <a href="#" class="btn btn-purple btn-lg" onclick="openModal('register')">Ücretsiz Simülasyon Başlat <svg class="arr" viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>
+      <a href="#pricing" class="btn btn-ghost btn-lg">Paketleri Gör</a>
+    </div>
+    <p style="font-size:.76rem;color:rgba(255,255,255,.25);margin-top:16px" data-sr="fade" data-d="3">
+      Kredi kartı gerekmez · 7 gün para iade garantisi
+    </p>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer style="background:var(--bg-dark2);padding:60px 0 30px">
+<style>
+.ft-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:36px;margin-bottom:44px}
+.ft-brand .n-name{color:rgba(255,255,255,.88);font-size:1rem}.ft-brand .n-name span{color:var(--p400)}
+.ft-brand p{font-size:.82rem;color:rgba(255,255,255,.32);line-height:1.7;margin-top:11px;max-width:230px}
+.ft-col h5{font-size:.66rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.28);margin-bottom:13px}
+.ft-col ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+.ft-col ul a{font-size:.82rem;color:rgba(255,255,255,.43);transition:color .2s}.ft-col ul a:hover{color:rgba(255,255,255,.88)}
+.ft-btm{border-top:1px solid rgba(255,255,255,.05);padding-top:22px;display:flex;justify-content:space-between;font-size:.76rem;color:rgba(255,255,255,.22);flex-wrap:wrap;gap:10px}
+@media(max-width:900px){.ft-grid{grid-template-columns:1fr 1fr;gap:24px}}
+</style>
+<div class="wrap">
+  <div class="ft-grid">
+    <div class="ft-brand"><div class="n-logo"><div class="n-mark">S</div><span class="n-name">Synaps<span>AI</span></span></div><p>Türkiye'nin yapay zeka destekli kariyer platformu.</p></div>
+    <div class="ft-col"><h5>Ürünler</h5><ul><li><a href="cv-builder.html">CV Builder</a></li><li><a href="#">Mülakat Koçu</a></li><li><a href="kariyer-asistani.html">Kariyer Asistanı</a></li><li><a href="#pricing">Fiyatlar</a></li></ul></div>
+    <div class="ft-col"><h5>Şirket</h5><ul><li><a href="#">Hakkımızda</a></li><li><a href="#">Blog</a></li><li><a href="#">İletişim</a></li></ul></div>
+    <div class="ft-col"><h5>Destek</h5><ul><li><a href="#">Yardım</a></li><li><a href="#">KVKK</a></li><li><a href="#">Gizlilik</a></li></ul></div>
+  </div>
+  <div class="ft-btm"><span>© 2025 SynapsAI. Tüm hakları saklıdır.</span><span>🇹🇷 Türkiye'de üretildi</span></div>
+</div>
+</footer>
+
+<!-- ══ MODAL ══ -->
+<div class="modal-overlay" id="mo">
+<style>
+.modal-overlay{position:fixed;inset:0;z-index:2000;background:rgba(13,8,43,.7);backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .35s var(--ease)}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal-card{background:var(--bg-w);border-radius:28px;padding:44px 40px;width:100%;max-width:400px;position:relative;box-shadow:var(--s5);transform:scale(.94) translateY(16px);transition:transform .4s var(--spring)}
+.modal-overlay.open .modal-card{transform:scale(1) translateY(0)}
+.modal-x{position:absolute;top:18px;right:20px;width:30px;height:30px;border-radius:9px;background:var(--bg-off);border:none;cursor:pointer;font-size:.9rem;color:var(--ink3);display:flex;align-items:center;justify-content:center;transition:all .2s}
+.modal-x:hover{background:var(--p100);color:var(--p700)}
+.m-title{font-weight:800;font-size:1.5rem;letter-spacing:-.03em;color:var(--ink);margin-bottom:4px}
+.m-sub{font-size:.84rem;color:var(--ink3);margin-bottom:24px}
+.m-tabs{display:flex;background:var(--bg-off);border-radius:12px;padding:3px;margin-bottom:24px}
+.m-tab{flex:1;padding:9px;border-radius:10px;border:none;background:transparent;font-family:'Bricolage Grotesque';font-weight:700;font-size:.85rem;color:var(--ink4);cursor:pointer;transition:all .25s}
+.m-tab.on{background:var(--ink);color:#fff}
+.mfg{margin-bottom:14px}
+.mfl{display:block;font-size:.76rem;font-weight:700;color:var(--ink2);margin-bottom:5px}
+.mfi{width:100%;background:var(--bg-off);border:1.5px solid var(--bdr);border-radius:12px;padding:11px 14px;font-family:'Bricolage Grotesque';font-size:.9rem;color:var(--ink);outline:none;transition:all .2s}
+.mfi:focus{border-color:var(--p500);background:var(--p50)}.mfi::placeholder{color:var(--ink5)}
+.mfcta{display:flex;align-items:center;justify-content:center;width:100%;padding:13px;border-radius:100px;font-family:'Bricolage Grotesque';font-weight:800;font-size:.9rem;background:var(--ink);color:#fff;border:none;cursor:pointer;transition:all .28s var(--ease)}
+.mfcta:hover{background:var(--p700);box-shadow:0 8px 28px rgba(109,40,217,.4)}
+.mfsep{display:flex;align-items:center;gap:12px;margin:16px 0}
+.mfsep::before,.mfsep::after{content:'';flex:1;height:1px;background:var(--bdr2)}
+.mfsep span{font-size:.72rem;color:var(--ink4)}
+.mfgb{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;padding:11px;border-radius:100px;border:1.5px solid var(--bdr);background:transparent;font-family:'Bricolage Grotesque';font-weight:700;font-size:.86rem;color:var(--ink2);cursor:pointer;transition:all .2s}
+.mfgb:hover{background:var(--p50);border-color:var(--p300);color:var(--p700)}
+</style>
+  <div class="modal-card">
+    <button class="modal-x" onclick="closeModal()">✕</button>
+    <div class="n-logo" style="margin-bottom:20px"><div class="n-mark">S</div><span class="n-name" style="color:var(--ink)">Synaps<span style="color:var(--p600)">AI</span></span></div>
+    <div class="m-title" id="m-title">Hoş Geldin</div>
+    <div class="m-sub" id="m-sub">Hesabına giriş yap.</div>
+    <div class="m-tabs"><button class="m-tab on" id="mt-l" onclick="switchTab('l')">Giriş Yap</button><button class="m-tab" id="mt-r" onclick="switchTab('r')">Kayıt Ol</button></div>
+    <div id="mf-l">
+      <div class="mfg"><label class="mfl">E-posta</label><input type="email" class="mfi" placeholder="ornek@email.com"></div>
+      <div class="mfg"><label class="mfl">Şifre</label><input type="password" class="mfi" placeholder="••••••••"></div>
+      <button class="mfcta">Giriş Yap</button>
+      <div class="mfsep"><span>veya</span></div>
+      <button class="mfgb"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>Google ile devam et</button>
+    </div>
+    <div id="mf-r" style="display:none">
+      <div class="mfg"><label class="mfl">Ad Soyad</label><input type="text" class="mfi" placeholder="Adınız Soyadınız"></div>
+      <div class="mfg"><label class="mfl">E-posta</label><input type="email" class="mfi" placeholder="ornek@email.com"></div>
+      <div class="mfg"><label class="mfl">Şifre</label><input type="password" class="mfi" placeholder="En az 8 karakter"></div>
+      <button class="mfcta">Ücretsiz Kayıt Ol</button>
+      <div class="mfsep"><span>veya</span></div>
+      <button class="mfgb"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>Google ile kayıt ol</button>
+    </div>
+  </div>
+</div>
+
+<script>
+window.addEventListener('scroll',()=>{ document.getElementById('nav').classList.toggle('stuck',scrollY>24) },{passive:true});
+const obs=new IntersectionObserver(e=>e.forEach(x=>{ if(x.isIntersecting) x.target.classList.add('vis') }),{threshold:.08,rootMargin:'0px 0px -60px 0px'});
+document.querySelectorAll('[data-sr]').forEach(el=>obs.observe(el));
+
+function openModal(t){ document.getElementById('mo').classList.add('open'); switchTab(t==='register'?'r':'l'); document.body.style.overflow='hidden' }
+function closeModal(){ document.getElementById('mo').classList.remove('open'); document.body.style.overflow='' }
+function switchTab(t){
+  const l=t==='l';
+  document.getElementById('mt-l').classList.toggle('on',l);
+  document.getElementById('mt-r').classList.toggle('on',!l);
+  document.getElementById('mf-l').style.display=l?'':'none';
+  document.getElementById('mf-r').style.display=l?'none':'';
+  document.getElementById('m-title').textContent=l?'Hoş Geldin':'Hesap Oluştur';
+  document.getElementById('m-sub').textContent=l?'Hesabına giriş yap.':'Ücretsiz başla, hemen kullan.';
+}
+document.getElementById('mo').addEventListener('click',e=>{ if(e.target===document.getElementById('mo')) closeModal() });
+
+let yearly=false;
+const P={s:{m:'0',y:'0'},g:{m:'299',y:'179'},u:{m:'499',y:'299'}};
+function togglePricing(){
+  yearly=!yearly;
+  document.getElementById('ptSw').classList.toggle('on',yearly);
+  document.getElementById('ptl-m').classList.toggle('on',!yearly);
+  document.getElementById('ptl-y').classList.toggle('on',yearly);
+  const k=yearly?'y':'m';
+  ['s','g','u'].forEach(id=>document.getElementById('p-'+id).textContent=P[id][k]);
+  document.getElementById('n-g').textContent=yearly?'Yıllık ₺2.148 · %40 tasarruf':'';
+  document.getElementById('n-u').textContent=yearly?'Yıllık ₺3.588 · %40 tasarruf':'';
+}
+
+// Category tab switcher
+document.querySelectorAll('.cat-tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    tab.closest('.fg-bd').querySelectorAll('.cat-tab').forEach(t=>t.classList.remove('on'));
+    tab.classList.add('on');
+  });
+});
+
+// Hero parallax
+window.addEventListener('scroll',()=>{
+  const v=document.querySelector('.int-window');
+  if(v) v.style.transform=`translateY(${scrollY*.05}px)`;
+},{passive:true});
+</script>
+</body>
+</html>

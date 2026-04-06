@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kariyer Asistanı — Synaps AI | Kariyerini Planla ve Kazan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400;1,9..144,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F7F5FF; --bg-off:#EFECFE; --bg-w:#FFFFFF; --bg-dark:#13082B; --bg-dark2:#0C0518;
+  --p700:#6D28D9; --p600:#7C3AED; --p500:#8B5CF6; --p400:#A78BFA; --p300:#C4B5FD;
+  --p200:#DDD6FE; --p100:#EDE9FE; --p50:#F5F3FF;
+  --ink:#0F0A1E; --ink2:#2E1E5A; --ink3:#6B5F8A; --ink4:#A89EC0; --ink5:#C8C0DC;
+  --green:#059669; --amber:#D97706; --coral:#E11D48; --sky:#0284C7; --teal:#0D9488;
+  --bdr:rgba(109,40,217,.12); --bdr2:rgba(109,40,217,.07);
+  --s2:0 4px 24px rgba(109,40,217,.10); --s3:0 16px 64px rgba(109,40,217,.14);
+  --s4:0 32px 100px rgba(15,10,30,.18); --s5:0 48px 140px rgba(15,10,30,.25);
+  --ease:cubic-bezier(.25,0,0,1); --spring:cubic-bezier(.34,1.56,.64,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Bricolage Grotesque',sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden;line-height:1.55}
+a{text-decoration:none} button{font-family:inherit;cursor:pointer;border:none}
+
+.t-d{font-family:'Bricolage Grotesque';font-weight:800;font-size:clamp(3rem,6.5vw,7rem);line-height:1.0;letter-spacing:-.04em}
+.t-h2{font-family:'Bricolage Grotesque';font-weight:800;font-size:clamp(2.2rem,4vw,4.6rem);line-height:1.06;letter-spacing:-.03em}
+.italic{font-family:'Fraunces',serif;font-style:italic;font-weight:300;color:var(--p600)}
+.eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--p600);margin-bottom:16px}
+.eyebrow::before{content:'';display:block;width:20px;height:2px;background:var(--p500);border-radius:2px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 32px}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:9px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;border:none;cursor:pointer;transition:all .28s var(--ease);white-space:nowrap}
+.btn-dark{background:var(--ink);color:#fff;padding:15px 30px;border-radius:100px;font-size:.95rem}
+.btn-dark:hover{background:var(--p700);transform:translateY(-2px);box-shadow:0 10px 32px rgba(109,40,217,.4)}
+.btn-purple{background:var(--p600);color:#fff;padding:15px 30px;border-radius:100px;font-size:.95rem;box-shadow:0 4px 20px rgba(109,40,217,.3)}
+.btn-purple:hover{background:var(--p700);transform:translateY(-2px);box-shadow:0 12px 36px rgba(109,40,217,.45)}
+.btn-outline{background:transparent;color:var(--ink);padding:14px 28px;border-radius:100px;font-size:.95rem;border:2px solid rgba(15,10,30,.14)}
+.btn-outline:hover{border-color:var(--p400);color:var(--p700);background:var(--p50)}
+.btn-ghost{background:rgba(255,255,255,.1);color:#fff;padding:12px 22px;border-radius:100px;font-size:.88rem;border:1px solid rgba(255,255,255,.2)}
+.btn-ghost:hover{background:rgba(255,255,255,.2)}
+.btn-lg{padding:18px 40px;font-size:1.05rem}
+.btn-sm{padding:10px 20px;font-size:.85rem}
+.arr{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2.5;transition:transform .2s}
+.btn:hover .arr{transform:translateX(4px)}
+
+/* NAV */
+#nav{position:fixed;top:0;left:0;right:0;z-index:900;height:68px;display:flex;align-items:center;padding:0 36px;transition:all .35s var(--ease)}
+#nav.stuck{background:rgba(247,245,255,.94);backdrop-filter:blur(24px);border-bottom:1px solid var(--bdr2);box-shadow:0 1px 4px rgba(109,40,217,.06)}
+.nav-in{max-width:1180px;margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between}
+.n-logo{display:flex;align-items:center;gap:10px}
+.n-mark{width:34px;height:34px;border-radius:9px;background:var(--ink);display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-style:italic;font-size:1.05rem;color:#fff;transition:background .25s}
+.n-logo:hover .n-mark{background:var(--p700)}
+.n-name{font-weight:800;font-size:1.1rem;color:var(--ink);letter-spacing:-.03em}
+.n-name span{color:var(--p600)}
+.n-back{display:flex;align-items:center;gap:7px;font-size:.84rem;font-weight:700;color:var(--ink3);padding:8px 14px;border-radius:10px;transition:all .2s}
+.n-back:hover{color:var(--ink);background:var(--p50)}
+.n-back svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.5;transition:transform .2s}
+.n-back:hover svg{transform:translateX(-3px)}
+.n-actions{display:flex;align-items:center;gap:10px}
+.n-sign{font-size:.88rem;font-weight:700;color:var(--ink3);padding:8px 14px;border-radius:10px;cursor:pointer;transition:color .2s}
+.n-sign:hover{color:var(--ink)}
+
+/* SCROLL REVEAL */
+[data-sr]{opacity:0;transition:opacity .85s var(--ease),transform .85s var(--ease)}
+[data-sr="up"]{transform:translateY(50px)}
+[data-sr="left"]{transform:translateX(-50px)}
+[data-sr="right"]{transform:translateX(50px)}
+[data-sr="scale"]{transform:scale(.92)}
+[data-sr="fade"]{}
+[data-sr].vis{opacity:1;transform:none}
+[data-d="1"]{transition-delay:.1s}[data-d="2"]{transition-delay:.2s}
+[data-d="3"]{transition-delay:.3s}[data-d="4"]{transition-delay:.4s}[data-d="5"]{transition-delay:.5s}
+
+/* HERO */
+#hero{padding:140px 0 100px;position:relative;overflow:hidden}
+.h-mesh{position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 60% 55% at 90% 45%,rgba(13,148,136,.06) 0%,transparent 60%),
+    radial-gradient(ellipse 70% 65% at 6% 50%,rgba(139,92,246,.09) 0%,transparent 65%)}
+.h-grid{position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(rgba(109,40,217,.04) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(109,40,217,.04) 1px,transparent 1px);
+  background-size:72px 72px;
+  mask-image:radial-gradient(ellipse 90% 80% at 50% 35%,black 0%,transparent 100%)}
+
+.hero-body{position:relative;z-index:2;display:grid;grid-template-columns:1fr 1.15fr;gap:60px;align-items:center;padding:0 32px;max-width:1180px;margin:0 auto;width:100%}
+
+/* amber trial pill */
+.trial-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(217,119,6,.07);border:1px solid rgba(217,119,6,.2);color:var(--amber);border-radius:100px;padding:7px 16px 7px 10px;font-size:.78rem;font-weight:800;letter-spacing:.02em;margin-bottom:28px}
+.trial-dot{width:22px;height:22px;border-radius:50%;background:rgba(217,119,6,.12);border:1px solid rgba(217,119,6,.25);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.trial-dot-in{width:8px;height:8px;border-radius:50%;background:var(--amber);animation:adot 1.8s infinite}
+@keyframes adot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+
+.hero-title{margin-bottom:24px}
+.hero-sub{font-size:1.05rem;color:var(--ink3);line-height:1.75;margin-bottom:36px;max-width:510px}
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:36px}
+.hero-pills{display:flex;gap:10px;flex-wrap:wrap}
+.hpill{background:var(--bg-w);border:1px solid var(--bdr);border-radius:100px;padding:8px 16px;display:flex;align-items:center;gap:7px;font-size:.8rem;font-weight:700;color:var(--ink2);transition:all .25s}
+.hpill:hover{border-color:var(--p300);background:var(--p50);transform:translateY(-1px)}
+.hpill-num{font-family:'Fraunces',serif;font-size:1rem;font-weight:700;color:var(--p600)}
+
+/* ── Career Dashboard Mockup ── */
+.dash-card{background:var(--bg-w);border:1px solid var(--bdr);border-radius:24px;overflow:hidden;box-shadow:var(--s4);transition:all .5s var(--ease)}
+.dash-card:hover{transform:translateY(-8px);box-shadow:var(--s5)}
+
+.dc-bar{background:var(--p50);border-bottom:1px solid var(--bdr2);padding:11px 18px;display:flex;align-items:center;justify-content:space-between}
+.dc-dots{display:flex;gap:5px}
+.dcd{width:10px;height:10px;border-radius:50%}
+.dcd.r{background:#FF5F57}.dcd.y{background:#FEBC2E}.dcd.g{background:#28C840}
+.dc-title{font-size:.8rem;font-weight:800;color:var(--ink)}
+.dc-badge{font-size:.7rem;font-weight:700;color:var(--p700);background:var(--p100);padding:3px 10px;border-radius:100px}
+
+.dc-body{padding:16px}
+
+/* kanban */
+.kanban{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:13px}
+.kb-h{font-size:.56rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;padding-bottom:4px;margin-bottom:7px;border-bottom:2px solid}
+.kb-h.bl{color:var(--sky);border-color:var(--sky)}
+.kb-h.am{color:var(--amber);border-color:var(--amber)}
+.kb-h.gr{color:var(--green);border-color:var(--green)}
+.kb-h.rd{color:var(--coral);border-color:var(--coral)}
+
+.kc{background:var(--p50);border:1px solid var(--bdr2);border-radius:7px;padding:7px 8px;margin-bottom:5px;cursor:pointer;transition:all .2s}
+.kc:hover{border-color:var(--p300);transform:translateY(-1px)}
+.kc.g{background:rgba(5,150,105,.05);border-color:rgba(5,150,105,.2)}
+.kc.a{background:rgba(217,119,6,.05);border-color:rgba(217,119,6,.2)}
+.kc-co{font-size:.66rem;font-weight:800;color:var(--ink)}
+.kc-ro{font-size:.58rem;color:var(--ink3)}
+.kc-dt{font-size:.54rem;font-weight:700;margin-top:3px}
+
+/* AI assistant row */
+.ai-row{background:linear-gradient(135deg,var(--p50),var(--bg-off));border:1px solid var(--p200);border-radius:11px;padding:11px 13px;display:flex;gap:9px;align-items:flex-start}
+.ai-row-ic{width:24px;height:24px;background:var(--p600);border-radius:7px;flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:1px;animation:aipulse 3s infinite}
+@keyframes aipulse{0%,100%{box-shadow:0 0 0 0 rgba(124,58,237,.3)}50%{box-shadow:0 0 0 6px rgba(124,58,237,0)}}
+.ai-row-ic svg{width:11px;height:11px;stroke:#fff;fill:none;stroke-width:2}
+.ai-row-txt{font-size:.72rem;color:var(--ink2);line-height:1.5}
+.ai-row-txt strong{color:var(--p700)}
+
+/* floating offer badge */
+.offer-float{position:absolute;top:-18px;right:-22px;background:var(--bg-w);border:1px solid rgba(5,150,105,.3);border-radius:16px;padding:13px 17px;box-shadow:var(--s3);animation:ofloat 4s ease-in-out infinite}
+@keyframes ofloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.of-lbl{font-size:.58rem;font-weight:800;color:var(--green);margin-bottom:3px;display:flex;align-items:center;gap:5px}
+.of-lbl::before{content:'🎉'}
+.of-co{font-weight:800;font-size:.9rem;color:var(--ink)}
+.of-sal{font-size:.72rem;color:var(--green);font-weight:700;margin-top:2px}
+
+/* roadmap float */
+.rm-float{position:absolute;bottom:16px;left:-24px;background:var(--bg-w);border:1px solid var(--bdr);border-radius:14px;padding:12px 15px;box-shadow:var(--s3);min-width:175px}
+.rmf-lbl{font-size:.6rem;font-weight:800;color:var(--ink4);margin-bottom:8px}
+.rmf-steps{display:flex;flex-direction:column;gap:6px}
+.rmf-s{display:flex;align-items:center;gap:7px}
+.rmf-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.rmf-dot.done{background:var(--green)}
+.rmf-dot.active{background:var(--p500);animation:adot 1.5s infinite}
+.rmf-dot.todo{background:var(--p200)}
+.rmf-txt{font-size:.66rem;font-weight:700;color:var(--ink2)}
+.rmf-txt.muted{color:var(--ink4)}
+
+/* TICKER */
+.ticker{background:var(--p700);overflow:hidden;padding:12px 0;position:relative;z-index:3}
+.ticker-track{display:flex;gap:60px;animation:tick 28s linear infinite;width:max-content}
+.ticker-track:hover{animation-play-state:paused}
+.tick-item{display:flex;align-items:center;gap:9px;font-size:.84rem;font-weight:600;color:rgba(255,255,255,.6);flex-shrink:0}
+.tick-item strong{color:#fff}
+.tick-sep{color:rgba(255,255,255,.25)}
+@keyframes tick{to{transform:translateX(-50%)}}
+
+@media(max-width:1000px){
+  .hero-body{grid-template-columns:1fr;gap:44px}
+  .offer-float{right:-8px;top:-10px}
+  .rm-float{left:-8px;bottom:8px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-in">
+    <a href="../index.html" class="n-logo">
+      <div class="n-mark">S</div>
+      <span class="n-name">Synaps<span>AI</span></span>
+    </a>
+    <a href="../index.html" class="n-back">
+      <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Anasayfa
+    </a>
+    <div class="n-actions">
+      <span class="n-sign" onclick="openModal('login')">Giriş Yap</span>
+      <a href="#" class="btn btn-dark btn-sm" onclick="openModal('register')">
+        Kariyer Planımı Yap <svg class="arr" viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="h-mesh"></div>
+  <div class="h-grid"></div>
+
+  <div class="hero-body">
+    <!-- COPY -->
+    <div>
+      <div data-sr="up">
+        <div class="trial-pill">
+          <div class="trial-dot"><div class="trial-dot-in"></div></div>
+          1 ücretsiz danışmanlık · Sonrası paket gerektirir
+        </div>
+      </div>
+
+      <div class="hero-title" data-sr="up" data-d="1">
+        <h1 class="t-d">
+          <span style="display:block">Kariyer yolunu</span>
+          <span style="display:block" class="italic">AI ile çiz</span>
+          <span style="display:block">ve kazan</span>
+        </h1>
+      </div>
+
+      <p class="hero-sub" data-sr="up" data-d="2">
+        Kişiselleştirilmiş kariyer yol haritası, Kanban iş takip panosu,
+        maaş analizi ve 7/24 AI danışmanı. Başvurularını organize et,
+        teklifleri akıllıca değerlendir. Sektörde bir ilk.
+      </p>
+
+      <div class="hero-ctas" data-sr="up" data-d="3">
+        <a href="#" class="btn btn-dark btn-lg" onclick="openModal('register')">
+          Ücretsiz Kariyer Planı Al <svg class="arr" viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+        </a>
+        <a href="#pricing" class="btn btn-outline btn-lg">Paketleri Gör</a>
+      </div>
+
+      <div class="hero-pills" data-sr="fade" data-d="4">
+        <div class="hpill"><span class="hpill-num">14</span> ort. başvuru takibi</div>
+        <div class="hpill"><span class="hpill-num">%43</span> teklif artışı</div>
+        <div class="hpill"><span class="hpill-num">%28</span> maaş artışı</div>
+        <div class="hpill"><span class="hpill-num">4.9★</span> kullanıcı puanı</div>
+      </div>
+    </div>
+
+    <!-- CAREER DASHBOARD MOCKUP -->
+    <div style="position:relative" data-sr="right" data-d="2">
+      <div class="dash-card">
+        <div class="dc-bar">
+          <div class="dc-dots"><div class="dcd r"></div><div class="dcd y"></div><div class="dcd g"></div></div>
+          <div class="dc-title">Kariyer Panosu</div>
+          <div class="dc-badge">14 Aktif Başvuru</div>
+        </div>
+        <div class="dc-body">
+          <div class="kanban">
+            <!-- Başvuru -->
+            <div>
+              <div class="kb-h bl">Başvuru</div>
+              <div class="kc"><div class="kc-co">Trendyol</div><div class="kc-ro">Frontend Dev</div><div class="kc-dt" style="color:var(--sky)">3 gün</div></div>
+              <div class="kc"><div class="kc-co">Getir</div><div class="kc-ro">React Dev</div><div class="kc-dt" style="color:var(--sky)">5 gün</div></div>
+              <div class="kc"><div class="kc-co">N11</div><div class="kc-ro">SWE</div><div class="kc-dt" style="color:var(--sky)">8 gün</div></div>
+            </div>
+            <!-- Mülakat -->
+            <div>
+              <div class="kb-h am">Mülakat</div>
+              <div class="kc a"><div class="kc-co">Hepsiburada</div><div class="kc-ro">Software Eng.</div><div class="kc-dt" style="color:var(--amber)">Yarın 14:00</div></div>
+              <div class="kc"><div class="kc-co">Zynga TR</div><div class="kc-ro">Backend Dev</div><div class="kc-dt" style="color:var(--amber)">5 Haz.</div></div>
+            </div>
+            <!-- Teklif -->
+            <div>
+              <div class="kb-h gr">Teklif</div>
+              <div class="kc g"><div class="kc-co">Peak Games</div><div class="kc-ro">Senior Dev</div><div class="kc-dt" style="color:var(--green)">₺95K ✓</div></div>
+            </div>
+            <!-- Geçti -->
+            <div>
+              <div class="kb-h rd">Geçti</div>
+              <div class="kc" style="opacity:.4"><div class="kc-co">Insider</div><div class="kc-ro">Dev</div><div class="kc-dt" style="color:var(--coral)">Red</div></div>
+            </div>
+          </div>
+
+          <div class="ai-row">
+            <div class="ai-row-ic"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+            <div class="ai-row-txt">
+              <strong>AI Asistan:</strong> Hepsiburada mülakatın yarın 14:00! Sana özel 12 beklenen soru hazırladım. Şimdi pratik yapalım mı?
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Offer float -->
+      <div class="offer-float">
+        <div class="of-lbl">Teklif Alındı!</div>
+        <div class="of-co">Peak Games</div>
+        <div class="of-sal">₺95.000 / ay</div>
+      </div>
+
+      <!-- Roadmap float -->
+      <div class="rm-float">
+        <div class="rmf-lbl">KARİYER ROTASI</div>
+        <div class="rmf-steps">
+          <div class="rmf-s"><div class="rmf-dot done"></div><span class="rmf-txt">Frontend Developer</span></div>
+          <div class="rmf-s"><div class="rmf-dot active"></div><span class="rmf-txt">Senior Frontend</span></div>
+          <div class="rmf-s"><div class="rmf-dot todo"></div><span class="rmf-txt muted">Tech Lead</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track">
+    <div class="tick-item"><strong>1 Ücretsiz</strong><span class="tick-sep">·</span>Kariyer danışmanlığı</div>
+    <div class="tick-item"><strong>Kanban Pano</strong><span class="tick-sep">·</span>Başvuru takibi</div>
+    <div class="tick-item"><strong>%43</strong> teklif oranı artışı</div>
+    <div class="tick-item"><strong>Yol Haritası</strong><span class="tick-sep">·</span>AI ile kişiselleştirilmiş</div>
+    <div class="tick-item"><strong>Maaş Analizi</strong><span class="tick-sep">·</span>Unlimited'da</div>
+    <div class="tick-item"><strong>7/24</strong> AI Kariyer Danışmanı</div>
+    <div class="tick-item"><strong>LinkedIn</strong><span class="tick-sep">·</span>Profil optimizasyonu</div>
+    <div class="tick-item"><strong>1 Ücretsiz</strong><span class="tick-sep">·</span>Kariyer danışmanlığı</div>
+    <div class="tick-item"><strong>Kanban Pano</strong><span class="tick-sep">·</span>Başvuru takibi</div>
+    <div class="tick-item"><strong>%43</strong> teklif oranı artışı</div>
+    <div class="tick-item"><strong>Yol Haritası</strong><span class="tick-sep">·</span>AI ile kişiselleştirilmiş</div>
+    <div class="tick-item"><strong>Maaş Analizi</strong><span class="tick-sep">·</span>Unlimited'da</div>
+    <div class="tick-item"><strong>7/24</strong> AI Kariyer Danışmanı</div>
+    <div class="tick-item"><strong>LinkedIn</strong><span class="tick-sep">·</span>Profil optimizasyonu</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     FEATURES
+══════════════════════════════════ -->
+<section id="features" style="padding:140px 0;background:var(--bg)">
+<style>
+.fg-head{text-align:center;margin-bottom:72px}
+.fg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.fg{background:var(--bg-w);border:1px solid var(--bdr2);border-radius:24px;overflow:hidden;transition:all .35s var(--ease)}
+.fg:hover{border-color:var(--p300);box-shadow:var(--s3);transform:translateY(-5px)}
+.fg.s2{grid-column:span 2}
+.fg-bd{padding:26px}
+.fg-ico{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+.fg-ico svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8}
+.fg-title{font-weight:800;font-size:1.05rem;color:var(--ink);letter-spacing:-.02em;margin-bottom:8px}
+.fg-desc{font-size:.86rem;color:var(--ink3);line-height:1.65}
+
+/* Roadmap visual */
+.rm-vis{margin-top:18px;display:flex;flex-direction:column;gap:0;position:relative}
+.rm-vis::before{content:'';position:absolute;left:15px;top:18px;bottom:18px;width:2px;background:linear-gradient(to bottom,var(--p500),var(--p300),rgba(196,181,253,.2));border-radius:2px}
+.rm-row{display:flex;gap:14px;align-items:flex-start;padding:10px 0;cursor:default}
+.rm-row:hover .rm-orb{transform:scale(1.1)}
+.rm-orb{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.68rem;font-weight:900;color:#fff;position:relative;z-index:1;transition:transform .3s var(--spring)}
+.rm-orb.done{background:var(--green)}
+.rm-orb.active{background:var(--p600);animation:rmanim 2.5s infinite}
+@keyframes rmanim{0%,100%{box-shadow:0 0 0 0 rgba(124,58,237,.35)}50%{box-shadow:0 0 0 7px rgba(124,58,237,0)}}
+.rm-orb.todo{background:var(--p200);color:var(--ink4)}
+.rm-info{padding-top:5px}
+.rm-title{font-weight:800;font-size:.84rem;color:var(--ink);margin-bottom:2px}
+.rm-orb.todo + .rm-info .rm-title{color:var(--ink4)}
+.rm-sub{font-size:.68rem;color:var(--ink3);line-height:1.4}
+.rm-tag{display:inline-flex;align-items:center;gap:4px;font-size:.62rem;font-weight:800;padding:2px 8px;border-radius:100px;margin-top:5px}
+.rm-tag.g{background:rgba(5,150,105,.1);color:var(--green);border:1px solid rgba(5,150,105,.2)}
+.rm-tag.p{background:var(--p100);color:var(--p700);border:1px solid var(--p200)}
+
+/* Kanban mini */
+.kb-mini{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px}
+.kbm-h{font-size:.55rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;padding-bottom:4px;margin-bottom:5px;border-bottom:1.5px solid}
+.kbm-h.bl{color:var(--sky);border-color:var(--sky)}
+.kbm-h.am{color:var(--amber);border-color:var(--amber)}
+.kbm-h.gr{color:var(--green);border-color:var(--green)}
+.kbm-h.rd{color:var(--coral);border-color:var(--coral)}
+.kbm-c{background:var(--p50);border:1px solid var(--bdr2);border-radius:6px;padding:5px 6px;margin-bottom:4px}
+.kbm-c.g{background:rgba(5,150,105,.05);border-color:rgba(5,150,105,.18)}
+.kbm-c.a{background:rgba(217,119,6,.05);border-color:rgba(217,119,6,.18)}
+.kbm-co{font-size:.62rem;font-weight:800;color:var(--ink)}
+.kbm-ro{font-size:.56rem;color:var(--ink3)}
+.kbm-dt{font-size:.52rem;font-weight:700;margin-top:2px}
+
+/* Salary chart */
+.sal-chart{margin-top:16px;display:flex;flex-direction:column;gap:9px}
+.sal-row{display:flex;align-items:center;gap:10px}
+.sal-l{font-size:.72rem;font-weight:600;color:var(--ink2);min-width:76px}
+.sal-t{flex:1;height:9px;background:var(--p100);border-radius:100px;overflow:hidden}
+.sal-f{height:100%;border-radius:100px}
+.sal-v{font-size:.72rem;font-weight:800;min-width:60px;text-align:right}
+
+/* LinkedIn tips */
+.li-tips{margin-top:15px;display:flex;flex-direction:column;gap:7px}
+.li-tip{display:flex;gap:9px;align-items:flex-start;padding:9px 11px;background:var(--p50);border:1px solid var(--p200);border-radius:10px;transition:all .2s}
+.li-tip:hover{border-color:var(--p400);background:var(--p100)}
+.li-tip-n{font-family:'Fraunces',serif;font-weight:700;font-size:1.1rem;color:var(--p600);line-height:1;flex-shrink:0;min-width:16px;padding-top:1px}
+.li-tip-txt{font-size:.74rem;color:var(--ink2);line-height:1.5}
+
+/* AI chat snippet */
+.ai-chat-demo{margin-top:15px;display:flex;flex-direction:column;gap:8px}
+.acd-msg{padding:9px 12px;border-radius:12px;font-size:.76rem;line-height:1.5}
+.acd-msg.user{background:var(--p600);color:#fff;border-top-right-radius:4px;align-self:flex-end;max-width:85%}
+.acd-msg.ai{background:var(--p50);border:1px solid var(--p200);color:var(--ink2);border-top-left-radius:4px;max-width:90%}
+.acd-msg strong{font-weight:800}
+
+@media(max-width:900px){.fg-grid{grid-template-columns:1fr}.fg.s2{grid-column:span 1}.kb-mini{grid-template-columns:repeat(2,1fr)}}
+</style>
+<div class="wrap">
+  <div class="fg-head" data-sr="up">
+    <span class="eyebrow" style="justify-content:center;display:flex">Özellikler</span>
+    <h2 class="t-h2">Kariyerinin her adımında <span class="italic">AI yanında</span></h2>
+  </div>
+  <div class="fg-grid">
+
+    <!-- Kariyer Yol Haritası — span 2 -->
+    <div class="fg s2" data-sr="left">
+      <div class="fg-bd">
+        <div class="fg-ico" style="background:var(--p100)"><svg viewBox="0 0 24 24" stroke="var(--p600)"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+        <div class="fg-title">Kişiselleştirilmiş Kariyer Yol Haritası</div>
+        <div class="fg-desc">Mevcut pozisyonundan hedef role giden en kısa yolu AI çizer. Her adım için öğrenme kaynakları, zaman çizelgesi ve başarı kriterleri. <span style="color:var(--p700);font-weight:700">Growth+ özelliği.</span></div>
+        <div class="rm-vis">
+          <div class="rm-row">
+            <div class="rm-orb done">✓</div>
+            <div class="rm-info">
+              <div class="rm-title">Frontend Developer · Şu An</div>
+              <div class="rm-sub">3 yıl deneyim · React, TypeScript</div>
+              <div class="rm-tag g">✓ Tamamlandı</div>
+            </div>
+          </div>
+          <div class="rm-row">
+            <div class="rm-orb active">→</div>
+            <div class="rm-info">
+              <div class="rm-title">Senior Frontend Developer</div>
+              <div class="rm-sub">Tahmini 8–12 ay · System Design + Mentörlük</div>
+              <div class="rm-tag p">● Devam ediyor</div>
+            </div>
+          </div>
+          <div class="rm-row">
+            <div class="rm-orb todo">3</div>
+            <div class="rm-info">
+              <div class="rm-title">Tech Lead / Engineering Manager</div>
+              <div class="rm-sub">Uzun vade · 3–4 yıl · Liderlik + Mimari</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Kanban Pano -->
+    <div class="fg" data-sr="right">
+      <div class="fg-bd">
+        <div class="fg-ico" style="background:rgba(2,132,199,.1)"><svg viewBox="0 0 24 24" stroke="var(--sky)"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div>
+        <div class="fg-title">Kanban İş Başvuru Takibi</div>
+        <div class="fg-desc">Tüm başvurularını tek panoda yönet. Tarih hatırlatmaları, notlar, mülakat takibi. <span style="color:var(--p700);font-weight:700">Growth+ özelliği.</span></div>
+        <div class="kb-mini">
+          <div><div class="kbm-h bl">Başvuru</div><div class="kbm-c"><div class="kbm-co">Trendyol</div><div class="kbm-ro">Frontend</div><div class="kbm-dt" style="color:var(--sky)">3 gün</div></div><div class="kbm-c"><div class="kbm-co">Getir</div><div class="kbm-ro">React</div></div></div>
+          <div><div class="kbm-h am">Mülakat</div><div class="kbm-c a"><div class="kbm-co">Hepsiburada</div><div class="kbm-ro">SWE</div><div class="kbm-dt" style="color:var(--amber)">Yarın</div></div></div>
+          <div><div class="kbm-h gr">Teklif</div><div class="kbm-c g"><div class="kbm-co">Peak Games</div><div class="kbm-ro">Senior</div><div class="kbm-dt" style="color:var(--green)">₺95K</div></div></div>
+          <div><div class="kbm-h rd">Geçti</div><div class="kbm-c" style="opacity:.45"><div class="kbm-co">Insider</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Maaş Analizi -->
+    <div class="fg" data-sr="left" data-d="1">
+      <div class="fg-bd">
+        <div class="fg-ico" style="background:rgba(5,150,105,.1)"><svg viewBox="0 0 24 24" stroke="var(--green)"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+        <div class="fg-title">Piyasa Maaş Analizi</div>
+        <div class="fg-desc">Sektör, şehir ve deneyime göre gerçek maaş aralıkları. Teklifi değerlendirmek için somut veri. <span style="color:var(--amber);font-weight:700">Sadece Unlimited'da.</span></div>
+        <div class="sal-chart">
+          <div class="sal-row"><span class="sal-l">Junior</span><div class="sal-t"><div class="sal-f" style="width:38%;background:linear-gradient(90deg,var(--sky),#38BDF8)"></div></div><span class="sal-v" style="color:var(--sky)">₺40–55K</span></div>
+          <div class="sal-row"><span class="sal-l">Mid-Level</span><div class="sal-t"><div class="sal-f" style="width:62%;background:linear-gradient(90deg,var(--p600),var(--p400))"></div></div><span class="sal-v" style="color:var(--p600)">₺65–85K</span></div>
+          <div class="sal-row"><span class="sal-l">Senior</span><div class="sal-t"><div class="sal-f" style="width:90%;background:linear-gradient(90deg,var(--green),#34D399)"></div></div><span class="sal-v" style="color:var(--green)">₺90–130K</span></div>
+          <div class="sal-row"><span class="sal-l">Tech Lead</span><div class="sal-t"><div class="sal-f" style="width:100%;background:linear-gradient(90deg,var(--amber),#FCD34D)"></div></div><span class="sal-v" style="color:var(--amber)">₺120–180K</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LinkedIn Optimizasyon -->
+    <div class="fg" data-sr="right" data-d="1">
+      <div class="fg-bd">
+        <div class="fg-ico" style="background:#E8F0FE"><svg viewBox="0 0 24 24" stroke="none" fill="#0A66C2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></div>
+        <div class="fg-title">LinkedIn Profil Optimizasyonu</div>
+        <div class="fg-desc">Recruiter görünürlüğünü artır, profil notunu 100'e yaklaştır. <span style="color:var(--p700);font-weight:700">Growth+ özelliği.</span></div>
+        <div class="li-tips">
+          <div class="li-tip"><span class="li-tip-n">1</span><div class="li-tip-txt">"Open to Work" başlık yerine hedef pozisyonu öne çıkar — <strong>%35 daha fazla</strong> görüntülenme.</div></div>
+          <div class="li-tip"><span class="li-tip-n">2</span><div class="li-tip-txt">Özet bölümüne 3 anahtar kelime ekle — AI <strong>otomatik öneriyor.</strong></div></div>
+          <div class="li-tip"><span class="li-tip-n">3</span><div class="li-tip-txt">Beceriler bölümünü güncelle — recruiter filtrelerinde <strong>öne çık.</strong></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7/24 AI Danışman — span 2 -->
+    <div class="fg s2" data-sr="up" data-d="2">
+      <div class="fg-bd">
+        <div class="fg-ico" style="background:linear-gradient(135deg,var(--p100),var(--p200))"><svg viewBox="0 0 24 24" stroke="var(--p600)"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+        <div class="fg-title">7/24 AI Kariyer Danışmanı</div>
+        <div class="fg-desc">Teklif almadan bekleyeyim mi? Pozisyon değiştirmeli miyim? Hangi şirkete öncelik vereyim? Her soruya anlık, <strong>kişiselleştirilmiş</strong> yanıt. <span style="color:var(--p700);font-weight:700">Growth+ özelliği.</span></div>
+        <div class="ai-chat-demo">
+          <div class="acd-msg user">"Hepsiburada'dan teklif aldım, Peak Games cevabını bekliyor. Ne yapmalıyım?"</div>
+          <div class="acd-msg ai"><strong>AI Kariyer Asistanı:</strong> Peak Games'in cevap süresini sormak için 48 saat bekle. Hepsiburada'dan uzatma iste — genellikle 3–5 gün verirler. Bu süreçte müzakere pozisyonun çok güçlü. İki teklife birden sahip olman maaş artırımı için mükemmel bir fırsat. İstersen müzakere scriptini hazırlayayım?</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Raporlar & Hatırlatmalar -->
+    <div class="fg" data-sr="scale" data-d="3">
+      <div class="fg-bd">
+        <div class="fg-ico" style="background:rgba(217,119,6,.08)"><svg viewBox="0 0 24 24" stroke="var(--amber)"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
+        <div class="fg-title">Akıllı Hatırlatmalar</div>
+        <div class="fg-desc">Mülakat tarihleri, takip mesajları, teklif son tarihleri. Hiçbir şeyi kaçırma. <span style="color:var(--p700);font-weight:700">Growth+ özelliği.</span></div>
+        <div style="margin-top:14px;display:flex;flex-direction:column;gap:7px">
+          <div style="background:rgba(217,119,6,.07);border:1px solid rgba(217,119,6,.18);border-radius:9px;padding:9px 12px;display:flex;align-items:center;gap:9px">
+            <div style="font-size:1.1rem">⏰</div>
+            <div><div style="font-size:.72rem;font-weight:800;color:var(--amber)">Yarın 14:00</div><div style="font-size:.68rem;color:var(--ink3)">Hepsiburada mülakatı</div></div>
+            <div style="margin-left:auto;background:rgba(217,119,6,.1);color:var(--amber);font-size:.6rem;font-weight:800;padding:2px 8px;border-radius:100px">12 Soru Hazır</div>
+          </div>
+          <div style="background:rgba(5,150,105,.06);border:1px solid rgba(5,150,105,.15);border-radius:9px;padding:9px 12px;display:flex;align-items:center;gap:9px">
+            <div style="font-size:1.1rem">📬</div>
+            <div><div style="font-size:.72rem;font-weight:800;color:var(--green)">Bugün gönder</div><div style="font-size:.68rem;color:var(--ink3)">Getir — 5. gün takip</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</section>
+
+<!-- ══════════════════════════════════
+     HOW IT WORKS
+══════════════════════════════════ -->
+<section id="hiw" style="padding:140px 0;background:var(--bg-dark)">
+<style>
+.hiw-h2{text-align:center;margin-bottom:80px}
+.hiw-h2 .t-h2{color:#fff}.hiw-h2 .italic{color:var(--p300)}
+.hiw-h2 p{color:rgba(255,255,255,.5);margin-top:14px;max-width:430px;margin-left:auto;margin-right:auto;font-size:.96rem}
+.hiw-tl{position:relative;display:flex;flex-direction:column;max-width:680px;margin:0 auto}
+.hiw-tl::before{content:'';position:absolute;left:35px;top:55px;bottom:55px;width:2px;background:linear-gradient(to bottom,var(--p600),var(--p400),rgba(196,181,253,.12));border-radius:2px}
+.hstep{display:flex;gap:26px;align-items:flex-start;padding:30px 0;cursor:default}
+.hstep:hover .horb{background:var(--p600);border-color:var(--p400);transform:scale(1.08)}
+.horb{width:70px;height:70px;border-radius:50%;background:rgba(255,255,255,.04);border:2px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .35s var(--spring);position:relative;z-index:1}
+.horb svg{width:24px;height:24px;stroke:var(--p400);fill:none;stroke-width:1.6;transition:stroke .3s}
+.hstep:hover .horb svg{stroke:#fff}
+.hn{position:absolute;top:-5px;right:-5px;width:20px;height:20px;background:var(--p600);border-radius:50%;font-size:.6rem;font-weight:900;color:#fff;display:flex;align-items:center;justify-content:center;border:2px solid var(--bg-dark)}
+.hcont{padding-top:12px}
+.hcont-lbl{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--p400);margin-bottom:7px}
+.hcont h3{font-weight:800;font-size:1.2rem;color:#fff;letter-spacing:-.025em;margin-bottom:8px}
+.hcont p{font-size:.88rem;color:rgba(255,255,255,.5);line-height:1.7}
+.htags{display:flex;gap:6px;flex-wrap:wrap;margin-top:11px}
+.htag{font-size:.7rem;font-weight:700;padding:4px 11px;border-radius:100px}
+.htag.g{background:rgba(5,150,105,.1);border:1px solid rgba(5,150,105,.2);color:#34D399}
+.htag.p{background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.2);color:var(--p300)}
+.htag.a{background:rgba(217,119,6,.1);border:1px solid rgba(217,119,6,.2);color:#FCD34D}
+@media(max-width:900px){.hiw-tl::before{display:none}}
+</style>
+<div class="wrap">
+  <div class="hiw-h2" data-sr="up">
+    <span class="eyebrow" style="color:var(--p300);justify-content:center;display:flex">Nasıl Çalışır</span>
+    <h2 class="t-h2">3 adımda <span class="italic">kariyer kontrolü</span></h2>
+    <p>1 ücretsiz danışmanlıkla başla. AI'nın gücünü görünce devam edersin.</p>
+  </div>
+  <div class="hiw-tl">
+    <div class="hstep" data-sr="left">
+      <div class="horb">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 1 0-16 0"/></svg>
+        <div class="hn">1</div>
+      </div>
+      <div class="hcont">
+        <div class="hcont-lbl">Profil &amp; Hedef</div>
+        <h3>Mevcut durumunu ve hedefini anlat</h3>
+        <p>Deneyimini, mevcut pozisyonunu ve hedef kariyer rotanı paylaş. AI kişiselleştirilmiş yol haritasını dakikalar içinde oluşturur.</p>
+        <div class="htags"><span class="htag g">✓ 1 seans ücretsiz</span></div>
+      </div>
+    </div>
+
+    <div class="hstep" data-sr="left" data-d="1">
+      <div class="horb">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        <div class="hn">2</div>
+      </div>
+      <div class="hcont">
+        <div class="hcont-lbl">Takip &amp; Organize</div>
+        <h3>Başvurularını Kanban'da yönet</h3>
+        <p>Tüm başvurularını tek yerden takip et. Mülakat tarihleri, notlar, şirket araştırması hepsi bir arada. Hiçbir fırsatı kaçırma.</p>
+        <div class="htags"><span class="htag p">✦ Growth+ özelliği</span></div>
+      </div>
+    </div>
+
+    <div class="hstep" data-sr="left" data-d="2">
+      <div class="horb">
+        <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        <div class="hn">3</div>
+      </div>
+      <div class="hcont">
+        <div class="hcont-lbl">Teklif &amp; Müzakere</div>
+        <h3>Maaş analizi ile en iyi teklifi al</h3>
+        <p>Piyasa verilerine dayalı müzakere stratejisi. Hangi teklifi kabul et, hangisini bekle, nasıl karşı teklif ver — AI rehberlik eder.</p>
+        <div class="htags"><span class="htag a">★ Unlimited özelliği</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══ PRICING ══ -->
+<section id="pricing" style="padding:140px 0;background:var(--bg);position:relative;overflow:hidden">
+<style>
+.prgl{position:absolute;border-radius:50%;filter:blur(100px);pointer-events:none}
+.pr-h{text-align:center;margin-bottom:22px}.pr-h .t-h2{margin-bottom:14px}.pr-h p{color:var(--ink3);max-width:500px;margin:0 auto;font-size:1rem}
+.pr-tog{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:56px}
+.pt-l{font-size:.88rem;font-weight:700;color:var(--ink4);transition:color .25s}.pt-l.on{color:var(--ink)}
+.pt-sw{position:relative;width:48px;height:26px;background:var(--p200);border-radius:100px;cursor:pointer;transition:background .3s}.pt-sw.on{background:var(--p600)}
+.pt-kn{position:absolute;width:20px;height:20px;background:#fff;border-radius:50%;top:3px;left:3px;transition:left .3s var(--spring);box-shadow:0 1px 6px rgba(0,0,0,.15)}.pt-sw.on .pt-kn{left:25px}
+.sv-pill{background:rgba(5,150,105,.1);border:1px solid rgba(5,150,105,.2);color:var(--green);font-size:.72rem;font-weight:800;padding:4px 11px;border-radius:100px}
+.pr-tbl{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1020px;margin:0 auto}
+.pc{background:var(--bg-w);border:1px solid var(--bdr);border-radius:26px;overflow:hidden;transition:all .35s var(--ease);position:relative}
+.pc:hover{transform:translateY(-6px);box-shadow:var(--s3)}
+.pc.pop{border-color:var(--p500);box-shadow:0 0 0 3px var(--p200),var(--s3)}.pc.pop:hover{box-shadow:0 0 0 3px var(--p300),var(--s4)}
+.pc-top{padding:28px 28px 20px;border-bottom:1px solid var(--bdr2)}
+.pop-b{position:absolute;top:-1px;left:50%;transform:translateX(-50%);background:linear-gradient(90deg,var(--p700),var(--p500));color:#fff;font-size:.64rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:5px 14px;border-radius:0 0 12px 12px}
+.pc-name{font-weight:800;font-size:1rem;color:var(--ink);letter-spacing:-.02em;margin-bottom:4px;margin-top:14px}.pc:not(.pop) .pc-name{margin-top:0}
+.pc-tag{font-size:.76rem;color:var(--ink3);margin-bottom:16px}
+.pc-price{display:flex;align-items:flex-end;gap:4px;margin-bottom:5px}
+.pc-num{font-family:'Fraunces',serif;font-weight:700;font-size:2.8rem;line-height:1;color:var(--ink)}.pc.pop .pc-num{color:var(--p700)}
+.pc-cur{font-size:1.1rem;font-weight:700;color:var(--ink3);margin-bottom:4px}.pc.pop .pc-cur{color:var(--p600)}
+.pc-per{font-size:.8rem;color:var(--ink4);margin-bottom:4px}.pc-note{font-size:.7rem;color:var(--green);font-weight:600;height:16px}
+.pc-ca{padding:16px 26px;border-bottom:1px solid var(--bdr2)}
+.pc-btn{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;padding:12px;border-radius:100px;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:.88rem;cursor:pointer;border:none;transition:all .28s var(--ease)}
+.pc-btn.dark{background:var(--ink);color:#fff}.pc-btn.dark:hover{background:var(--p700);box-shadow:0 8px 24px rgba(109,40,217,.4)}
+.pc-btn.purple{background:var(--p600);color:#fff;box-shadow:0 4px 18px rgba(109,40,217,.3)}.pc-btn.purple:hover{background:var(--p700);box-shadow:0 10px 32px rgba(109,40,217,.45);transform:translateY(-2px)}
+.pc-btn.outline{background:transparent;color:var(--ink2);border:2px solid rgba(109,40,217,.18)}.pc-btn.outline:hover{border-color:var(--p400);color:var(--p700);background:var(--p50)}
+.pc-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.5;transition:transform .2s}.pc-btn:hover svg{transform:translateX(3px)}
+.pc-feats{padding:18px 26px 24px}
+.pcsl{font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:var(--ink4);margin-bottom:9px;margin-top:14px}.pcsl:first-child{margin-top:0}
+.pf{display:flex;align-items:flex-start;gap:8px;padding:5px 0;border-bottom:1px solid var(--bdr2);font-size:.82rem;color:var(--ink2)}.pf:last-child{border:none}
+.pf-ok{font-size:.72rem;font-weight:800;color:var(--p600);flex-shrink:0;margin-top:1px}
+.pf-no{font-size:.72rem;color:var(--ink5);flex-shrink:0}.pf-m{color:var(--ink4)}
+.pfb{margin-left:auto;font-size:.56rem;font-weight:800;padding:2px 6px;border-radius:100px;background:var(--p100);color:var(--p700);white-space:nowrap;flex-shrink:0}
+.pfb.g{background:rgba(5,150,105,.1);color:var(--green)}
+@media(max-width:900px){.pr-tbl{grid-template-columns:1fr;max-width:420px}}
+</style>
+<div class="prgl" style="width:450px;height:450px;background:rgba(139,92,246,.07);top:-80px;right:-80px"></div>
+<div class="prgl" style="width:300px;height:300px;background:rgba(13,148,136,.04);bottom:0;left:80px"></div>
+<div class="wrap">
+  <div class="pr-h" data-sr="up">
+    <span class="eyebrow" style="justify-content:center;display:flex">Fiyatlandırma</span>
+    <h2 class="t-h2">Bir danışmanlıkla <span class="italic">başla, büyü</span></h2>
+    <p>Ücretsiz kariyer danışmanlığı al, yol haritanı gör. Growth ile Kanban ve sınırsız AI asistan açılır.</p>
+  </div>
+  <div class="pr-tog" data-sr="fade">
+    <span class="pt-l on" id="ptl-m">Aylık</span>
+    <div class="pt-sw" id="ptSw" onclick="togglePricing()"><div class="pt-kn"></div></div>
+    <span class="pt-l" id="ptl-y">Yıllık</span>
+    <span class="sv-pill">%40 tasarruf</span>
+  </div>
+  <div class="pr-tbl" data-sr="up">
+    <div class="pc">
+      <div class="pc-top"><div class="pc-name">Starter</div><div class="pc-tag">Denemek isteyenler için</div><div class="pc-price"><span class="pc-cur">₺</span><span class="pc-num" id="p-s">0</span></div><div class="pc-note" id="n-s"></div></div>
+      <div class="pc-ca"><button class="pc-btn dark" onclick="openModal('register')">Ücretsiz Başla <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></button></div>
+      <div class="pc-feats">
+        <div class="pcsl">CV Builder</div>
+        <div class="pf"><span class="pf-ok">✓</span>Sınırsız CV, 5 şablon, ATS skoru</div>
+        <div class="pf"><span class="pf-ok">✓</span>PDF &amp; DOCX indirme</div>
+        <div class="pcsl">Kariyer Asistanı</div>
+        <div class="pf"><span class="pf-ok">✓</span>1 kariyer danışmanlığı <span class="pfb">Deneme</span></div>
+        <div class="pf"><span class="pf-no">—</span><span class="pf-m">Kariyer yol haritası</span></div>
+        <div class="pf"><span class="pf-no">—</span><span class="pf-m">Kanban iş takip panosu</span></div>
+        <div class="pf"><span class="pf-no">—</span><span class="pf-m">Maaş analizi</span></div>
+        <div class="pcsl">Mülakat Koçu</div>
+        <div class="pf"><span class="pf-ok">✓</span>1 simülasyon <span class="pfb">Deneme</span></div>
+      </div>
+    </div>
+    <div class="pc pop">
+      <div class="pop-b">EN ÇOK TERCİH EDİLEN</div>
+      <div class="pc-top"><div class="pc-name">Growth</div><div class="pc-tag">Aktif iş arayanlar için</div><div class="pc-price"><span class="pc-cur">₺</span><span class="pc-num" id="p-g">299</span><span class="pc-per">/ay</span></div><div class="pc-note" id="n-g"></div></div>
+      <div class="pc-ca"><button class="pc-btn purple" onclick="openModal('register')">Hemen Başla <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></button></div>
+      <div class="pc-feats">
+        <div class="pcsl">CV Builder — Tam</div>
+        <div class="pf"><span class="pf-ok">✓</span>AI öneriler + 50+ şablon + LinkedIn aktar</div>
+        <div class="pcsl">Kariyer Asistanı — Sınırsız</div>
+        <div class="pf"><span class="pf-ok">✓</span>Sınırsız AI danışmanlık <span class="pfb g">Sınırsız</span></div>
+        <div class="pf"><span class="pf-ok">✓</span>Kariyer yol haritası</div>
+        <div class="pf"><span class="pf-ok">✓</span>Kanban iş takip panosu</div>
+        <div class="pf"><span class="pf-ok">✓</span>LinkedIn profil optimizasyonu</div>
+        <div class="pf"><span class="pf-ok">✓</span>Akıllı hatırlatmalar</div>
+        <div class="pf"><span class="pf-no">—</span><span class="pf-m">Maaş analizi &amp; müzakere</span></div>
+        <div class="pcsl">Mülakat Koçu</div>
+        <div class="pf"><span class="pf-ok">✓</span>Sınırsız simülasyon <span class="pfb g">Sınırsız</span></div>
+      </div>
+    </div>
+    <div class="pc">
+      <div class="pc-top"><div class="pc-name">Unlimited</div><div class="pc-tag">Her şey, sınır yok</div><div class="pc-price"><span class="pc-cur">₺</span><span class="pc-num" id="p-u">499</span><span class="pc-per">/ay</span></div><div class="pc-note" id="n-u"></div></div>
+      <div class="pc-ca"><button class="pc-btn outline" onclick="openModal('register')">Unlimited'a Geç <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></button></div>
+      <div class="pc-feats">
+        <div class="pcsl">Kariyer Asistanı — Unlimited</div>
+        <div class="pf"><span class="pf-ok">✓</span>Growth'taki her şey</div>
+        <div class="pf"><span class="pf-ok">✓</span>Piyasa maaş analizi <span class="pfb">Sadece Unlimited</span></div>
+        <div class="pf"><span class="pf-ok">✓</span>Maaş müzakere rehberi</div>
+        <div class="pf"><span class="pf-ok">✓</span>Kariyer koçu 1-1 (2/ay)</div>
+        <div class="pcsl">Mülakat Koçu</div>
+        <div class="pf"><span class="pf-ok">✓</span>Sınırsız + maaş müzakeresi <span class="pfb">Sadece Unlimited</span></div>
+        <div class="pcsl">CV Builder</div>
+        <div class="pf"><span class="pf-ok">✓</span>Growth + çok dilli (EN/DE/FR)</div>
+        <div class="pf"><span class="pf-ok">✓</span>Öncelikli destek (max 2 saat)</div>
+      </div>
+    </div>
+  </div>
+  <p style="text-align:center;margin-top:22px;font-size:.82rem;color:var(--ink3)" data-sr="fade" data-d="2">Kredi kartı gerekmez · İstediğin zaman iptal et · 7 gün para iade garantisi</p>
+</div>
+</section>
+
+<!-- ══ TESTIMONIALS ══ -->
+<section id="proof" style="padding:120px 0;background:var(--bg-w);overflow:hidden">
+<style>
+.proof-h{text-align:center;margin-bottom:56px}
+.proof-rows{display:flex;flex-direction:column;gap:18px}
+.proof-row{position:relative;overflow:hidden}
+.proof-row::before,.proof-row::after{content:'';position:absolute;top:0;bottom:0;width:120px;z-index:10;pointer-events:none}
+.proof-row::before{left:0;background:linear-gradient(to right,var(--bg-w),transparent)}
+.proof-row::after{right:0;background:linear-gradient(to left,var(--bg-w),transparent)}
+.proof-track{display:flex;gap:16px;width:max-content;animation:pmove 42s linear infinite;padding:4px 0 18px}
+.proof-track.rev{animation-name:pmoveR}.proof-track:hover{animation-play-state:paused}
+@keyframes pmove{to{transform:translateX(-50%)}}
+@keyframes pmoveR{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+.pcard{min-width:270px;flex-shrink:0;background:var(--bg);border:1px solid var(--bdr2);border-radius:18px;padding:20px;transition:all .3s var(--ease);cursor:pointer}
+.pcard:hover{border-color:var(--p300);box-shadow:var(--s2);transform:translateY(-3px);background:var(--bg-w)}
+.pcard-stars{color:#FBBF24;font-size:.75rem;letter-spacing:2px;margin-bottom:9px}
+.pcard-text{font-size:.84rem;color:var(--ink2);line-height:1.65;margin-bottom:13px}
+.pcard-auth{display:flex;align-items:center;gap:9px}
+.pcard-av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:900;color:#fff;flex-shrink:0}
+.pcard-name{font-weight:800;font-size:.8rem;color:var(--ink)}.pcard-role{font-size:.68rem;color:var(--ink3)}
+</style>
+<div class="wrap"><div class="proof-h" data-sr="up"><span class="eyebrow" style="justify-content:center;display:flex">Başarı Hikayeleri</span><h2 class="t-h2" style="text-align:center">Kariyer Asistanı ile <span class="italic">yüksenenler</span></h2></div></div>
+<div class="proof-rows">
+  <div class="proof-row"><div class="proof-track">
+    <div class="pcard"><div class="pcard-stars">★★★★★</div><p class="pcard-text">"Kariyer Asistanı başvurularımı organize etmeme inanılmaz yardımcı oldu. Kanban panosu olmadan iş aramazdım."</p><div class="pcard-auth"><div class="pcard-av" style="background:linear-gradient(135deg,#D97706,#FCD34D)">MC</div><div><div class="pcard-name">Mert Can</div><div class="pcard-role">Data Scientist · Ankara</div></div></div></div>
+    <div class="pcard"><div class="pcard-stars">★★★★★</div><p class="pcard-text">"LinkedIn recruiter mesajlarım 1 haftada 5 katına çıktı. Optimizasyon önerileri inanılmaz işe yarıyor."</p><div class="pcard-auth"><div class="pcard-av" style="background:linear-gradient(135deg,#E11D48,#FB7185)">SA</div><div><div class="pcard-name">Selin Arslan</div><div class="pcard-role">Creative Director · İstanbul</div></div></div></div>
+    <div class="pcard"><div class="pcard-stars">★★★★★</div><p class="pcard-text">"Kariyer geçişi yaparken yol haritası paha biçilemezdi. 6 ayda tamamen farklı sektöre geçtim."</p><div class="pcard-auth"><div class="pcard-av" style="background:linear-gradient(135deg,#7C3AED,#C4B5FD)">BÖ</div><div><div class="pcard-name">Burak Öztürk</div><div class="pcard-role">Fintech Analyst · İstanbul</div></div></div></div>
+    <div class="pcard"><div class="pcard-stars">★★★★★</div><p class="pcard-text">"AI mülakat tarihimi hatırlatıp özel sorular hazırladı. O mülakatı geçtim, Peak Games'ten teklif aldım."</p><div class="pcard-auth"><div class="pcard-av" style="background:linear-gradient(135deg,#059669,#34D399)">ZK</div><div><div class="pcard-name">Zeynep Koç</div><div class="pcard-role">Product Manager · İstanbul</div></div></div></div>
+    <div class="pcard"><div class="pcard-stars">★★★★★</div><p class="pcard-text">"Maaş analizini görünce 'az mı isteyecektim' diye korktum. AI müzakere scriptini hazırladı, %22 artırdım."</p><div class="pcard-auth"><div class="pcard-av" style="background:linear-gradient(135deg,#0284C7,#38BDF8)">EŞ</div><div><div class="pcard-name">Elif Şahin</div><div class="pcard-role">UX Designer · Ankara</div></div></div></div>
+    <div class="pcard"><div class="pcard-stars">★★★★★</div><p class="pcard-text">"Kanban panosu olmadan iş aramazdım."</p><div class="pcard-auth"><div class="pcard-av" style="background:linear-gradient(135deg,#D97706,#FCD34D)">MC</div><div><div class="pcard-name">Mert Can</div><div class="pcard-role">Data Scientist</div></div></div></div>
+    <div class="pcard"><div class="pcard-stars">★★★★★</div><p class="pcard-text">"Recruiter mesajlarım 5 katına çıktı."</p><div class="pcard-auth"><div class="pcard-av" style="background:linear-gradient(135deg,#E11D48,#FB7185)">SA</div><div><div class="pcard-name">Selin Arslan</div><div class="pcard-role">Creative Director</div></div></div></div>
+    <div class="pcard"><div class="pcard-stars">★★★★★</div><p class="pcard-text">"6 ayda farklı sektöre geçtim."</p><div class="pcard-auth"><div class="pcard-av" style="background:linear-gradient(135deg,#7C3AED,#C4B5FD)">BÖ</div><div><div class="pcard-name">Burak Öztürk</div><div class="pcard-role">Fintech Analyst</div></div></div></div>
+    <div class="pcard"><div class="pcard-stars">★★★★★</div><p class="pcard-text">"Peak Games'ten teklif aldım."</p><div class="pcard-auth"><div class="pcard-av" style="background:linear-gradient(135deg,#059669,#34D399)">ZK</div><div><div class="pcard-name">Zeynep Koç</div><div class="pcard-role">Product Manager</div></div></div></div>
+    <div class="pcard"><div class="pcard-stars">★★★★★</div><p class="pcard-text">"Maaşı %22 artırdım."</p><div class="pcard-auth"><div class="pcard-av" style="background:linear-gradient(135deg,#0284C7,#38BDF8)">EŞ</div><div><div class="pcard-name">Elif Şahin</div><div class="pcard-role">UX Designer</div></div></div></div>
+  </div></div>
+  <div class="proof-row"><div class="proof-track rev">
+    <div class="pcard"><div class="pcard-stars">★★★★★</div><p class="pcard-text">"İki teklife birden sahiptim. AI hangisini kabul etmem gerektiğini hesapladı, müzakereyi yönetti."</p><div class="pcard-auth"><div class="pcard-av" style="background:linear-gradient(135deg,#059669,#6EE7B7)">KD</div><div><div class="pcard-name">Kemal Demir</div><div class="pcard-role">Backend Developer · İzmir</div></div></div></div>
+    <div class="pcard"><div class="pcard-stars">★★★★★</div><p class="pcard-text">"Yol haritası '6 ayda senior hedefle' dedi. 5. ayda teklif aldım."</p><div class="pcard-auth"><div class="pcard-av" style="background:linear-gradient(135deg,#0D9488,#34D399)">HY</div><div><div class="pcard-name">Hasan Yıldız</div><div class="pcard-role">Product Designer · İstanbul</div></div></div></div>
+    <div class="pcard"><div class="pcard-stars">★★★★★</div><p class="pcard-text">"14 başvuruyu aynı anda takip etmek artık stres yaratmıyor. Her şey Kanban'da."</p><div class="pcard-auth"><div class="pcard-av" style="background:linear-gradient(135deg,#7C3AED,#A78BFA)">AY</div><div><div class="pcard-name">Ahmet Yılmaz</div><div class="pcard-role">Software Engineer · İstanbul</div></div></div></div>
+    <div class="pcard"><div class="pcard-stars">★★★★★</div><p class="pcard-text">"1 ücretsiz danışmanlık beni tamamen sattı. AI'ın kariyer analizi inanılmaz derin."</p><div class="pcard-auth"><div class="pcard-av" style="background:linear-gradient(135deg,#6D28D9,#C4B5FD)">NÖ</div><div><div class="pcard-name">Nil Öztürk</div><div class="pcard-role">Brand Manager · Ankara</div></div></div></div>
+    <div class="pcard"><div class="pcard-stars">★★★★★</div><p class="pcard-text">"AI müzakereyi yönetti."</p><div class="pcard-auth"><div class="pcard-av" style="background:linear-gradient(135deg,#059669,#6EE7B7)">KD</div><div><div class="pcard-name">Kemal Demir</div><div class="pcard-role">Backend Developer</div></div></div></div>
+    <div class="pcard"><div class="pcard-stars">★★★★★</div><p class="pcard-text">"5. ayda senior teklif aldım."</p><div class="pcard-auth"><div class="pcard-av" style="background:linear-gradient(135deg,#0D9488,#34D399)">HY</div><div><div class="pcard-name">Hasan Yıldız</div><div class="pcard-role">Product Designer</div></div></div></div>
+    <div class="pcard"><div class="pcard-stars">★★★★★</div><p class="pcard-text">"14 başvuruyu stressiz takip ediyorum."</p><div class="pcard-auth"><div class="pcard-av" style="background:linear-gradient(135deg,#7C3AED,#A78BFA)">AY</div><div><div class="pcard-name">Ahmet Yılmaz</div><div class="pcard-role">Software Engineer</div></div></div></div>
+    <div class="pcard"><div class="pcard-stars">★★★★★</div><p class="pcard-text">"1 ücretsiz danışmanlık beni sattı."</p><div class="pcard-auth"><div class="pcard-av" style="background:linear-gradient(135deg,#6D28D9,#C4B5FD)">NÖ</div><div><div class="pcard-name">Nil Öztürk</div><div class="pcard-role">Brand Manager</div></div></div></div>
+  </div></div>
+</div>
+</section>
+
+<!-- ══ CTA ══ -->
+<section id="cta" style="padding:160px 0;background:var(--bg-dark);text-align:center;position:relative;overflow:hidden">
+  <div style="position:absolute;border-radius:50%;filter:blur(120px);pointer-events:none;width:700px;height:400px;background:rgba(109,40,217,.25);top:-180px;left:50%;transform:translateX(-50%)"></div>
+  <div style="position:absolute;border-radius:50%;filter:blur(120px);pointer-events:none;width:300px;height:300px;background:rgba(13,148,136,.06);bottom:0;right:5%"></div>
+  <div style="position:relative;z-index:1;max-width:680px;margin:0 auto;padding:0 32px">
+    <div data-sr="up"><span class="eyebrow" style="color:var(--p300);justify-content:center;display:flex;margin-bottom:20px">Hazır Mısın?</span><h2 class="t-h2" style="color:#fff">Kariyer planını <span class="italic">bugün yap</span></h2></div>
+    <p style="font-size:1rem;color:rgba(255,255,255,.5);max-width:460px;margin:18px auto 42px;line-height:1.7" data-sr="up" data-d="1">1 ücretsiz kariyer danışmanlığıyla başla. Yol haritanı gör, farkı anladıktan sonra büyü.</p>
+    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap" data-sr="up" data-d="2">
+      <a href="#" class="btn btn-purple btn-lg" onclick="openModal('register')">Ücretsiz Kariyer Planı Al <svg class="arr" viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>
+      <a href="#pricing" class="btn btn-ghost btn-lg">Paketleri Gör</a>
+    </div>
+    <p style="font-size:.76rem;color:rgba(255,255,255,.25);margin-top:16px" data-sr="fade" data-d="3">Kredi kartı gerekmez · 7 gün para iade garantisi</p>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer style="background:var(--bg-dark2);padding:60px 0 30px">
+<style>
+.ft-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:36px;margin-bottom:44px}
+.ft-brand .n-name{color:rgba(255,255,255,.88);font-size:1rem}.ft-brand .n-name span{color:var(--p400)}
+.ft-brand p{font-size:.82rem;color:rgba(255,255,255,.32);line-height:1.7;margin-top:11px;max-width:230px}
+.ft-col h5{font-size:.66rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.28);margin-bottom:13px}
+.ft-col ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+.ft-col ul a{font-size:.82rem;color:rgba(255,255,255,.43);transition:color .2s}.ft-col ul a:hover{color:rgba(255,255,255,.88)}
+.ft-btm{border-top:1px solid rgba(255,255,255,.05);padding-top:22px;display:flex;justify-content:space-between;font-size:.76rem;color:rgba(255,255,255,.22);flex-wrap:wrap;gap:10px}
+@media(max-width:900px){.ft-grid{grid-template-columns:1fr 1fr;gap:24px}}
+</style>
+<div class="wrap">
+  <div class="ft-grid">
+    <div class="ft-brand"><div class="n-logo"><div class="n-mark">S</div><span class="n-name">Synaps<span>AI</span></span></div><p>Türkiye'nin yapay zeka destekli kariyer platformu.</p></div>
+    <div class="ft-col"><h5>Ürünler</h5><ul><li><a href="cv-builder.html">CV Builder</a></li><li><a href="mulakat-kocu.html">Mülakat Koçu</a></li><li><a href="#">Kariyer Asistanı</a></li><li><a href="#pricing">Fiyatlar</a></li></ul></div>
+    <div class="ft-col"><h5>Şirket</h5><ul><li><a href="#">Hakkımızda</a></li><li><a href="#">Blog</a></li><li><a href="#">İletişim</a></li></ul></div>
+    <div class="ft-col"><h5>Destek</h5><ul><li><a href="#">Yardım</a></li><li><a href="#">KVKK</a></li><li><a href="#">Gizlilik</a></li></ul></div>
+  </div>
+  <div class="ft-btm"><span>© 2025 SynapsAI. Tüm hakları saklıdır.</span><span>🇹🇷 Türkiye'de üretildi</span></div>
+</div>
+</footer>
+
+<!-- ══ MODAL ══ -->
+<div class="modal-overlay" id="mo">
+<style>
+.modal-overlay{position:fixed;inset:0;z-index:2000;background:rgba(13,8,43,.7);backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .35s var(--ease)}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal-card{background:var(--bg-w);border-radius:28px;padding:44px 40px;width:100%;max-width:400px;position:relative;box-shadow:var(--s5);transform:scale(.94) translateY(16px);transition:transform .4s var(--spring)}
+.modal-overlay.open .modal-card{transform:scale(1) translateY(0)}
+.modal-x{position:absolute;top:18px;right:20px;width:30px;height:30px;border-radius:9px;background:var(--bg-off);border:none;cursor:pointer;font-size:.9rem;color:var(--ink3);display:flex;align-items:center;justify-content:center;transition:all .2s}
+.modal-x:hover{background:var(--p100);color:var(--p700)}
+.m-title{font-weight:800;font-size:1.5rem;letter-spacing:-.03em;color:var(--ink);margin-bottom:4px}
+.m-sub{font-size:.84rem;color:var(--ink3);margin-bottom:24px}
+.m-tabs{display:flex;background:var(--bg-off);border-radius:12px;padding:3px;margin-bottom:24px}
+.m-tab{flex:1;padding:9px;border-radius:10px;border:none;background:transparent;font-family:'Bricolage Grotesque';font-weight:700;font-size:.85rem;color:var(--ink4);cursor:pointer;transition:all .25s}
+.m-tab.on{background:var(--ink);color:#fff}
+.mfg{margin-bottom:14px}.mfl{display:block;font-size:.76rem;font-weight:700;color:var(--ink2);margin-bottom:5px}
+.mfi{width:100%;background:var(--bg-off);border:1.5px solid var(--bdr);border-radius:12px;padding:11px 14px;font-family:'Bricolage Grotesque';font-size:.9rem;color:var(--ink);outline:none;transition:all .2s}
+.mfi:focus{border-color:var(--p500);background:var(--p50)}.mfi::placeholder{color:var(--ink5)}
+.mfcta{display:flex;align-items:center;justify-content:center;width:100%;padding:13px;border-radius:100px;font-family:'Bricolage Grotesque';font-weight:800;font-size:.9rem;background:var(--ink);color:#fff;border:none;cursor:pointer;transition:all .28s var(--ease)}
+.mfcta:hover{background:var(--p700);box-shadow:0 8px 28px rgba(109,40,217,.4)}
+.mfsep{display:flex;align-items:center;gap:12px;margin:16px 0}
+.mfsep::before,.mfsep::after{content:'';flex:1;height:1px;background:var(--bdr2)}
+.mfsep span{font-size:.72rem;color:var(--ink4)}
+.mfgb{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;padding:11px;border-radius:100px;border:1.5px solid var(--bdr);background:transparent;font-family:'Bricolage Grotesque';font-weight:700;font-size:.86rem;color:var(--ink2);cursor:pointer;transition:all .2s}
+.mfgb:hover{background:var(--p50);border-color:var(--p300);color:var(--p700)}
+</style>
+  <div class="modal-card">
+    <button class="modal-x" onclick="closeModal()">✕</button>
+    <div class="n-logo" style="margin-bottom:20px"><div class="n-mark">S</div><span class="n-name" style="color:var(--ink)">Synaps<span style="color:var(--p600)">AI</span></span></div>
+    <div class="m-title" id="m-title">Hoş Geldin</div>
+    <div class="m-sub" id="m-sub">Hesabına giriş yap.</div>
+    <div class="m-tabs"><button class="m-tab on" id="mt-l" onclick="switchTab('l')">Giriş Yap</button><button class="m-tab" id="mt-r" onclick="switchTab('r')">Kayıt Ol</button></div>
+    <div id="mf-l">
+      <div class="mfg"><label class="mfl">E-posta</label><input type="email" class="mfi" placeholder="ornek@email.com"></div>
+      <div class="mfg"><label class="mfl">Şifre</label><input type="password" class="mfi" placeholder="••••••••"></div>
+      <button class="mfcta">Giriş Yap</button>
+      <div class="mfsep"><span>veya</span></div>
+      <button class="mfgb"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>Google ile devam et</button>
+    </div>
+    <div id="mf-r" style="display:none">
+      <div class="mfg"><label class="mfl">Ad Soyad</label><input type="text" class="mfi" placeholder="Adınız Soyadınız"></div>
+      <div class="mfg"><label class="mfl">E-posta</label><input type="email" class="mfi" placeholder="ornek@email.com"></div>
+      <div class="mfg"><label class="mfl">Şifre</label><input type="password" class="mfi" placeholder="En az 8 karakter"></div>
+      <button class="mfcta">Ücretsiz Kayıt Ol</button>
+      <div class="mfsep"><span>veya</span></div>
+      <button class="mfgb"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>Google ile kayıt ol</button>
+    </div>
+  </div>
+</div>
+
+<script>
+window.addEventListener('scroll',()=>{ document.getElementById('nav').classList.toggle('stuck',scrollY>24) },{passive:true});
+const obs=new IntersectionObserver(e=>e.forEach(x=>{ if(x.isIntersecting) x.target.classList.add('vis') }),{threshold:.08,rootMargin:'0px 0px -60px 0px'});
+document.querySelectorAll('[data-sr]').forEach(el=>obs.observe(el));
+function openModal(t){ document.getElementById('mo').classList.add('open'); switchTab(t==='register'?'r':'l'); document.body.style.overflow='hidden' }
+function closeModal(){ document.getElementById('mo').classList.remove('open'); document.body.style.overflow='' }
+function switchTab(t){
+  const l=t==='l';
+  document.getElementById('mt-l').classList.toggle('on',l);
+  document.getElementById('mt-r').classList.toggle('on',!l);
+  document.getElementById('mf-l').style.display=l?'':'none';
+  document.getElementById('mf-r').style.display=l?'none':'';
+  document.getElementById('m-title').textContent=l?'Hoş Geldin':'Hesap Oluştur';
+  document.getElementById('m-sub').textContent=l?'Hesabına giriş yap.':'Ücretsiz başla, hemen kullan.';
+}
+document.getElementById('mo').addEventListener('click',e=>{ if(e.target===document.getElementById('mo')) closeModal() });
+let yearly=false;
+const P={s:{m:'0',y:'0'},g:{m:'299',y:'179'},u:{m:'499',y:'299'}};
+function togglePricing(){
+  yearly=!yearly;
+  document.getElementById('ptSw').classList.toggle('on',yearly);
+  document.getElementById('ptl-m').classList.toggle('on',!yearly);
+  document.getElementById('ptl-y').classList.toggle('on',yearly);
+  const k=yearly?'y':'m';
+  ['s','g','u'].forEach(id=>document.getElementById('p-'+id).textContent=P[id][k]);
+  document.getElementById('n-g').textContent=yearly?'Yıllık ₺2.148 · %40 tasarruf':'';
+  document.getElementById('n-u').textContent=yearly?'Yıllık ₺3.588 · %40 tasarruf':'';
+}
+window.addEventListener('scroll',()=>{
+  const d=document.querySelector('.dash-card');
+  if(d) d.style.transform=`translateY(${scrollY*.05}px)`;
+},{passive:true});
+</script>
+</body>
+</html>
