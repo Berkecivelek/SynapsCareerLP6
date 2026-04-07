@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CV Builder — Synaps AI | ATS'yi Geçen CV'ler</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400;1,9..144,700&display=swap" rel="stylesheet">
+<style>
+/* ── TOKENS ── */
+:root {
+  --bg:#F7F5FF; --bg-off:#EFECFE; --bg-w:#FFFFFF; --bg-dark:#13082B; --bg-dark2:#0C0518;
+  --p700:#6D28D9; --p600:#7C3AED; --p500:#8B5CF6; --p400:#A78BFA; --p300:#C4B5FD;
+  --p200:#DDD6FE; --p100:#EDE9FE; --p50:#F5F3FF;
+  --ink:#0F0A1E; --ink2:#2E1E5A; --ink3:#6B5F8A; --ink4:#A89EC0; --ink5:#C8C0DC;
+  --green:#059669; --amber:#D97706; --coral:#E11D48; --sky:#0284C7;
+  --bdr:rgba(109,40,217,.12); --bdr2:rgba(109,40,217,.07);
+  --s2:0 4px 24px rgba(109,40,217,.10); --s3:0 16px 64px rgba(109,40,217,.14);
+  --s4:0 32px 100px rgba(15,10,30,.18); --s5:0 48px 140px rgba(15,10,30,.25);
+  --ease:cubic-bezier(.25,0,0,1); --spring:cubic-bezier(.34,1.56,.64,1);
+}
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0 }
+html { scroll-behavior:smooth }
+body { font-family:'Bricolage Grotesque',sans-serif; background:var(--bg); color:var(--ink); overflow-x:hidden; line-height:1.55 }
+a { text-decoration:none } button { font-family:inherit; cursor:pointer; border:none }
+img { max-width:100%; display:block }
+
+/* ── TYPE ── */
+.t-d { font-family:'Bricolage Grotesque'; font-weight:800; font-size:clamp(3rem,6.5vw,7rem); line-height:1.0; letter-spacing:-.04em }
+.t-h2 { font-family:'Bricolage Grotesque'; font-weight:800; font-size:clamp(2.2rem,4vw,4.6rem); line-height:1.06; letter-spacing:-.03em }
+.t-h3 { font-family:'Bricolage Grotesque'; font-weight:700; font-size:clamp(1.3rem,2vw,1.9rem); line-height:1.15; letter-spacing:-.025em }
+.italic { font-family:'Fraunces',serif; font-style:italic; font-weight:300; color:var(--p600) }
+.eyebrow { display:inline-flex; align-items:center; gap:7px; font-size:.72rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--p600); margin-bottom:16px }
+.eyebrow::before { content:''; display:block; width:20px; height:2px; background:var(--p500); border-radius:2px }
+
+/* ── LAYOUT ── */
+.wrap { max-width:1180px; margin:0 auto; padding:0 32px }
+
+/* ── BUTTONS ── */
+.btn { display:inline-flex; align-items:center; gap:9px; font-family:'Bricolage Grotesque',sans-serif; font-weight:700; border:none; cursor:pointer; transition:all .28s var(--ease); white-space:nowrap }
+.btn-dark { background:var(--ink); color:#fff; padding:15px 30px; border-radius:100px; font-size:.95rem }
+.btn-dark:hover { background:var(--p700); transform:translateY(-2px); box-shadow:0 10px 32px rgba(109,40,217,.4) }
+.btn-purple { background:var(--p600); color:#fff; padding:15px 30px; border-radius:100px; font-size:.95rem; box-shadow:0 4px 20px rgba(109,40,217,.3) }
+.btn-purple:hover { background:var(--p700); transform:translateY(-2px); box-shadow:0 12px 36px rgba(109,40,217,.45) }
+.btn-outline { background:transparent; color:var(--ink); padding:14px 28px; border-radius:100px; font-size:.95rem; border:2px solid rgba(15,10,30,.14) }
+.btn-outline:hover { border-color:var(--p400); color:var(--p700); background:var(--p50) }
+.btn-ghost { background:rgba(255,255,255,.1); color:#fff; padding:12px 22px; border-radius:100px; font-size:.88rem; border:1px solid rgba(255,255,255,.2) }
+.btn-ghost:hover { background:rgba(255,255,255,.2) }
+.btn-lg { padding:18px 40px; font-size:1.05rem }
+.btn-sm { padding:10px 20px; font-size:.85rem }
+.arr { width:15px; height:15px; fill:none; stroke:currentColor; stroke-width:2.5; transition:transform .2s }
+.btn:hover .arr { transform:translateX(4px) }
+
+/* ── NAV ── */
+#nav { position:fixed; top:0; left:0; right:0; z-index:900; height:68px; display:flex; align-items:center; padding:0 36px; transition:all .35s var(--ease) }
+#nav.stuck { background:rgba(247,245,255,.94); backdrop-filter:blur(24px); border-bottom:1px solid var(--bdr2); box-shadow:0 1px 4px rgba(109,40,217,.06) }
+.nav-in { max-width:1180px; margin:0 auto; width:100%; display:flex; align-items:center; justify-content:space-between }
+.n-logo { display:flex; align-items:center; gap:10px }
+.n-mark { width:34px; height:34px; border-radius:9px; background:var(--ink); display:flex; align-items:center; justify-content:center; font-family:'Fraunces',serif; font-style:italic; font-size:1.05rem; color:#fff; transition:background .25s }
+.n-logo:hover .n-mark { background:var(--p700) }
+.n-name { font-weight:800; font-size:1.1rem; color:var(--ink); letter-spacing:-.03em }
+.n-name span { color:var(--p600) }
+.n-back { display:flex; align-items:center; gap:7px; font-size:.84rem; font-weight:700; color:var(--ink3); padding:8px 14px; border-radius:10px; transition:all .2s }
+.n-back:hover { color:var(--ink); background:var(--p50) }
+.n-back svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2.5; transition:transform .2s }
+.n-back:hover svg { transform:translateX(-3px) }
+.n-actions { display:flex; align-items:center; gap:10px }
+.n-sign { font-size:.88rem; font-weight:700; color:var(--ink3); padding:8px 14px; border-radius:10px; cursor:pointer; transition:color .2s }
+.n-sign:hover { color:var(--ink) }
+
+/* ── SCROLL REVEAL ── */
+[data-sr] { opacity:0; transition:opacity .85s var(--ease), transform .85s var(--ease) }
+[data-sr="up"]    { transform:translateY(50px) }
+[data-sr="left"]  { transform:translateX(-50px) }
+[data-sr="right"] { transform:translateX(50px) }
+[data-sr="scale"] { transform:scale(.92) }
+[data-sr="fade"]  { }
+[data-sr].vis { opacity:1; transform:none }
+[data-d="1"] { transition-delay:.1s } [data-d="2"] { transition-delay:.2s }
+[data-d="3"] { transition-delay:.3s } [data-d="4"] { transition-delay:.4s }
+[data-d="5"] { transition-delay:.5s } [data-d="6"] { transition-delay:.6s }
+
+/* ── HERO ── */
+#hero { padding:140px 0 0; min-height:100vh; display:flex; flex-direction:column; position:relative; overflow:hidden }
+.hero-bg { position:absolute; inset:0; pointer-events:none;
+  background:
+    radial-gradient(ellipse 70% 60% at 12% 50%, rgba(139,92,246,.09) 0%, transparent 65%),
+    radial-gradient(ellipse 55% 65% at 88% 30%, rgba(109,40,217,.06) 0%, transparent 60%) }
+.hero-grid { position:absolute; inset:0; pointer-events:none;
+  background-image: linear-gradient(rgba(109,40,217,.04) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(109,40,217,.04) 1px, transparent 1px);
+  background-size:72px 72px;
+  mask-image:radial-gradient(ellipse 85% 75% at 40% 30%, black 10%, transparent 100%) }
+
+.hero-body { position:relative; z-index:2; display:grid; grid-template-columns:1fr 1.15fr; gap:60px; align-items:center; padding:0 32px; max-width:1180px; margin:0 auto; width:100% }
+
+/* copy side */
+.free-badge { display:inline-flex; align-items:center; gap:8px; background:rgba(5,150,105,.09); border:1px solid rgba(5,150,105,.2); color:var(--green); border-radius:100px; padding:7px 16px 7px 9px; font-size:.78rem; font-weight:800; letter-spacing:.02em; margin-bottom:28px }
+.free-dot { width:20px; height:20px; border-radius:50%; background:var(--green); display:flex; align-items:center; justify-content:center; font-size:.6rem; color:#fff; font-weight:900; flex-shrink:0 }
+.hero-title { margin-bottom:24px }
+.hero-sub { font-size:1.05rem; color:var(--ink3); line-height:1.75; margin-bottom:36px; max-width:500px }
+.hero-ctas { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:36px }
+.hero-pills { display:flex; gap:10px; flex-wrap:wrap }
+.hpill { background:var(--bg-w); border:1px solid var(--bdr); border-radius:100px; padding:8px 16px; display:flex; align-items:center; gap:7px; font-size:.8rem; font-weight:700; color:var(--ink2); transition:all .25s }
+.hpill:hover { border-color:var(--p300); background:var(--p50); transform:translateY(-1px) }
+.hpill-num { font-family:'Fraunces',serif; font-size:1rem; font-weight:700; color:var(--p600) }
+
+/* visual side */
+.hero-visual { position:relative }
+
+/* big editor card */
+.editor-card { background:var(--bg-w); border:1px solid var(--bdr); border-radius:24px; overflow:hidden; box-shadow:var(--s4); transition:all .5s var(--ease) }
+.editor-card:hover { transform:translateY(-8px) rotate(-.4deg); box-shadow:var(--s5) }
+.ec-bar { background:var(--p50); border-bottom:1px solid var(--bdr2); padding:11px 18px; display:flex; align-items:center; gap:10px }
+.ec-dots { display:flex; gap:5px }
+.ec-dot { width:10px; height:10px; border-radius:50% }
+.ec-dot.r { background:#FF5F57 } .ec-dot.y { background:#FEBC2E } .ec-dot.g { background:#28C840 }
+.ec-tabs { display:flex; gap:2px; margin-left:8px }
+.ec-tab { font-size:.7rem; font-weight:700; padding:5px 10px; border-radius:7px; color:var(--ink3); cursor:pointer; transition:all .2s }
+.ec-tab.on { background:var(--p600); color:#fff }
+.ec-prog-wrap { flex:1; max-width:110px; margin-left:auto }
+.ec-prog { height:5px; background:var(--p100); border-radius:100px; overflow:hidden }
+.ec-prog-fill { height:100%; background:linear-gradient(90deg, var(--p600), var(--p400)); width:74%; animation:pp 2.5s ease-in-out infinite alternate }
+@keyframes pp { 0%{width:68%} 100%{width:80%} }
+.ec-saved { font-size:.62rem; color:var(--green); font-weight:800; margin-left:8px; display:flex; align-items:center; gap:4px }
+.ec-saved::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--green); animation:pulse 2s infinite }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+.ec-body { display:grid; grid-template-columns:200px 1px 1fr; height:380px }
+.ec-sidebar { background:var(--bg); border-right:none; padding:14px 10px; overflow:hidden }
+.ec-divider { background:var(--bdr2) }
+.ec-editor { padding:18px; overflow:hidden }
+
+/* sidebar sections */
+.sb-lbl { font-size:.57rem; font-weight:800; text-transform:uppercase; letter-spacing:.08em; color:var(--ink4); margin:12px 8px 6px }
+.sb-row { display:flex; align-items:center; gap:8px; padding:7px 9px; border-radius:9px; cursor:pointer; transition:all .2s; margin-bottom:2px }
+.sb-row:hover { background:var(--p50) }
+.sb-row.on { background:var(--p100); border:1px solid var(--p200) }
+.sb-ico { width:26px; height:26px; border-radius:7px; display:flex; align-items:center; justify-content:center; flex-shrink:0 }
+.sb-ico svg { width:12px; height:12px; stroke:currentColor; fill:none; stroke-width:2 }
+.sb-txt { font-size:.7rem; font-weight:700; color:var(--ink2) }
+.sb-row.on .sb-txt { color:var(--p700) }
+.sb-check { font-size:.58rem; font-weight:800; color:var(--green); margin-left:auto }
+
+/* ats mini */
+.ats-mini { background:rgba(5,150,105,.06); border:1px solid rgba(5,150,105,.15); border-radius:10px; padding:9px 11px; margin:10px 8px 0 }
+.atm-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:7px }
+.atm-score { font-family:'Fraunces',serif; font-weight:700; font-size:1.5rem; color:var(--green); line-height:1 }
+.atm-lbl { font-size:.56rem; color:var(--green); font-weight:700 }
+.atm-tag { font-size:.56rem; font-weight:800; background:rgba(5,150,105,.1); color:var(--green); padding:2px 7px; border-radius:100px }
+.pr { display:flex; align-items:center; gap:5px; margin-bottom:4px }
+.pr-l { font-size:.58rem; color:var(--ink3); font-weight:600; min-width:60px }
+.pr-t { flex:1; height:3.5px; background:var(--p100); border-radius:100px; overflow:hidden }
+.pr-f { height:100%; border-radius:100px; background:linear-gradient(90deg,var(--green),#34D399) }
+.pr-v { font-size:.58rem; font-weight:800; color:var(--green); min-width:20px; text-align:right }
+
+/* editor fields */
+.ef { margin-bottom:9px }
+.ef-lbl { font-size:.58rem; font-weight:800; text-transform:uppercase; letter-spacing:.07em; color:var(--ink4); margin-bottom:3px }
+.ef-val { background:var(--bg-off); border:1.5px solid var(--bdr); border-radius:8px; padding:7px 10px; font-size:.74rem; color:var(--ink2) }
+.ef-val.on { border-color:var(--p400); background:var(--p50) }
+.ef-val.ty::after { content:'|'; color:var(--p600); animation:blink 1s infinite }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+.ef-textarea { min-height:52px; line-height:1.5 }
+.ef-ai { background:var(--p50); border:1px solid var(--p200); border-radius:7px; padding:6px 9px; font-size:.63rem; color:var(--p700); margin-top:4px; line-height:1.5 }
+.ef-skills { display:flex; gap:4px; flex-wrap:wrap; margin-top:4px }
+.skill-chip { font-size:.64rem; font-weight:700; padding:3px 9px; border-radius:6px }
+.skill-chip.on { background:var(--p100); color:var(--p700) }
+.skill-chip.add { background:rgba(5,150,105,.1); color:var(--green) }
+
+/* floating badges */
+.float-b { position:absolute; background:var(--bg-w); border:1px solid var(--bdr); border-radius:16px; padding:11px 15px; box-shadow:var(--s3) }
+.fb-ats { top:-18px; right:-22px }
+.fb-ats-n { font-family:'Fraunces',serif; font-weight:700; font-size:2rem; color:var(--green); line-height:1 }
+.fb-ats-l { font-size:.62rem; color:var(--ink3); font-weight:600 }
+.fb-ats-bar { height:4px; background:var(--p100); border-radius:100px; margin-top:5px; width:90px; overflow:hidden }
+.fb-ats-fill { height:100%; background:linear-gradient(90deg,var(--green),#34D399); border-radius:100px }
+.fb-ai { bottom:20px; left:-22px; max-width:185px }
+.fb-ai-lbl { font-size:.58rem; font-weight:800; color:var(--p700); margin-bottom:4px; display:flex; align-items:center; gap:5px }
+.fb-ai-lbl::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--p500); animation:ag 1.5s infinite }
+@keyframes ag { 0%,100%{opacity:1} 50%{opacity:.3} }
+.fb-ai-txt { font-size:.65rem; color:var(--ink2); line-height:1.45 }
+.fb-ai-txt strong { color:var(--p700) }
+
+/* hero bottom: scroll into view mockups */
+.hero-mocks-row { position:relative; z-index:2; max-width:1180px; margin:56px auto 0; padding:0 32px; display:grid; grid-template-columns:repeat(3,1fr); gap:14px }
+.hmr-card { background:var(--bg-w); border:1px solid var(--bdr); border-radius:18px 18px 0 0; overflow:hidden; box-shadow:var(--s3); transform-origin:bottom center; transition:all .4s var(--ease) }
+.hmr-card:hover { transform:translateY(-8px); box-shadow:var(--s4); z-index:5 }
+.hmr-bar { background:var(--p50); border-bottom:1px solid var(--bdr2); padding:9px 13px; display:flex; align-items:center; gap:8px }
+.hmr-dots { display:flex; gap:4px }
+.hd { width:8px; height:8px; border-radius:50% }
+.hd.r{background:#FF5F57} .hd.y{background:#FEBC2E} .hd.g{background:#28C840}
+.hmr-title { font-size:.7rem; font-weight:700; color:var(--ink3) }
+.hmr-tag { margin-left:auto; font-size:.58rem; font-weight:800; padding:2px 8px; border-radius:100px; background:var(--p100); color:var(--p700) }
+.hmr-body { padding:14px }
+
+/* TICKER */
+.ticker { background:var(--p700); overflow:hidden; padding:12px 0; position:relative; z-index:3 }
+.ticker-track { display:flex; gap:60px; animation:tick 28s linear infinite; width:max-content }
+.ticker-track:hover { animation-play-state:paused }
+.tick-item { display:flex; align-items:center; gap:9px; font-size:.84rem; font-weight:600; color:rgba(255,255,255,.6); flex-shrink:0 }
+.tick-item strong { color:#fff }
+.tick-sep { color:rgba(255,255,255,.25) }
+@keyframes tick { to{transform:translateX(-50%)} }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-in">
+    <a href="../index.html" class="n-logo">
+      <div class="n-mark">S</div>
+      <span class="n-name">Synaps<span>AI</span></span>
+    </a>
+    <a href="../index.html" class="n-back">
+      <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Anasayfa
+    </a>
+    <div class="n-actions">
+      <span class="n-sign" onclick="openModal('login')">Giriş Yap</span>
+      <a href="#" class="btn btn-dark btn-sm" onclick="openModal('register')">
+        CV Oluştur <svg class="arr" viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+
+  <div class="hero-body">
+    <!-- Copy -->
+    <div>
+      <div data-sr="up">
+        <div class="free-badge">
+          <div class="free-dot">✓</div>
+          Temel özellikler sonsuza dek ücretsiz
+        </div>
+      </div>
+      <div class="hero-title" data-sr="up" data-d="1">
+        <h1 class="t-d">
+          <span style="display:block">İşe alınanların</span>
+          <span style="display:block" class="italic">CV'si böyle</span>
+          <span style="display:block">görünür</span>
+        </h1>
+      </div>
+      <p class="hero-sub" data-sr="up" data-d="2">
+        ATS filtrelerini geçen, işe alım uzmanlarının duraksadığı CV'ler sıradan değil.
+        Synaps AI ile dakikalar içinde oluştur — temel özellikler ücretsiz,
+        AI önerileri ve 50+ premium şablon Pro'da.
+      </p>
+      <div class="hero-ctas" data-sr="up" data-d="3">
+        <a href="#" class="btn btn-dark btn-lg" onclick="openModal('register')">
+          Ücretsiz CV Oluştur <svg class="arr" viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+        </a>
+        <a href="#templates" class="btn btn-outline btn-lg">Şablonları Keşfet</a>
+      </div>
+      <div class="hero-pills" data-sr="fade" data-d="4">
+        <div class="hpill"><span class="hpill-num">250K+</span> CV oluşturuldu</div>
+        <div class="hpill"><span class="hpill-num">%78</span> mülakat başarısı</div>
+        <div class="hpill"><span class="hpill-num">4.9★</span> kullanıcı puanı</div>
+      </div>
+    </div>
+
+    <!-- Visual: Big Editor -->
+    <div class="hero-visual" data-sr="right" data-d="2">
+      <div class="editor-card">
+        <div class="ec-bar">
+          <div class="ec-dots">
+            <div class="ec-dot r"></div><div class="ec-dot y"></div><div class="ec-dot g"></div>
+          </div>
+          <div class="ec-tabs">
+            <div class="ec-tab on">Editör</div>
+            <div class="ec-tab">Şablonlar</div>
+            <div class="ec-tab">ATS Analiz</div>
+          </div>
+          <div class="ec-prog-wrap">
+            <div class="ec-prog"><div class="ec-prog-fill"></div></div>
+          </div>
+          <div class="ec-saved">Kaydedildi</div>
+        </div>
+        <div class="ec-body">
+          <!-- Sidebar -->
+          <div class="ec-sidebar">
+            <div class="sb-lbl">Bölümler</div>
+            <div class="sb-row on">
+              <div class="sb-ico" style="background:var(--p100);color:var(--p700)">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 1 0-16 0"/></svg>
+              </div>
+              <span class="sb-txt">Kişisel Bilgiler</span>
+              <span class="sb-check">✓</span>
+            </div>
+            <div class="sb-row">
+              <div class="sb-ico" style="background:rgba(5,150,105,.1);color:var(--green)">
+                <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+              </div>
+              <span class="sb-txt">Deneyim</span>
+              <span class="sb-check">✓</span>
+            </div>
+            <div class="sb-row">
+              <div class="sb-ico" style="background:rgba(2,132,199,.1);color:var(--sky)">
+                <svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+              </div>
+              <span class="sb-txt">Eğitim</span>
+              <span class="sb-check">✓</span>
+            </div>
+            <div class="sb-row">
+              <div class="sb-ico" style="background:rgba(217,119,6,.1);color:var(--amber)">
+                <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              </div>
+              <span class="sb-txt">Beceriler</span>
+            </div>
+            <div class="sb-lbl" style="margin-top:14px">ATS Skoru</div>
+            <div class="ats-mini">
+              <div class="atm-head">
+                <div><div class="atm-score">87</div><div class="atm-lbl">/ 100</div></div>
+                <div class="atm-tag">İyi ✓</div>
+              </div>
+              <div class="pr"><span class="pr-l">Uyum</span><div class="pr-t"><div class="pr-f" style="width:87%"></div></div><span class="pr-v">87</span></div>
+              <div class="pr"><span class="pr-l">Anahtar</span><div class="pr-t"><div class="pr-f" style="width:72%"></div></div><span class="pr-v">72</span></div>
+              <div class="pr"><span class="pr-l">Format</span><div class="pr-t"><div class="pr-f" style="width:94%"></div></div><span class="pr-v">94</span></div>
+            </div>
+          </div>
+          <div class="ec-divider"></div>
+          <!-- Editor -->
+          <div class="ec-editor">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+              <div class="ef"><div class="ef-lbl">Ad</div><div class="ef-val">Zeynep</div></div>
+              <div class="ef"><div class="ef-lbl">Soyad</div><div class="ef-val">Kaya</div></div>
+            </div>
+            <div class="ef">
+              <div class="ef-lbl">Hedef Pozisyon</div>
+              <div class="ef-val on ty">Senior UX Designer</div>
+            </div>
+            <div class="ef">
+              <div class="ef-lbl">Profesyonel Özet</div>
+              <div class="ef-val ef-textarea">8+ yıl deneyimli UX tasarımcı, B2B SaaS ürünlerinde kullanıcı araştırması ve Figma konusunda uzman...</div>
+              <div class="ef-ai">⚡ AI: "design system" ve "Figma" ekleyerek ATS skorunu <strong>%12 artır</strong></div>
+            </div>
+            <div class="ef">
+              <div class="ef-lbl">Beceriler</div>
+              <div class="ef-skills">
+                <span class="skill-chip on">Figma</span>
+                <span class="skill-chip on">UX Research</span>
+                <span class="skill-chip on">Prototyping</span>
+                <span class="skill-chip add">+ Ekle</span>
+              </div>
+            </div>
+            <div style="margin-top:10px;background:var(--p50);border:1px solid var(--p200);border-radius:10px;padding:9px 11px">
+              <div style="font-size:.6rem;font-weight:800;color:var(--p700);margin-bottom:4px">🎯 İlan Uyum Analizi</div>
+              <div style="font-size:.7rem;color:var(--ink2)">Trendyol Senior UX ilanıyla <strong style="color:var(--green)">%82 eşleşme.</strong> 3 eksik anahtar kelime var.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Floating badges -->
+      <div class="float-b fb-ats">
+        <div class="fb-ats-n">87</div>
+        <div class="fb-ats-l">ATS Skoru</div>
+        <div class="fb-ats-bar"><div class="fb-ats-fill" style="width:87%"></div></div>
+      </div>
+      <div class="float-b fb-ai">
+        <div class="fb-ai-lbl">AI Önerisi Aktif</div>
+        <div class="fb-ai-txt">3 kelime ekle → skor <strong>92'ye</strong> çıkar</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track">
+    <div class="tick-item"><strong>ATS Analizi</strong><span class="tick-sep">·</span>Ücretsiz</div>
+    <div class="tick-item"><strong>50+</strong> Premium Şablon</div>
+    <div class="tick-item"><strong>AI Önerileri</strong><span class="tick-sep">·</span>Pro'da</div>
+    <div class="tick-item"><strong>250K+</strong> CV oluşturuldu</div>
+    <div class="tick-item"><strong>PDF & DOCX</strong><span class="tick-sep">·</span>Ücretsiz indirme</div>
+    <div class="tick-item"><strong>%78</strong> mülakat başarısı</div>
+    <div class="tick-item"><strong>LinkedIn</strong><span class="tick-sep">·</span>Tek tıkla aktar</div>
+    <div class="tick-item"><strong>ATS Analizi</strong><span class="tick-sep">·</span>Ücretsiz</div>
+    <div class="tick-item"><strong>50+</strong> Premium Şablon</div>
+    <div class="tick-item"><strong>AI Önerileri</strong><span class="tick-sep">·</span>Pro'da</div>
+    <div class="tick-item"><strong>250K+</strong> CV oluşturuldu</div>
+    <div class="tick-item"><strong>PDF & DOCX</strong><span class="tick-sep">·</span>Ücretsiz indirme</div>
+    <div class="tick-item"><strong>%78</strong> mülakat başarısı</div>
+    <div class="tick-item"><strong>LinkedIn</strong><span class="tick-sep">·</span>Tek tıkla aktar</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     TEMPLATE GALLERY
+══════════════════════════════════ -->
+<section id="templates" style="padding:140px 0;background:var(--bg-dark);overflow:hidden">
+  <style>
+  .tg-head { text-align:center; margin-bottom:60px }
+  .tg-head .t-h2 { color:#fff }
+  .tg-head .italic { color:var(--p300) }
+  .tg-head p { color:rgba(255,255,255,.5); margin-top:14px; font-size:1rem }
+
+  .tg-row { position:relative; overflow:hidden; margin-bottom:16px }
+  .tg-row::before,.tg-row::after { content:''; position:absolute; top:0; bottom:0; width:160px; z-index:10; pointer-events:none }
+  .tg-row::before { left:0; background:linear-gradient(to right,var(--bg-dark),transparent) }
+  .tg-row::after  { right:0; background:linear-gradient(to left,var(--bg-dark),transparent) }
+
+  .tg-track { display:flex; gap:16px; width:max-content; padding:6px 0 18px; animation:tgR 40s linear infinite }
+  .tg-track.rev { animation-name:tgL }
+  .tg-track:hover { animation-play-state:paused }
+  @keyframes tgR { to{transform:translateX(-50%)} }
+  @keyframes tgL { from{transform:translateX(-50%)} to{transform:translateX(0)} }
+
+  /* template card */
+  .tc { flex-shrink:0; width:178px; border-radius:16px; overflow:hidden; cursor:pointer; border:1px solid rgba(255,255,255,.07); transition:all .3s var(--ease) }
+  .tc:hover { border-color:var(--p400); transform:translateY(-8px) scale(1.02); box-shadow:0 20px 60px rgba(109,40,217,.35) }
+  .tc-prev { height:230px; padding:10px; position:relative; overflow:hidden }
+  .tc-badge { position:absolute; top:8px; right:8px; font-size:.58rem; font-weight:800; padding:2px 8px; border-radius:100px }
+  .tc-badge.free { background:rgba(5,150,105,.2); color:#34D399; border:1px solid rgba(5,150,105,.3) }
+  .tc-badge.pro  { background:rgba(139,92,246,.25); color:var(--p300); border:1px solid rgba(139,92,246,.3) }
+  .tc-name { padding:8px 12px 11px; font-size:.76rem; font-weight:800; color:rgba(255,255,255,.75); border-top:1px solid rgba(255,255,255,.06) }
+
+  /* simulated CV inside templates */
+  .ts { padding:8px }
+  .ts-hdr { height:36px; border-radius:5px; margin-bottom:8px; display:flex; align-items:center; padding:5px 8px; gap:5px }
+  .ts-av  { width:20px; height:20px; border-radius:50%; background:rgba(255,255,255,.25); flex-shrink:0 }
+  .ts-n   { height:4px; border-radius:2px; margin-bottom:3px }
+  .ts-r   { height:3px; border-radius:2px; width:55% }
+  .ts-sec { font-size:.4rem; font-weight:800; text-transform:uppercase; letter-spacing:.08em; margin:6px 0 3px; padding-bottom:2px; border-bottom:1px solid }
+  .ts-ln  { height:3px; border-radius:2px; margin-bottom:3px }
+  </style>
+
+  <div class="wrap">
+    <div class="tg-head" data-sr="up">
+      <span class="eyebrow" style="color:var(--p300);justify-content:center;display:flex">Şablon Galerisi</span>
+      <h2 class="t-h2">50+ ATS uyumlu şablon, <span class="italic">her sektöre özel</span></h2>
+      <p>5 temel şablon tamamen ücretsiz — Pro'ya geçince tüm galeri açılır</p>
+    </div>
+  </div>
+
+  <!-- Row 1 → -->
+  <div class="tg-row">
+    <div class="tg-track">
+
+      <div class="tc"><div class="tc-prev" style="background:linear-gradient(180deg,#1E1B4B,#312E81)"><div class="tc-badge free">Ücretsiz</div><div class="ts"><div class="ts-hdr"><div class="ts-av"></div><div><div class="ts-n" style="width:55px;background:rgba(255,255,255,.6)"></div><div class="ts-r" style="background:rgba(255,255,255,.3)"></div></div></div><div class="ts-sec" style="color:rgba(255,255,255,.35);border-color:rgba(255,255,255,.1)">Deneyim</div><div class="ts-ln" style="width:100%;background:rgba(255,255,255,.55)"></div><div class="ts-ln" style="width:80%;background:rgba(255,255,255,.3)"></div><div class="ts-ln" style="width:65%;background:rgba(255,255,255,.2)"></div><div class="ts-sec" style="color:rgba(255,255,255,.35);border-color:rgba(255,255,255,.1)">Beceriler</div><div style="display:flex;gap:4px;flex-wrap:wrap"><div style="height:11px;width:36px;border-radius:3px;background:rgba(139,92,246,.4)"></div><div style="height:11px;width:44px;border-radius:3px;background:rgba(139,92,246,.3)"></div><div style="height:11px;width:30px;border-radius:3px;background:rgba(139,92,246,.25)"></div></div></div></div><div class="tc-name">Nova Dark</div></div>
+
+      <div class="tc"><div class="tc-prev" style="background:#fff"><div class="tc-badge free">Ücretsiz</div><div class="ts"><div style="height:32px;background:linear-gradient(90deg,var(--p700),var(--p500));border-radius:4px;margin-bottom:8px;display:flex;align-items:center;padding:5px 7px;gap:5px"><div style="width:18px;height:18px;border-radius:50%;background:rgba(255,255,255,.4)"></div><div><div style="height:4px;width:48px;background:rgba(255,255,255,.8);border-radius:2px;margin-bottom:2px"></div><div style="height:3px;width:32px;background:rgba(255,255,255,.5);border-radius:2px"></div></div></div><div class="ts-sec" style="color:var(--ink4);border-color:var(--p200)">Özet</div><div class="ts-ln" style="width:100%;background:var(--p200)"></div><div class="ts-ln" style="width:80%;background:var(--p100)"></div><div class="ts-sec" style="color:var(--ink4);border-color:var(--p200)">Deneyim</div><div class="ts-ln" style="width:70%;background:var(--p600);opacity:.4"></div><div class="ts-ln" style="width:100%;background:var(--p100)"></div><div class="ts-ln" style="width:85%;background:var(--p100)"></div></div></div><div class="tc-name">Classic Pro</div></div>
+
+      <div class="tc"><div class="tc-prev" style="background:linear-gradient(135deg,#0C0518,#1E1B4B)"><div class="tc-badge pro">Pro</div><div class="ts"><div style="border-left:3px solid var(--p400);padding-left:8px;margin-bottom:10px"><div style="height:7px;width:65px;background:var(--p300);border-radius:2px;margin-bottom:3px"></div><div style="height:3px;width:42px;background:rgba(196,181,253,.4);border-radius:2px"></div></div><div class="ts-ln" style="width:100%;background:rgba(196,181,253,.3)"></div><div class="ts-ln" style="width:80%;background:rgba(196,181,253,.2)"></div><div class="ts-ln" style="width:65%;background:rgba(196,181,253,.15)"></div><div style="margin-top:8px;height:1px;background:rgba(196,181,253,.15)"></div><div class="ts-ln" style="width:50%;background:var(--p400);opacity:.4;margin-top:6px"></div><div class="ts-ln" style="width:90%;background:rgba(196,181,253,.2)"></div></div></div><div class="tc-name">Midnight</div></div>
+
+      <div class="tc"><div class="tc-prev" style="background:#F8F6FF"><div class="tc-badge free">Ücretsiz</div><div class="ts"><div style="text-align:center;margin-bottom:9px"><div style="width:26px;height:26px;border-radius:50%;background:var(--p300);margin:0 auto 5px"></div><div style="height:5px;width:55px;background:var(--p500);border-radius:2px;margin:0 auto 3px"></div><div style="height:3px;width:38px;background:var(--p300);border-radius:2px;margin:0 auto"></div></div><div style="height:1px;background:var(--p200);margin:6px 0"></div><div class="ts-ln" style="width:100%;background:var(--p200)"></div><div class="ts-ln" style="width:75%;background:var(--p100)"></div><div class="ts-ln" style="width:90%;background:var(--p100)"></div></div></div><div class="tc-name">Minimal</div></div>
+
+      <div class="tc"><div class="tc-prev" style="background:linear-gradient(180deg,#065F46,#064E3B)"><div class="tc-badge pro">Pro</div><div class="ts"><div class="ts-hdr"><div class="ts-av" style="background:rgba(52,211,153,.3)"></div><div><div class="ts-n" style="width:52px;background:rgba(52,211,153,.7)"></div><div class="ts-r" style="background:rgba(52,211,153,.4)"></div></div></div><div class="ts-sec" style="color:rgba(52,211,153,.5);border-color:rgba(52,211,153,.2)">Skills</div><div style="display:flex;gap:4px;flex-wrap:wrap"><div style="height:11px;width:36px;border-radius:3px;background:rgba(52,211,153,.3)"></div><div style="height:11px;width:48px;border-radius:3px;background:rgba(52,211,153,.2)"></div><div style="height:11px;width:34px;border-radius:3px;background:rgba(52,211,153,.25)"></div></div><div class="ts-sec" style="color:rgba(52,211,153,.5);border-color:rgba(52,211,153,.2)">Experience</div><div class="ts-ln" style="width:80%;background:rgba(52,211,153,.4)"></div><div class="ts-ln" style="width:100%;background:rgba(52,211,153,.2)"></div></div></div><div class="tc-name">Emerald</div></div>
+
+      <div class="tc"><div class="tc-prev" style="background:linear-gradient(135deg,#1E1B4B,#4C1D95)"><div class="tc-badge pro">Pro</div><div class="ts"><div style="display:grid;grid-template-columns:1fr 1.4fr;gap:7px;height:100%"><div style="border-right:1px solid rgba(196,181,253,.1);padding-right:6px"><div style="height:22px;width:22px;border-radius:50%;background:rgba(139,92,246,.4);margin-bottom:7px"></div><div class="ts-ln" style="width:100%;background:rgba(196,181,253,.3)"></div><div class="ts-ln" style="width:80%;background:rgba(196,181,253,.2)"></div><div style="margin-top:10px;height:3px;width:40px;background:rgba(139,92,246,.3);border-radius:2px"></div><div class="ts-ln" style="width:70%;background:rgba(196,181,253,.15);margin-top:4px"></div></div><div><div class="ts-ln" style="width:100%;background:rgba(255,255,255,.5)"></div><div class="ts-ln" style="width:80%;background:rgba(255,255,255,.3)"></div><div class="ts-ln" style="width:65%;background:rgba(255,255,255,.2)"></div><div style="margin-top:6px"></div><div class="ts-ln" style="width:55%;background:rgba(255,255,255,.5)"></div><div class="ts-ln" style="width:100%;background:rgba(255,255,255,.2)"></div><div class="ts-ln" style="width:80%;background:rgba(255,255,255,.15)"></div></div></div></div></div><div class="tc-name">Split View</div></div>
+
+      <div class="tc"><div class="tc-prev" style="background:#FFFBEB"><div class="tc-badge free">Ücretsiz</div><div class="ts"><div style="border-bottom:2px solid var(--amber);padding-bottom:7px;margin-bottom:7px"><div style="height:6px;width:75px;background:var(--amber);border-radius:2px;margin-bottom:3px"></div><div style="height:3px;width:48px;background:rgba(217,119,6,.4);border-radius:2px"></div></div><div class="ts-ln" style="width:100%;background:rgba(0,0,0,.1)"></div><div class="ts-ln" style="width:80%;background:rgba(0,0,0,.07)"></div><div class="ts-ln" style="width:92%;background:rgba(0,0,0,.06)"></div><div style="margin-top:8px;border-bottom:1px solid rgba(217,119,6,.3);padding-bottom:5px;margin-bottom:5px"><div style="height:4px;width:50px;background:var(--amber);opacity:.6;border-radius:2px"></div></div><div class="ts-ln" style="width:100%;background:rgba(0,0,0,.08)"></div></div></div><div class="tc-name">Warm Classic</div></div>
+
+      <div class="tc"><div class="tc-prev" style="background:linear-gradient(135deg,#0F172A,#1E293B)"><div class="tc-badge pro">Pro</div><div class="ts"><div style="background:rgba(255,255,255,.05);border-radius:5px;padding:6px;margin-bottom:8px"><div style="height:5px;width:65px;background:rgba(255,255,255,.6);border-radius:2px;margin-bottom:3px"></div><div style="height:3px;width:42px;background:rgba(255,255,255,.3);border-radius:2px"></div></div><div class="ts-ln" style="width:100%;background:rgba(255,255,255,.2)"></div><div class="ts-ln" style="width:80%;background:rgba(255,255,255,.15)"></div><div class="ts-ln" style="width:65%;background:rgba(255,255,255,.1)"></div><div style="margin-top:8px;display:flex;gap:4px;flex-wrap:wrap"><div style="height:11px;width:40px;border-radius:2px;background:rgba(99,102,241,.4)"></div><div style="height:11px;width:50px;border-radius:2px;background:rgba(99,102,241,.3)"></div></div></div></div><div class="tc-name">Executive</div></div>
+
+      <!-- duplicate for seamless loop -->
+      <div class="tc"><div class="tc-prev" style="background:linear-gradient(180deg,#1E1B4B,#312E81)"><div class="tc-badge free">Ücretsiz</div><div class="ts"><div class="ts-hdr"><div class="ts-av"></div></div><div class="ts-ln" style="width:90%;background:rgba(255,255,255,.5)"></div><div class="ts-ln" style="width:70%;background:rgba(255,255,255,.3)"></div></div></div><div class="tc-name">Nova Dark</div></div>
+      <div class="tc"><div class="tc-prev" style="background:#fff"><div class="tc-badge free">Ücretsiz</div><div class="ts"><div class="ts-ln" style="width:80%;background:var(--p200)"></div></div></div><div class="tc-name">Classic Pro</div></div>
+      <div class="tc"><div class="tc-prev" style="background:linear-gradient(135deg,#0C0518,#1E1B4B)"><div class="tc-badge pro">Pro</div><div class="ts"><div class="ts-ln" style="width:80%;background:rgba(196,181,253,.3)"></div></div></div><div class="tc-name">Midnight</div></div>
+      <div class="tc"><div class="tc-prev" style="background:#F8F6FF"><div class="tc-badge free">Ücretsiz</div><div class="ts"><div class="ts-ln" style="width:70%;background:var(--p200)"></div></div></div><div class="tc-name">Minimal</div></div>
+      <div class="tc"><div class="tc-prev" style="background:linear-gradient(180deg,#065F46,#064E3B)"><div class="tc-badge pro">Pro</div><div class="ts"><div class="ts-ln" style="width:80%;background:rgba(52,211,153,.3)"></div></div></div><div class="tc-name">Emerald</div></div>
+      <div class="tc"><div class="tc-prev" style="background:linear-gradient(135deg,#1E1B4B,#4C1D95)"><div class="tc-badge pro">Pro</div><div class="ts"><div class="ts-ln" style="width:80%;background:rgba(255,255,255,.4)"></div></div></div><div class="tc-name">Split View</div></div>
+      <div class="tc"><div class="tc-prev" style="background:#FFFBEB"><div class="tc-badge free">Ücretsiz</div><div class="ts"><div class="ts-ln" style="width:80%;background:rgba(0,0,0,.1)"></div></div></div><div class="tc-name">Warm Classic</div></div>
+      <div class="tc"><div class="tc-prev" style="background:linear-gradient(135deg,#0F172A,#1E293B)"><div class="tc-badge pro">Pro</div><div class="ts"><div class="ts-ln" style="width:70%;background:rgba(255,255,255,.2)"></div></div></div><div class="tc-name">Executive</div></div>
+    </div>
+  </div>
+
+  <!-- Row 2 ← -->
+  <div class="tg-row">
+    <div class="tg-track rev">
+      <div class="tc"><div class="tc-prev" style="background:linear-gradient(135deg,#1E1B4B,#4C1D95)"><div class="tc-badge pro">Pro</div><div class="ts"><div class="ts-ln" style="width:80%;background:rgba(255,255,255,.4)"></div></div></div><div class="tc-name">Split View</div></div>
+      <div class="tc"><div class="tc-prev" style="background:linear-gradient(135deg,#0F172A,#1E293B)"><div class="tc-badge pro">Pro</div><div class="ts"><div class="ts-ln" style="width:70%;background:rgba(255,255,255,.2)"></div></div></div><div class="tc-name">Executive</div></div>
+      <div class="tc"><div class="tc-prev" style="background:linear-gradient(180deg,#065F46,#064E3B)"><div class="tc-badge pro">Pro</div><div class="ts"><div class="ts-ln" style="width:80%;background:rgba(52,211,153,.3)"></div></div></div><div class="tc-name">Emerald</div></div>
+      <div class="tc"><div class="tc-prev" style="background:linear-gradient(135deg,#0C0518,#1E1B4B)"><div class="tc-badge pro">Pro</div><div class="ts"><div class="ts-ln" style="width:80%;background:rgba(196,181,253,.3)"></div></div></div><div class="tc-name">Midnight</div></div>
+      <div class="tc"><div class="tc-prev" style="background:linear-gradient(180deg,#1E1B4B,#312E81)"><div class="tc-badge free">Ücretsiz</div><div class="ts"><div class="ts-ln" style="width:90%;background:rgba(255,255,255,.5)"></div></div></div><div class="tc-name">Nova Dark</div></div>
+      <div class="tc"><div class="tc-prev" style="background:#F8F6FF"><div class="tc-badge free">Ücretsiz</div><div class="ts"><div class="ts-ln" style="width:70%;background:var(--p200)"></div></div></div><div class="tc-name">Minimal</div></div>
+      <div class="tc"><div class="tc-prev" style="background:#fff"><div class="tc-badge free">Ücretsiz</div><div class="ts"><div class="ts-ln" style="width:80%;background:var(--p200)"></div></div></div><div class="tc-name">Classic Pro</div></div>
+      <div class="tc"><div class="tc-prev" style="background:#FFFBEB"><div class="tc-badge free">Ücretsiz</div><div class="ts"><div class="ts-ln" style="width:80%;background:rgba(0,0,0,.1)"></div></div></div><div class="tc-name">Warm Classic</div></div>
+      <!-- dup -->
+      <div class="tc"><div class="tc-prev" style="background:linear-gradient(135deg,#1E1B4B,#4C1D95)"><div class="tc-badge pro">Pro</div></div><div class="tc-name">Split View</div></div>
+      <div class="tc"><div class="tc-prev" style="background:linear-gradient(135deg,#0F172A,#1E293B)"><div class="tc-badge pro">Pro</div></div><div class="tc-name">Executive</div></div>
+      <div class="tc"><div class="tc-prev" style="background:linear-gradient(180deg,#065F46,#064E3B)"><div class="tc-badge pro">Pro</div></div><div class="tc-name">Emerald</div></div>
+      <div class="tc"><div class="tc-prev" style="background:linear-gradient(135deg,#0C0518,#1E1B4B)"><div class="tc-badge pro">Pro</div></div><div class="tc-name">Midnight</div></div>
+      <div class="tc"><div class="tc-prev" style="background:linear-gradient(180deg,#1E1B4B,#312E81)"><div class="tc-badge free">Ücretsiz</div></div><div class="tc-name">Nova Dark</div></div>
+      <div class="tc"><div class="tc-prev" style="background:#F8F6FF"><div class="tc-badge free">Ücretsiz</div></div><div class="tc-name">Minimal</div></div>
+      <div class="tc"><div class="tc-prev" style="background:#fff"><div class="tc-badge free">Ücretsiz</div></div><div class="tc-name">Classic Pro</div></div>
+      <div class="tc"><div class="tc-prev" style="background:#FFFBEB"><div class="tc-badge free">Ücretsiz</div></div><div class="tc-name">Warm Classic</div></div>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:36px" data-sr="up">
+    <a href="#" class="btn btn-ghost btn-lg" onclick="openModal('register')">
+      Tüm 50+ Şablonu Gör <svg class="arr" viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     FEATURES BENTO
+══════════════════════════════════ -->
+<section id="features" style="padding:140px 0;background:var(--bg)">
+  <style>
+  .bento-head { text-align:center; margin-bottom:72px }
+  .bento-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px }
+  .bc { background:var(--bg-w); border:1px solid var(--bdr2); border-radius:24px; overflow:hidden; transition:all .35s var(--ease); position:relative }
+  .bc:hover { border-color:var(--p300); box-shadow:var(--s3); transform:translateY(-5px) }
+  .bc.s2 { grid-column:span 2 }
+  .bc-bd { padding:26px }
+  .bc-ico { width:44px; height:44px; border-radius:12px; background:var(--p100); display:flex; align-items:center; justify-content:center; margin-bottom:14px }
+  .bc-ico svg { width:20px; height:20px; stroke:var(--p600); fill:none; stroke-width:1.8 }
+  .bc-title { font-weight:800; font-size:1.05rem; color:var(--ink); letter-spacing:-.02em; margin-bottom:8px }
+  .bc-desc  { font-size:.86rem; color:var(--ink3); line-height:1.65 }
+  /* ATS big visual */
+  .ats-vis { padding:0 26px 26px }
+  .ats-big { display:flex; align-items:center; gap:18px; margin-bottom:16px }
+  .ats-big-num { font-family:'Fraunces',serif; font-weight:700; font-size:3.5rem; color:var(--green); line-height:1 }
+  .ats-big-sub { font-weight:800; font-size:.9rem; color:var(--ink); margin-bottom:3px }
+  .ats-big-note { font-size:.76rem; color:var(--ink3) }
+  .ar { display:flex; align-items:center; gap:10px; margin-bottom:8px }
+  .ar-l { font-size:.72rem; font-weight:600; color:var(--ink2); min-width:110px }
+  .ar-t { flex:1; height:6px; background:var(--p100); border-radius:100px; overflow:hidden }
+  .ar-f { height:100%; border-radius:100px; background:linear-gradient(90deg,var(--green),#34D399) }
+  .ar-v { font-size:.72rem; font-weight:800; color:var(--green); min-width:26px; text-align:right }
+  /* ai sug */
+  .ai-list { display:flex; flex-direction:column; gap:7px; margin-top:10px }
+  .ai-s { background:var(--p50); border:1px solid var(--p200); border-radius:10px; padding:9px 12px; display:flex; gap:8px; align-items:center; cursor:pointer; transition:all .2s }
+  .ai-s:hover { border-color:var(--p400); background:var(--p100) }
+  .ai-s-ic { width:22px; height:22px; border-radius:6px; background:var(--p600); display:flex; align-items:center; justify-content:center; flex-shrink:0 }
+  .ai-s-ic svg { width:10px; height:10px; stroke:#fff; fill:none; stroke-width:2 }
+  .ai-s-txt { font-size:.74rem; color:var(--ink2); line-height:1.4 }
+  .ai-s-txt strong { color:var(--p700) }
+  .ai-s-b { margin-left:auto; font-size:.6rem; font-weight:800; background:rgba(5,150,105,.1); color:var(--green); padding:2px 8px; border-radius:100px; white-space:nowrap; flex-shrink:0 }
+  @media(max-width:900px){ .bento-grid{grid-template-columns:1fr} .bc.s2{grid-column:span 1} }
+  </style>
+
+  <div class="wrap">
+    <div class="bento-head" data-sr="up">
+      <span class="eyebrow" style="justify-content:center;display:flex">Özellikler</span>
+      <h2 class="t-h2">Her detay düşünülmüş,<br><span class="italic">her özellik işe yarıyor</span></h2>
+    </div>
+    <div class="bento-grid">
+
+      <!-- ATS — span 2 -->
+      <div class="bc s2" data-sr="left">
+        <div class="bc-bd">
+          <div class="bc-ico"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+          <div class="bc-title">Gerçek Zamanlı ATS Analizi</div>
+          <div class="bc-desc">Her değişiklikte anlık skor. İş ilanıyla karşılaştır, eksikleri gör, skoru artır. <span style="color:var(--green);font-weight:700">Tamamen ücretsiz.</span></div>
+        </div>
+        <div class="ats-vis">
+          <div class="ats-big">
+            <div class="ats-big-num">87</div>
+            <div><div class="ats-big-sub">ATS Uyum Skoru</div><div class="ats-big-note">Güçlü · 3 iyileştirme önerisi var</div></div>
+          </div>
+          <div class="ar"><span class="ar-l">ATS Uyum</span><div class="ar-t"><div class="ar-f" style="width:87%"></div></div><span class="ar-v">87</span></div>
+          <div class="ar"><span class="ar-l">Anahtar Kelime</span><div class="ar-t"><div class="ar-f" style="width:72%"></div></div><span class="ar-v">72</span></div>
+          <div class="ar"><span class="ar-l">Format &amp; Yapı</span><div class="ar-t"><div class="ar-f" style="width:94%"></div></div><span class="ar-v">94</span></div>
+          <div class="ar"><span class="ar-l">Okunabilirlik</span><div class="ar-t"><div class="ar-f" style="width:81%"></div></div><span class="ar-v">81</span></div>
+        </div>
+      </div>
+
+      <!-- AI önerileri -->
+      <div class="bc" data-sr="right">
+        <div class="bc-bd">
+          <div class="bc-ico" style="background:linear-gradient(135deg,var(--p100),var(--p200))"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+          <div class="bc-title">AI İçerik Önerileri</div>
+          <div class="bc-desc">Akıllı öneriler, tek tıkla uygula. <span style="color:var(--p700);font-weight:700">Pro özelliği.</span></div>
+          <div class="ai-list">
+            <div class="ai-s"><div class="ai-s-ic"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div><div class="ai-s-txt">"Figma" ekle → <strong>%15 daha fazla</strong> eşleşme</div><span class="ai-s-b">+15%</span></div>
+            <div class="ai-s"><div class="ai-s-ic"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div><div class="ai-s-txt">Özeti güçlendir → <strong>sonuç odaklı</strong></div><span class="ai-s-b">+8%</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LinkedIn -->
+      <div class="bc" data-sr="left" data-d="1">
+        <div class="bc-bd">
+          <div class="bc-ico" style="background:#E8F0FE"><svg viewBox="0 0 24 24" stroke="none" fill="#0A66C2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></div>
+          <div class="bc-title">LinkedIn'den İçe Aktar</div>
+          <div class="bc-desc">Tek tıkla profil içe aktar, saniyede CV hazır. <span style="color:var(--p700);font-weight:700">Pro özelliği.</span></div>
+        </div>
+        <div style="padding:0 22px 22px;display:flex;align-items:center;gap:11px">
+          <div style="width:42px;height:42px;border-radius:10px;background:#0A66C2;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></div>
+          <div style="font-size:1.4rem;color:var(--p400)">→</div>
+          <div style="background:var(--p50);border:1px solid var(--p200);border-radius:9px;padding:9px 12px;flex:1">
+            <div style="font-size:.58rem;font-weight:800;color:var(--p700);margin-bottom:4px">İçe Aktarılıyor...</div>
+            <div style="height:4px;background:var(--p300);border-radius:2px;margin-bottom:3px;animation:liLoad 1.8s ease-in-out infinite alternate"></div>
+            <div style="height:4px;background:var(--p200);border-radius:2px;animation:liLoad 1.8s .3s ease-in-out infinite alternate"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PDF İndir -->
+      <div class="bc" data-sr="right" data-d="1">
+        <div class="bc-bd">
+          <div class="bc-ico" style="background:rgba(5,150,105,.1)"><svg viewBox="0 0 24 24" stroke="var(--green)"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
+          <div class="bc-title">PDF &amp; DOCX İndir</div>
+          <div class="bc-desc">Her cihazda mükemmel görünen yüksek kaliteli format. <span style="color:var(--green);font-weight:700">Tamamen ücretsiz.</span></div>
+        </div>
+        <div style="padding:0 22px 22px;display:flex;gap:10px">
+          <div style="flex:1;background:var(--p50);border:1px solid var(--p200);border-radius:9px;padding:11px;text-align:center"><div style="font-size:1.3rem;margin-bottom:4px">📄</div><div style="font-size:.72rem;font-weight:800;color:var(--p700)">PDF</div><div style="font-size:.6rem;color:var(--green);font-weight:700">Ücretsiz</div></div>
+          <div style="flex:1;background:rgba(5,150,105,.06);border:1px solid rgba(5,150,105,.15);border-radius:9px;padding:11px;text-align:center"><div style="font-size:1.3rem;margin-bottom:4px">📝</div><div style="font-size:.72rem;font-weight:800;color:var(--green)">DOCX</div><div style="font-size:.6rem;color:var(--green);font-weight:700">Ücretsiz</div></div>
+        </div>
+      </div>
+
+      <!-- CV Linki -->
+      <div class="bc" data-sr="left" data-d="2">
+        <div class="bc-bd">
+          <div class="bc-ico" style="background:rgba(2,132,199,.1)"><svg viewBox="0 0 24 24" stroke="var(--sky)"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></div>
+          <div class="bc-title">Kişisel CV Linki</div>
+          <div class="bc-desc">synaps.ai/cv/adin — kaç kişi açtı görüntüle. <span style="color:var(--green);font-weight:700">Ücretsiz.</span></div>
+        </div>
+        <div style="padding:0 22px 22px">
+          <div style="background:var(--bg-off);border:1px solid var(--bdr);border-radius:8px;padding:9px 12px;font-size:.7rem;color:var(--p700);font-weight:700;display:flex;align-items:center;gap:5px">
+            <span style="color:var(--ink4)">synaps.ai/cv/</span>zeynep-kaya
+            <span style="margin-left:auto;background:rgba(5,150,105,.1);color:var(--green);font-size:.6rem;font-weight:800;padding:2px 7px;border-radius:100px">12 Görüntüleme</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+<style>@keyframes liLoad{0%{opacity:.4}100%{opacity:.9}}</style>
+<!-- ══ HOW IT WORKS ══ -->
+<section id="hiw" style="padding:140px 0;background:var(--bg-dark)">
+<style>
+.hiw-h{text-align:center;margin-bottom:80px}.hiw-h .t-h2{color:#fff}.hiw-h .italic{color:var(--p300)}
+.hiw-h p{color:rgba(255,255,255,.5);margin-top:14px;max-width:430px;margin-left:auto;margin-right:auto;font-size:.96rem}
+.hiw-tl{position:relative;display:flex;flex-direction:column;max-width:700px;margin:0 auto}
+.hiw-tl::before{content:'';position:absolute;left:35px;top:55px;bottom:55px;width:2px;background:linear-gradient(to bottom,var(--p600),var(--p400),rgba(196,181,253,.12));border-radius:2px}
+.hstep{display:flex;gap:26px;align-items:flex-start;padding:28px 0;cursor:default}
+.hstep:hover .horb{background:var(--p600);border-color:var(--p400);transform:scale(1.08)}
+.horb{width:70px;height:70px;border-radius:50%;background:rgba(255,255,255,.04);border:2px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .35s var(--spring);position:relative;z-index:1}
+.horb svg{width:24px;height:24px;stroke:var(--p400);fill:none;stroke-width:1.6;transition:stroke .3s}
+.hstep:hover .horb svg{stroke:#fff}
+.horb-n{position:absolute;top:-4px;right:-4px;width:18px;height:18px;background:var(--p600);border-radius:50%;font-size:.6rem;font-weight:900;color:#fff;display:flex;align-items:center;justify-content:center}
+.hcont{padding-top:13px}
+.hcont-lbl{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--p400);margin-bottom:7px}
+.hcont h3{font-weight:800;font-size:1.2rem;color:#fff;letter-spacing:-.025em;margin-bottom:8px}
+.hcont p{font-size:.88rem;color:rgba(255,255,255,.5);line-height:1.7}
+.htags{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.htag{font-size:.7rem;font-weight:700;padding:4px 11px;border-radius:100px}
+.htag.g{background:rgba(5,150,105,.1);border:1px solid rgba(5,150,105,.2);color:#34D399}
+.htag.p{background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.2);color:var(--p300)}
+</style>
+<div class="wrap">
+  <div class="hiw-h" data-sr="up">
+    <span class="eyebrow" style="color:var(--p300);justify-content:center;display:flex">Nasıl Çalışır</span>
+    <h2 class="t-h2">4 adımda <span class="italic">hazır CV</span></h2>
+    <p>İlk CV'ni 5 dakikada oluştur. AI kalanını halleder.</p>
+  </div>
+  <div class="hiw-tl">
+    <div class="hstep" data-sr="left">
+      <div class="horb"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 1 0-16 0"/></svg><div class="horb-n">1</div></div>
+      <div class="hcont"><div class="hcont-lbl">Profil</div><h3>Bilgilerini gir veya LinkedIn'den aktar</h3><p>Deneyim, eğitim ve becerilerini gir. LinkedIn'den tek tıkla içe aktar. 2 dakikada temel profil tamamlanır.</p><div class="htags"><span class="htag g">✓ Tamamen ücretsiz</span></div></div>
+    </div>
+    <div class="hstep" data-sr="left" data-d="1">
+      <div class="horb"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg><div class="horb-n">2</div></div>
+      <div class="hcont"><div class="hcont-lbl">Şablon</div><h3>Şablonunu seç, ihtiyacına göre özelleştir</h3><p>5 ücretsiz ATS şablonu arasından seç. Pro'da 50+ şablona eriş. Her şablon ATS sistemleri tarafından tam okunabilir.</p><div class="htags"><span class="htag g">✓ 5 şablon ücretsiz</span><span class="htag p">50+ Pro'da</span></div></div>
+    </div>
+    <div class="hstep" data-sr="left" data-d="2">
+      <div class="horb"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg><div class="horb-n">3</div></div>
+      <div class="hcont"><div class="hcont-lbl">Optimize</div><h3>AI skorunu artır, iş ilanına göre ayarla</h3><p>İlan URL'ini yapıştır, AI CV'ini o pozisyon için optimize eder. ATS skoru anlık güncellenir, eksikler gösterilir.</p><div class="htags"><span class="htag p">✦ Pro özelliği</span></div></div>
+    </div>
+    <div class="hstep" data-sr="left" data-d="3">
+      <div class="horb"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><div class="horb-n">4</div></div>
+      <div class="hcont"><div class="hcont-lbl">İndir &amp; Paylaş</div><h3>PDF indir, kişisel linkinle paylaş</h3><p>Yüksek kaliteli PDF veya DOCX indir. Kişisel CV linkinle paylaş, kaç kişinin açtığını takip et.</p><div class="htags"><span class="htag g">✓ Ücretsiz</span></div></div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══ PRICING ══ -->
+<section id="pricing" style="padding:140px 0;background:var(--bg);position:relative;overflow:hidden">
+<style>
+.prgl{position:absolute;border-radius:50%;filter:blur(100px);pointer-events:none}
+.pr-h{text-align:center;margin-bottom:22px}.pr-h .t-h2{margin-bottom:14px}.pr-h p{color:var(--ink3);max-width:480px;margin:0 auto;font-size:1rem}
+.pr-tog{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:56px}
+.pt-l{font-size:.88rem;font-weight:700;color:var(--ink4);transition:color .25s}.pt-l.on{color:var(--ink)}
+.pt-sw{position:relative;width:48px;height:26px;background:var(--p200);border-radius:100px;cursor:pointer;transition:background .3s}
+.pt-sw.on{background:var(--p600)}
+.pt-kn{position:absolute;width:20px;height:20px;background:#fff;border-radius:50%;top:3px;left:3px;transition:left .3s var(--spring);box-shadow:0 1px 6px rgba(0,0,0,.15)}
+.pt-sw.on .pt-kn{left:25px}
+.sv-pill{background:rgba(5,150,105,.1);border:1px solid rgba(5,150,105,.2);color:var(--green);font-size:.72rem;font-weight:800;padding:4px 11px;border-radius:100px}
+.pr-tbl{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1020px;margin:0 auto}
+.pc{background:var(--bg-w);border:1px solid var(--bdr);border-radius:26px;overflow:hidden;transition:all .35s var(--ease);position:relative}
+.pc:hover{transform:translateY(-6px);box-shadow:var(--s3)}
+.pc.pop{border-color:var(--p500);box-shadow:0 0 0 3px var(--p200),var(--s3)}
+.pc.pop:hover{box-shadow:0 0 0 3px var(--p300),var(--s4)}
+.pc-top{padding:28px 28px 20px;border-bottom:1px solid var(--bdr2)}
+.pop-b{position:absolute;top:-1px;left:50%;transform:translateX(-50%);background:linear-gradient(90deg,var(--p700),var(--p500));color:#fff;font-size:.64rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:5px 14px;border-radius:0 0 12px 12px}
+.pc-name{font-weight:800;font-size:1rem;color:var(--ink);letter-spacing:-.02em;margin-bottom:4px;margin-top:14px}
+.pc:not(.pop) .pc-name{margin-top:0}.pc-tag{font-size:.76rem;color:var(--ink3);margin-bottom:16px}
+.pc-price{display:flex;align-items:flex-end;gap:4px;margin-bottom:5px}
+.pc-num{font-family:'Fraunces',serif;font-weight:700;font-size:2.8rem;line-height:1;color:var(--ink)}
+.pc.pop .pc-num{color:var(--p700)}.pc-cur{font-size:1.1rem;font-weight:700;color:var(--ink3);margin-bottom:4px}
+.pc.pop .pc-cur{color:var(--p600)}.pc-per{font-size:.8rem;color:var(--ink4);margin-bottom:4px}
+.pc-note{font-size:.7rem;color:var(--green);font-weight:600;height:16px}
+.pc-ca{padding:16px 26px;border-bottom:1px solid var(--bdr2)}
+.pc-btn{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;padding:12px;border-radius:100px;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:.88rem;cursor:pointer;border:none;transition:all .28s var(--ease)}
+.pc-btn.dark{background:var(--ink);color:#fff}.pc-btn.dark:hover{background:var(--p700);box-shadow:0 8px 24px rgba(109,40,217,.4)}
+.pc-btn.purple{background:var(--p600);color:#fff;box-shadow:0 4px 18px rgba(109,40,217,.3)}.pc-btn.purple:hover{background:var(--p700);box-shadow:0 10px 32px rgba(109,40,217,.45);transform:translateY(-2px)}
+.pc-btn.outline{background:transparent;color:var(--ink2);border:2px solid rgba(109,40,217,.18)}.pc-btn.outline:hover{border-color:var(--p400);color:var(--p700);background:var(--p50)}
+.pc-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.5;transition:transform .2s}.pc-btn:hover svg{transform:translateX(3px)}
+.pc-feats{padding:18px 26px 24px}
+.pcsl{font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:var(--ink4);margin-bottom:9px;margin-top:14px}.pcsl:first-child{margin-top:0}
+.pf{display:flex;align-items:flex-start;gap:8px;padding:5px 0;border-bottom:1px solid var(--bdr2);font-size:.82rem;color:var(--ink2)}.pf:last-child{border:none}
+.pf-ok{font-size:.72rem;font-weight:800;color:var(--p600);flex-shrink:0;margin-top:1px}
+.pf-no{font-size:.72rem;color:var(--ink5);flex-shrink:0}.pf-m{color:var(--ink4)}
+.pfb{margin-left:auto;font-size:.56rem;font-weight:800;padding:2px 6px;border-radius:100px;background:var(--p100);color:var(--p700);white-space:nowrap;flex-shrink:0}
+.pfb.g{background:rgba(5,150,105,.1);color:var(--green)}
+@media(max-width:900px){.pr-tbl{grid-template-columns:1fr;max-width:420px}}
+</style>
+<div class="prgl" style="width:450px;height:450px;background:rgba(139,92,246,.07);top:-80px;right:-80px"></div>
+<div class="prgl" style="width:300px;height:300px;background:rgba(109,40,217,.05);bottom:0;left:80px"></div>
+<div class="wrap">
+  <div class="pr-h" data-sr="up">
+    <span class="eyebrow" style="justify-content:center;display:flex">Fiyatlandırma</span>
+    <h2 class="t-h2">Ücretsiz başla, <span class="italic">sonuç görünce</span> yükselt</h2>
+    <p>CV Builder temel özellikleri sonsuza dek ücretsiz. AI ve 50+ premium şablon için paket seç.</p>
+  </div>
+  <div class="pr-tog" data-sr="fade">
+    <span class="pt-l on" id="ptl-m">Aylık</span>
+    <div class="pt-sw" id="ptSw" onclick="togglePricing()"><div class="pt-kn"></div></div>
+    <span class="pt-l" id="ptl-y">Yıllık</span>
+    <span class="sv-pill">%40 tasarruf</span>
+  </div>
+  <div class="pr-tbl" data-sr="up">
+    <div class="pc">
+      <div class="pc-top"><div class="pc-name">Starter</div><div class="pc-tag">Denemek isteyenler için</div><div class="pc-price"><span class="pc-cur">₺</span><span class="pc-num" id="p-s">0</span></div><div class="pc-note" id="n-s"></div></div>
+      <div class="pc-ca"><button class="pc-btn dark" onclick="openModal('register')">Ücretsiz Başla <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></button></div>
+      <div class="pc-feats">
+        <div class="pcsl">CV Builder</div>
+        <div class="pf"><span class="pf-ok">✓</span>Sınırsız CV oluşturma</div>
+        <div class="pf"><span class="pf-ok">✓</span>5 temel ATS şablonu</div>
+        <div class="pf"><span class="pf-ok">✓</span>ATS uyumluluk skoru</div>
+        <div class="pf"><span class="pf-ok">✓</span>PDF &amp; DOCX indirme</div>
+        <div class="pf"><span class="pf-ok">✓</span>Kişisel CV linki</div>
+        <div class="pf"><span class="pf-no">—</span><span class="pf-m">AI içerik önerileri</span></div>
+        <div class="pf"><span class="pf-no">—</span><span class="pf-m">50+ premium şablon</span></div>
+        <div class="pf"><span class="pf-no">—</span><span class="pf-m">LinkedIn içe aktarma</span></div>
+        <div class="pcsl">Diğer Ürünler</div>
+        <div class="pf"><span class="pf-ok">✓</span>Mülakat Koçu — 1 deneme <span class="pfb">Deneme</span></div>
+        <div class="pf"><span class="pf-ok">✓</span>Kariyer Asistanı — 1 deneme <span class="pfb">Deneme</span></div>
+      </div>
+    </div>
+    <div class="pc pop">
+      <div class="pop-b">EN ÇOK TERCİH EDİLEN</div>
+      <div class="pc-top"><div class="pc-name">Growth</div><div class="pc-tag">Aktif iş arayanlar için</div><div class="pc-price"><span class="pc-cur">₺</span><span class="pc-num" id="p-g">299</span><span class="pc-per">/ay</span></div><div class="pc-note" id="n-g"></div></div>
+      <div class="pc-ca"><button class="pc-btn purple" onclick="openModal('register')">Hemen Başla <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></button></div>
+      <div class="pc-feats">
+        <div class="pcsl">CV Builder — Tam</div>
+        <div class="pf"><span class="pf-ok">✓</span>Starter'daki her şey</div>
+        <div class="pf"><span class="pf-ok">✓</span>AI içerik önerileri <span class="pfb">Pro</span></div>
+        <div class="pf"><span class="pf-ok">✓</span>50+ premium ATS şablonu</div>
+        <div class="pf"><span class="pf-ok">✓</span>LinkedIn'den içe aktar</div>
+        <div class="pf"><span class="pf-ok">✓</span>İlana göre optimizasyon</div>
+        <div class="pf"><span class="pf-ok">✓</span>Tıklama &amp; görüntüleme analizi</div>
+        <div class="pcsl">Diğer Ürünler</div>
+        <div class="pf"><span class="pf-ok">✓</span>Mülakat Koçu — sınırsız <span class="pfb g">Sınırsız</span></div>
+        <div class="pf"><span class="pf-ok">✓</span>Kariyer Asistanı — sınırsız <span class="pfb g">Sınırsız</span></div>
+        <div class="pf"><span class="pf-no">—</span><span class="pf-m">Maaş müzakeresi koçluğu</span></div>
+      </div>
+    </div>
+    <div class="pc">
+      <div class="pc-top"><div class="pc-name">Unlimited</div><div class="pc-tag">Her şey, sınır yok</div><div class="pc-price"><span class="pc-cur">₺</span><span class="pc-num" id="p-u">499</span><span class="pc-per">/ay</span></div><div class="pc-note" id="n-u"></div></div>
+      <div class="pc-ca"><button class="pc-btn outline" onclick="openModal('register')">Unlimited'a Geç <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></button></div>
+      <div class="pc-feats">
+        <div class="pcsl">CV Builder — Unlimited</div>
+        <div class="pf"><span class="pf-ok">✓</span>Growth'taki her şey</div>
+        <div class="pf"><span class="pf-ok">✓</span>Özel şablon tasarımı</div>
+        <div class="pf"><span class="pf-ok">✓</span>Çok dilli CV (EN/DE/FR)</div>
+        <div class="pcsl">Diğer Ürünler</div>
+        <div class="pf"><span class="pf-ok">✓</span>Mülakat Koçu — tam <span class="pfb g">Tam</span></div>
+        <div class="pf"><span class="pf-ok">✓</span>Maaş müzakeresi <span class="pfb">Sadece Unlimited</span></div>
+        <div class="pf"><span class="pf-ok">✓</span>Kariyer koçu 1-1 (2/ay)</div>
+        <div class="pf"><span class="pf-ok">✓</span>Öncelikli destek (max 2h)</div>
+      </div>
+    </div>
+  </div>
+  <p style="text-align:center;margin-top:22px;font-size:.82rem;color:var(--ink3)" data-sr="fade" data-d="2">
+    Kredi kartı gerekmez · İstediğin zaman iptal et · 7 gün para iade garantisi
+  </p>
+</div>
+</section>
+
+<!-- ══ TESTIMONIALS ══ -->
+<section id="proof" style="padding:120px 0;background:var(--bg-w);overflow:hidden">
+<style>
+.proof-h{text-align:center;margin-bottom:56px}
+.proof-row{position:relative;overflow:hidden}
+.proof-row::before,.proof-row::after{content:'';position:absolute;top:0;bottom:0;width:120px;z-index:10;pointer-events:none}
+.proof-row::before{left:0;background:linear-gradient(to right,var(--bg-w),transparent)}
+.proof-row::after{right:0;background:linear-gradient(to left,var(--bg-w),transparent)}
+.proof-track{display:flex;gap:16px;width:max-content;animation:pmove 40s linear infinite;padding:4px 0 18px}
+.proof-track:hover{animation-play-state:paused}
+@keyframes pmove{to{transform:translateX(-50%)}}
+.pcard{min-width:270px;flex-shrink:0;background:var(--bg);border:1px solid var(--bdr2);border-radius:18px;padding:20px;transition:all .3s var(--ease);cursor:pointer}
+.pcard:hover{border-color:var(--p300);box-shadow:var(--s2);transform:translateY(-3px);background:var(--bg-w)}
+.pcard-stars{color:#FBBF24;font-size:.75rem;letter-spacing:2px;margin-bottom:9px}
+.pcard-text{font-size:.84rem;color:var(--ink2);line-height:1.65;margin-bottom:13px}
+.pcard-auth{display:flex;align-items:center;gap:9px}
+.pcard-av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:900;color:#fff;flex-shrink:0}
+.pcard-name{font-weight:800;font-size:.8rem;color:var(--ink)}.pcard-role{font-size:.68rem;color:var(--ink3)}
+</style>
+<div class="wrap">
+  <div class="proof-h" data-sr="up">
+    <span class="eyebrow" style="justify-content:center;display:flex">Başarı Hikayeleri</span>
+    <h2 class="t-h2" style="text-align:center">CV Builder ile <span class="italic">işe girenler</span></h2>
+  </div>
+</div>
+<div class="proof-row">
+  <div class="proof-track">
+    <div class="pcard"><div class="pcard-stars">★★★★★</div><p class="pcard-text">"ATS skorum 62'den 91'e çıktı. Aynı hafta 2 mülakat daveti aldım. Daha önce hiç bu kadar geri dönüş almamıştım."</p><div class="pcard-auth"><div class="pcard-av" style="background:linear-gradient(135deg,#7C3AED,#A78BFA)">AY</div><div><div class="pcard-name">Ahmet Yılmaz</div><div class="pcard-role">Software Engineer</div></div></div></div>
+    <div class="pcard"><div class="pcard-stars">★★★★★</div><p class="pcard-text">"50 şablon arasından mükemmelini bulmak 5 dakika aldı. Gönderdiğim 10 firmadan 7'si geri döndü — rekor."</p><div class="pcard-auth"><div class="pcard-av" style="background:linear-gradient(135deg,#0284C7,#38BDF8)">EŞ</div><div><div class="pcard-name">Elif Şahin</div><div class="pcard-role">UX Designer</div></div></div></div>
+    <div class="pcard"><div class="pcard-stars">★★★★★</div><p class="pcard-text">"AI 'design system' kelimesini eklemememi önerdi. O haftadan recruiter mesajları patladı."</p><div class="pcard-auth"><div class="pcard-av" style="background:linear-gradient(135deg,#059669,#34D399)">ZK</div><div><div class="pcard-name">Zeynep Koç</div><div class="pcard-role">Product Designer</div></div></div></div>
+    <div class="pcard"><div class="pcard-stars">★★★★★</div><p class="pcard-text">"LinkedIn içe aktarma CV'mi saniyede doldurdu. Sonra AI ile ince ayar yaptım — mükemmeldi."</p><div class="pcard-auth"><div class="pcard-av" style="background:linear-gradient(135deg,#D97706,#FCD34D)">MC</div><div><div class="pcard-name">Mert Can</div><div class="pcard-role">Data Scientist</div></div></div></div>
+    <div class="pcard"><div class="pcard-stars">★★★★★</div><p class="pcard-text">"Temel özellikler gerçekten ücretsiz ve gayet yeterli. Pro'ya geçince bambaşka bir boyut açıldı."</p><div class="pcard-auth"><div class="pcard-av" style="background:linear-gradient(135deg,#6D28D9,#C4B5FD)">BÖ</div><div><div class="pcard-name">Burak Öztürk</div><div class="pcard-role">Fintech Analyst</div></div></div></div>
+    <div class="pcard"><div class="pcard-stars">★★★★★</div><p class="pcard-text">"ATS skorum 62'den 91'e çıktı."</p><div class="pcard-auth"><div class="pcard-av" style="background:linear-gradient(135deg,#7C3AED,#A78BFA)">AY</div><div><div class="pcard-name">Ahmet Yılmaz</div><div class="pcard-role">Software Engineer</div></div></div></div>
+    <div class="pcard"><div class="pcard-stars">★★★★★</div><p class="pcard-text">"10 firmadan 7'si geri döndü."</p><div class="pcard-auth"><div class="pcard-av" style="background:linear-gradient(135deg,#0284C7,#38BDF8)">EŞ</div><div><div class="pcard-name">Elif Şahin</div><div class="pcard-role">UX Designer</div></div></div></div>
+    <div class="pcard"><div class="pcard-stars">★★★★★</div><p class="pcard-text">"Recruiter mesajları patladı."</p><div class="pcard-auth"><div class="pcard-av" style="background:linear-gradient(135deg,#059669,#34D399)">ZK</div><div><div class="pcard-name">Zeynep Koç</div><div class="pcard-role">Product Designer</div></div></div></div>
+    <div class="pcard"><div class="pcard-stars">★★★★★</div><p class="pcard-text">"Saniyede CV hazır, mükemmel."</p><div class="pcard-auth"><div class="pcard-av" style="background:linear-gradient(135deg,#D97706,#FCD34D)">MC</div><div><div class="pcard-name">Mert Can</div><div class="pcard-role">Data Scientist</div></div></div></div>
+    <div class="pcard"><div class="pcard-stars">★★★★★</div><p class="pcard-text">"Pro'ya geçince bambaşka bir boyut."</p><div class="pcard-auth"><div class="pcard-av" style="background:linear-gradient(135deg,#6D28D9,#C4B5FD)">BÖ</div><div><div class="pcard-name">Burak Öztürk</div><div class="pcard-role">Fintech Analyst</div></div></div></div>
+  </div>
+</div>
+</section>
+
+<!-- ══ CTA ══ -->
+<section id="cta" style="padding:160px 0;background:var(--bg-dark);text-align:center;position:relative;overflow:hidden">
+  <div style="position:absolute;border-radius:50%;filter:blur(120px);pointer-events:none;width:700px;height:400px;background:rgba(109,40,217,.25);top:-180px;left:50%;transform:translateX(-50%)"></div>
+  <div style="position:absolute;border-radius:50%;filter:blur(120px);pointer-events:none;width:300px;height:300px;background:rgba(196,181,253,.1);bottom:0;right:5%"></div>
+  <div style="position:relative;z-index:1;max-width:680px;margin:0 auto;padding:0 32px">
+    <div data-sr="up">
+      <span class="eyebrow" style="color:var(--p300);justify-content:center;display:flex;margin-bottom:20px">Hazır Mısın?</span>
+      <h2 class="t-h2" style="color:#fff">İlk CV'ni <span class="italic">5 dakikada</span> oluştur</h2>
+    </div>
+    <p style="font-size:1rem;color:rgba(255,255,255,.5);max-width:460px;margin:18px auto 42px;line-height:1.7" data-sr="up" data-d="1">
+      Ücretsiz başla, ATS skorunu hemen gör. Beğenirsen Pro'ya geç — beğenmezsen ücretsiz kullanmaya devam et.
+    </p>
+    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap" data-sr="up" data-d="2">
+      <a href="#" class="btn btn-purple btn-lg" onclick="openModal('register')">Ücretsiz CV Oluştur <svg class="arr" viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>
+      <a href="#pricing" class="btn btn-ghost btn-lg">Paketleri Gör</a>
+    </div>
+    <p style="font-size:.76rem;color:rgba(255,255,255,.25);margin-top:16px" data-sr="fade" data-d="3">
+      Kredi kartı gerekmez · 7 gün para iade garantisi
+    </p>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer style="background:var(--bg-dark2);padding:60px 0 30px">
+<style>
+.ft-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:36px;margin-bottom:44px}
+.ft-brand .n-name{color:rgba(255,255,255,.88);font-size:1rem}.ft-brand .n-name span{color:var(--p400)}
+.ft-brand p{font-size:.82rem;color:rgba(255,255,255,.32);line-height:1.7;margin-top:11px;max-width:230px}
+.ft-col h5{font-size:.66rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.28);margin-bottom:13px}
+.ft-col ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+.ft-col ul a{font-size:.82rem;color:rgba(255,255,255,.43);transition:color .2s}.ft-col ul a:hover{color:rgba(255,255,255,.88)}
+.ft-btm{border-top:1px solid rgba(255,255,255,.05);padding-top:22px;display:flex;justify-content:space-between;font-size:.76rem;color:rgba(255,255,255,.22);flex-wrap:wrap;gap:10px}
+@media(max-width:900px){.ft-grid{grid-template-columns:1fr 1fr;gap:24px}}
+</style>
+<div class="wrap">
+  <div class="ft-grid">
+    <div class="ft-brand">
+      <div class="n-logo"><div class="n-mark">S</div><span class="n-name">Synaps<span>AI</span></span></div>
+      <p>Türkiye'nin yapay zeka destekli kariyer platformu.</p>
+    </div>
+    <div class="ft-col"><h5>Ürünler</h5><ul><li><a href="#">CV Builder</a></li><li><a href="mulakat-kocu.html">Mülakat Koçu</a></li><li><a href="kariyer-asistani.html">Kariyer Asistanı</a></li><li><a href="#pricing">Fiyatlar</a></li></ul></div>
+    <div class="ft-col"><h5>Şirket</h5><ul><li><a href="#">Hakkımızda</a></li><li><a href="#">Blog</a></li><li><a href="#">İletişim</a></li></ul></div>
+    <div class="ft-col"><h5>Destek</h5><ul><li><a href="#">Yardım</a></li><li><a href="#">KVKK</a></li><li><a href="#">Gizlilik</a></li></ul></div>
+  </div>
+  <div class="ft-btm">
+    <span>© 2025 SynapsAI. Tüm hakları saklıdır.</span>
+    <span>🇹🇷 Türkiye'de üretildi</span>
+  </div>
+</div>
+</footer>
+
+<!-- ══ MODAL ══ -->
+<div class="modal-overlay" id="mo">
+<style>
+.modal-overlay{position:fixed;inset:0;z-index:2000;background:rgba(13,8,43,.7);backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .35s var(--ease)}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal-card{background:var(--bg-w);border-radius:28px;padding:44px 40px;width:100%;max-width:400px;position:relative;box-shadow:var(--s5);transform:scale(.94) translateY(16px);transition:transform .4s var(--spring)}
+.modal-overlay.open .modal-card{transform:scale(1) translateY(0)}
+.modal-x{position:absolute;top:18px;right:20px;width:30px;height:30px;border-radius:9px;background:var(--bg-off);border:none;cursor:pointer;font-size:.9rem;color:var(--ink3);display:flex;align-items:center;justify-content:center;transition:all .2s}
+.modal-x:hover{background:var(--p100);color:var(--p700)}
+.m-title{font-weight:800;font-size:1.5rem;letter-spacing:-.03em;color:var(--ink);margin-bottom:4px}
+.m-sub{font-size:.84rem;color:var(--ink3);margin-bottom:24px}
+.m-tabs{display:flex;background:var(--bg-off);border-radius:12px;padding:3px;margin-bottom:24px}
+.m-tab{flex:1;padding:9px;border-radius:10px;border:none;background:transparent;font-family:'Bricolage Grotesque';font-weight:700;font-size:.85rem;color:var(--ink4);cursor:pointer;transition:all .25s}
+.m-tab.on{background:var(--ink);color:#fff}
+.mfg{margin-bottom:14px}
+.mfl{display:block;font-size:.76rem;font-weight:700;color:var(--ink2);margin-bottom:5px}
+.mfi{width:100%;background:var(--bg-off);border:1.5px solid var(--bdr);border-radius:12px;padding:11px 14px;font-family:'Bricolage Grotesque';font-size:.9rem;color:var(--ink);outline:none;transition:all .2s}
+.mfi:focus{border-color:var(--p500);background:var(--p50)}.mfi::placeholder{color:var(--ink5)}
+.mfcta{display:flex;align-items:center;justify-content:center;width:100%;padding:13px;border-radius:100px;font-family:'Bricolage Grotesque';font-weight:800;font-size:.9rem;background:var(--ink);color:#fff;border:none;cursor:pointer;transition:all .28s var(--ease)}
+.mfcta:hover{background:var(--p700);box-shadow:0 8px 28px rgba(109,40,217,.4)}
+.mfsep{display:flex;align-items:center;gap:12px;margin:16px 0}
+.mfsep::before,.mfsep::after{content:'';flex:1;height:1px;background:var(--bdr2)}
+.mfsep span{font-size:.72rem;color:var(--ink4)}
+.mfg-btn{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;padding:11px;border-radius:100px;border:1.5px solid var(--bdr);background:transparent;font-family:'Bricolage Grotesque';font-weight:700;font-size:.86rem;color:var(--ink2);cursor:pointer;transition:all .2s}
+.mfg-btn:hover{background:var(--p50);border-color:var(--p300);color:var(--p700)}
+</style>
+  <div class="modal-card">
+    <button class="modal-x" onclick="closeModal()">✕</button>
+    <div class="n-logo" style="margin-bottom:20px"><div class="n-mark">S</div><span class="n-name" style="color:var(--ink)">Synaps<span style="color:var(--p600)">AI</span></span></div>
+    <div class="m-title" id="m-title">Hoş Geldin</div>
+    <div class="m-sub" id="m-sub">Hesabına giriş yap.</div>
+    <div class="m-tabs"><button class="m-tab on" id="mt-l" onclick="switchTab('l')">Giriş Yap</button><button class="m-tab" id="mt-r" onclick="switchTab('r')">Kayıt Ol</button></div>
+    <div id="mf-l">
+      <div class="mfg"><label class="mfl">E-posta</label><input type="email" class="mfi" placeholder="ornek@email.com"></div>
+      <div class="mfg"><label class="mfl">Şifre</label><input type="password" class="mfi" placeholder="••••••••"></div>
+      <button class="mfcta">Giriş Yap</button>
+      <div class="mfsep"><span>veya</span></div>
+      <button class="mfg-btn"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>Google ile devam et</button>
+    </div>
+    <div id="mf-r" style="display:none">
+      <div class="mfg"><label class="mfl">Ad Soyad</label><input type="text" class="mfi" placeholder="Adınız Soyadınız"></div>
+      <div class="mfg"><label class="mfl">E-posta</label><input type="email" class="mfi" placeholder="ornek@email.com"></div>
+      <div class="mfg"><label class="mfl">Şifre</label><input type="password" class="mfi" placeholder="En az 8 karakter"></div>
+      <button class="mfcta">Ücretsiz Kayıt Ol</button>
+      <div class="mfsep"><span>veya</span></div>
+      <button class="mfg-btn"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>Google ile kayıt ol</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Scroll reveal
+window.addEventListener('scroll',()=>{ document.getElementById('nav').classList.toggle('stuck',scrollY>24) },{passive:true});
+const obs=new IntersectionObserver(e=>e.forEach(x=>{ if(x.isIntersecting) x.target.classList.add('vis') }),{threshold:.08,rootMargin:'0px 0px -60px 0px'});
+document.querySelectorAll('[data-sr]').forEach(el=>obs.observe(el));
+
+// Modal
+function openModal(t){ document.getElementById('mo').classList.add('open'); switchTab(t==='register'?'r':'l'); document.body.style.overflow='hidden' }
+function closeModal(){ document.getElementById('mo').classList.remove('open'); document.body.style.overflow='' }
+function switchTab(t){
+  const l=t==='l';
+  document.getElementById('mt-l').classList.toggle('on',l);
+  document.getElementById('mt-r').classList.toggle('on',!l);
+  document.getElementById('mf-l').style.display=l?'':'none';
+  document.getElementById('mf-r').style.display=l?'none':'';
+  document.getElementById('m-title').textContent=l?'Hoş Geldin':'Hesap Oluştur';
+  document.getElementById('m-sub').textContent=l?'Hesabına giriş yap.':'Ücretsiz başla, hemen kullan.';
+}
+document.getElementById('mo').addEventListener('click',e=>{ if(e.target===document.getElementById('mo')) closeModal() });
+
+// Pricing toggle
+let yearly=false;
+const P={s:{m:'0',y:'0'},g:{m:'299',y:'179'},u:{m:'499',y:'299'}};
+function togglePricing(){
+  yearly=!yearly;
+  const sw=document.getElementById('ptSw');
+  sw.classList.toggle('on',yearly);
+  document.getElementById('ptl-m').classList.toggle('on',!yearly);
+  document.getElementById('ptl-y').classList.toggle('on',yearly);
+  const k=yearly?'y':'m';
+  document.getElementById('p-s').textContent=P.s[k];
+  document.getElementById('p-g').textContent=P.g[k];
+  document.getElementById('p-u').textContent=P.u[k];
+  document.getElementById('n-g').textContent=yearly?'Yıllık ₺2.148 · %40 tasarruf':'';
+  document.getElementById('n-u').textContent=yearly?'Yıllık ₺3.588 · %40 tasarruf':'';
+}
+
+// Hero parallax
+window.addEventListener('scroll',()=>{
+  const hero=document.querySelector('.hero-visual');
+  if(hero) hero.style.transform=`translateY(${scrollY*.06}px)`;
+},{passive:true});
+</script>
+
+</body>
+</html>
